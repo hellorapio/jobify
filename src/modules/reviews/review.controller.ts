@@ -1,20 +1,20 @@
-import catchAsync from "../../utils/catchAsync";
 import validationCatch from "../../utils/validationCatch";
 import reviewValidator from "./review.validator";
 import sendRes from "../../utils/sendRes";
 import validators from "../../utils/validators";
 import ReviewService from "./review.service";
+import { Request, Response } from "express";
 
-export const getReviews = catchAsync(async (req, res) => {
+export const getReviews = async (req: Request, res: Response) => {
   const { companId } = await validationCatch(
     reviewValidator.ids,
     req.params
   );
   const reviews = await ReviewService.getReviews(companId);
   sendRes(res, 200, { result: reviews.length, reviews });
-});
+};
 
-export const updateReview = catchAsync(async (req, res) => {
+export const updateReview = async (req: Request, res: Response) => {
   const { reviewId } = await validationCatch(
     reviewValidator.ids,
     req.params
@@ -30,9 +30,9 @@ export const updateReview = catchAsync(async (req, res) => {
   );
 
   sendRes(res, 200, { review });
-});
+};
 
-export const createReview = catchAsync(async (req, res) => {
+export const createReview = async (req: Request, res: Response) => {
   const { id: companyId } = await validationCatch(validators.mongoId, {
     id: req.params.companyId,
   });
@@ -47,4 +47,4 @@ export const createReview = catchAsync(async (req, res) => {
   );
 
   sendRes(res, 201, { review });
-});
+};

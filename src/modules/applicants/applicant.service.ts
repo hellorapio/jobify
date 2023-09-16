@@ -9,9 +9,14 @@ class ApplicantService {
 
   static async getJobApplicants() {}
 
-  static async getAllApplicants() {}
+  static async deleteApplicant(applicantId: string, workerId: string) {
+    const applicant = await Applicant.findOneAndDelete({
+      _id: applicantId,
+      workerId,
+    });
 
-  static async deleteApplicant() {}
+    if (!applicant) throw new AppError("There is no Applicant here", 404);
+  }
 
   static async workerApplicants(workerId: string) {
     return await Applicant.find({ workerId });

@@ -1,14 +1,22 @@
-import catchAsync from "../utils/catchAsync";
+import { NextFunction, Request, Response } from "express";
 
-export const company = catchAsync(async (req, res, next) => {
+export const company = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   req.body.role = "company";
   next();
-});
+};
 
-export const worker = catchAsync(async (req, res, next) => {
+export const worker = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   req.body.role = "worker";
   next();
-});
+};
 
 export default {
   company,

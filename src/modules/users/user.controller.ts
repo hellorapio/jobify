@@ -1,6 +1,5 @@
+import { Request, Response } from "express";
 import User from "../auth/user.model";
-import catchAsync from "../../utils/catchAsync";
-import AppError from "../../utils/appError";
 import Company from "../companies/company.model";
 import Worker from "../workers/worker.model";
 
@@ -10,7 +9,7 @@ const objFiltering = (obj: {}, ...allowed: string[]) => {
   return obj;
 };
 
-export const getAllUsers = catchAsync(async (req, res, next) => {
+export const getAllUsers = async (req: Request, res: Response) => {
   const users = await User.find();
 
   res.status(200).json({
@@ -18,9 +17,9 @@ export const getAllUsers = catchAsync(async (req, res, next) => {
     results: users.length,
     data: users,
   });
-});
+};
 
-export const workerUpdate = catchAsync(async (req, res, next) => {
+export const workerUpdate = async (req: Request, res: Response) => {
   if (req.body.userId) delete req.body.userId;
 
   const worker = await Worker.findOneAndUpdate(
@@ -36,9 +35,9 @@ export const workerUpdate = catchAsync(async (req, res, next) => {
     status: "Success",
     worker,
   });
-});
+};
 
-export const companyUpdate = catchAsync(async (req, res, next) => {
+export const companyUpdate = async (req: Request, res: Response) => {
   if (req.body.companyId) delete req.body.companyId;
 
   const company = await Company.findOneAndUpdate(
@@ -54,15 +53,15 @@ export const companyUpdate = catchAsync(async (req, res, next) => {
     status: "Success",
     company,
   });
-});
+};
 
-export const deleteMe = catchAsync(async (req, res, next) => {
+export const deleteMe = async (req: Request, res: Response) => {
   await User.findByIdAndUpdate(req.user!.id, { active: false });
 
   res.status(204).json({
     status: "Success",
   });
-});
+};
 
 // exports.createUser = (req, res) => {};
 // exports.updateUser = (req, res) => {};

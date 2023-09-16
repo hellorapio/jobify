@@ -6,22 +6,6 @@ import authMiddleware from "../../middlewares/auth.middleware";
 const router = express.Router();
 
 router
-  .route("/")
-  .get(
-    authMiddleware.authProtection,
-    authMiddleware.restrictTo("admin"),
-    applicantController.getAllApplicants
-  );
-
-router
-  .route("/me")
-  .get(
-    authMiddleware.authProtection,
-    authMiddleware.restrictTo("worker", "company"),
-    applicantController.allUserApplicants
-  );
-
-router
   .route("/reply/:applicantId")
   .patch(
     authMiddleware.authProtection,

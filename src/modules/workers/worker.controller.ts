@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import catchAsync from "../../utils/catchAsync";
 import sendRes from "../../utils/sendRes";
 import validationCatch from "../../utils/validationCatch";
 import WorkerService from "./worker.service";

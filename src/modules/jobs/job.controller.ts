@@ -1,43 +1,43 @@
-import catchAsync from "../../utils/catchAsync";
 import validationCatch from "../../utils/validationCatch";
 import jobValidator from "./job.validator";
 import sendRes from "../../utils/sendRes";
 import validators from "../../utils/validators";
 import JobService from "./job.service";
+import { Request, Response } from "express";
 
-const getAllJobs = catchAsync(async (req, res) => {
+const getAllJobs = async (req: Request, res: Response) => {
   const jobs = await JobService.getAllJobs();
   sendRes(res, 200, { results: jobs.length, jobs });
-});
+};
 
-const getJob = catchAsync(async (req, res) => {
+const getJob = async (req: Request, res: Response) => {
   const { id } = await validationCatch(validators.mongoId, req.params);
   const job = await JobService.getJob(id);
   sendRes(res, 200, job);
-});
+};
 
-const createJob = catchAsync(async (req, res) => {
+const createJob = async (req: Request, res: Response) => {
   const jobBody = await validationCatch(jobValidator.createJob, req.body);
   const job = await JobService.createJob(jobBody);
   sendRes(res, 201, job);
-});
+};
 
-const updateJob = catchAsync(async (req, res) => {
+const updateJob = async (req: Request, res: Response) => {
   const jobBody = await validationCatch(jobValidator.updateJob, req.body);
   const { id } = await validationCatch(validators.mongoId, req.params);
   const job = await JobService.updateJob(id, jobBody);
   sendRes(res, 200, job);
-});
+};
 
-const deleteJob = catchAsync(async (req, res) => {
+const deleteJob = async (req: Request, res: Response) => {
   const { id } = await validationCatch(validators.mongoId, req.params);
   await JobService.deleteJob(id);
   sendRes(res, 204);
-});
+};
 
 export default { updateJob, getAllJobs, deleteJob, createJob, getJob };
 
-// export const getJobStats = catchAsync(async (req, res, next) => {
+// export const getJobStats = async (req: Request, res: Response) => {
 //   const job = await Job.aggregate([
 //     {
 //       $group: {

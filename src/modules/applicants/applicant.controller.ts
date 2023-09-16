@@ -1,12 +1,11 @@
-import { Response } from "express";
+import { Response, Request } from "express";
 import AppError from "../../utils/appError";
 import sendRes from "../../utils/sendRes";
 import ApplicantService from "./applicant.service";
 import applicantValidator from "./applicant.validator";
 import validationCatch from "../../utils/validationCatch";
-import { CustomRequest } from "../../types";
 
-const createApplicant = async (req: CustomRequest, res: Response) => {
+const createApplicant = async (req: Request, res: Response) => {
   const { jobId } = await validationCatch(
     applicantValidator.ids,
     req.params
@@ -26,7 +25,7 @@ const createApplicant = async (req: CustomRequest, res: Response) => {
   sendRes(res, 201, applicant);
 };
 
-const replyApplicant = async (req: CustomRequest, res: Response) => {
+const replyApplicant = async (req: Request, res: Response) => {
   const { applicantId } = await validationCatch(
     applicantValidator.ids,
     req.params
@@ -42,47 +41,27 @@ const replyApplicant = async (req: CustomRequest, res: Response) => {
   sendRes(res, 200);
 };
 
-const workerApplicants = async (req: CustomRequest, res: Response) => {
+const workerApplicants = async (req: Request, res: Response) => {
   const applicants = await ApplicantService.workerApplicants(req.user.id);
   sendRes(res, 200, { results: applicants.length, applicants });
 };
 
-const companyApplicants = async (req: CustomRequest, res: Response) => {
+const companyApplicants = async (req: Request, res: Response) => {
   const applicants = await ApplicantService.workerApplicants(req.user.id);
   sendRes(res, 200, { results: applicants.length, applicants });
 };
 
-const deleteApplicant = async (req: CustomRequest, res: Response) => {
-  let applicant;
+const deleteApplicant = async (req: Request, res: Response) => {
+  const { applicantId } = await validationCatch(
+    applicantValidator.ids,
+    req.params
+  );
 
-  if (req.user.role === "worker")
-    applicant = await Applicant.findOneAndDelete({
-      _id: req.params.applicantId,
-      workerId: req.user.id,
-    });
-  else
-    applicant = await Applicant.findOneAndDelete({
-      _id: req.params.applicantId,
-    });
-
-  if (!applicant) throw new AppError("There is no Applicant here", 404);
-
-  res.status(204).json({
-    status: "Success",
-  });
+  await ApplicantService.deleteApplicant(applicantId, req.user.id);
+  sendRes(res, 204);
 };
 
-const getAllApplicants = async (req: CustomRequest, res: Response) => {
-  const applicants = await Applicant.find();
-
-  res.status(200).json({
-    status: "Success",
-    results: applicants.length,
-    data: applicants,
-  });
-};
-
-const getJobApplicants = async (req: CustomRequest, res: Response) => {
+const getJobApplicants = async (req: Request, res: Response) => {
   const { jobId } = req.params;
   const applicants = await Applicant.find({ jobId });
 
@@ -105,7 +84,7 @@ const getJobApplicants = async (req: CustomRequest, res: Response) => {
   });
 };
 
-const updateApplicant = async (req: CustomRequest, res: Response) => {
+const updateApplicant = async (req: Request, res: Response) => {
   const { letter } = req.body;
   const { applicantId } = req.params;
   const applicant = await Applicant.findOneAndUpdate(
@@ -123,7 +102,7 @@ const updateApplicant = async (req: CustomRequest, res: Response) => {
   });
 };
 
-const getApplicant = async (req: CustomRequest, res: Response) => {
+const getApplicant = async (req: Request, res: Response) => {
   const { applicantId } = req.params;
   const applicant = await Applicant.findById(applicantId);
 
@@ -151,7 +130,6 @@ export default {
   updateApplicant,
   getApplicant,
   getJobApplicants,
-  getAllApplicants,
   deleteApplicant,
   workerApplicants,
   companyApplicants,
