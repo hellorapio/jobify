@@ -13,7 +13,13 @@ class ApplicantService {
 
   static async deleteApplicant() {}
 
-  static async allUserApplicants() {}
+  static async workerApplicants(workerId: string) {
+    return await Applicant.find({ workerId });
+  }
+
+  static async companyApplicants(companyId: string) {
+    return await Applicant.find({ companyId });
+  }
 
   static async replyApplicant(
     applicantId: string,
@@ -34,14 +40,14 @@ class ApplicantService {
 
   static async createApplicant(
     jobId: string,
-    userId: string,
+    workerId: string,
     { letter }: IApplicant
   ) {
     const job = await Job.findById(jobId).select("companyId");
     if (!job) throw new AppError("there is No Job", 404);
 
     const duplicate = await Applicant.find({
-      userId,
+      workerId,
       jobId,
     });
 
@@ -50,7 +56,7 @@ class ApplicantService {
 
     const applicant = await Applicant.create({
       companyId: job.companyId,
-      userId,
+      workerId,
       jobId,
       letter,
     });

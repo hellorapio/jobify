@@ -1,7 +1,7 @@
 import mongoose, { ObjectId, Document } from "mongoose";
 
 export interface IApplicant extends Document {
-  userId: ObjectId;
+  workerId: ObjectId;
   companyId: ObjectId;
   status: "Pending" | "Interviewing" | "Rejected" | "Accepted";
   jobId: ObjectId;
@@ -9,7 +9,7 @@ export interface IApplicant extends Document {
 }
 
 const applicantSchema = new mongoose.Schema<IApplicant>({
-  userId: {
+  workerId: {
     type: mongoose.Types.ObjectId,
     ref: "Worker",
   },

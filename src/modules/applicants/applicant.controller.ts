@@ -14,7 +14,7 @@ const createApplicant = async (req: CustomRequest, res: Response) => {
 
   const applicantBody = await validationCatch(
     applicantValidator.createApplicant,
-    req.params
+    req.body
   );
 
   const applicant = await ApplicantService.createApplicant(
@@ -42,20 +42,14 @@ const replyApplicant = async (req: CustomRequest, res: Response) => {
   sendRes(res, 200);
 };
 
-const allUserApplicants = async (req: CustomRequest, res: Response) => {
-  let applicants: any[];
+const workerApplicants = async (req: CustomRequest, res: Response) => {
+  const applicants = await ApplicantService.workerApplicants(req.user.id);
+  sendRes(res, 200, { results: applicants.length, applicants });
+};
 
-  if (req.user.role === "worker")
-    applicants = await Applicant.find({ userId: req.user.id });
-  else if (req.user.role === "company")
-    applicants = await Applicant.find({ companyId: req.user.id });
-  else applicants = [];
-
-  res.status(200).json({
-    status: "Success",
-    results: applicants.length,
-    data: applicants,
-  });
+const companyApplicants = async (req: CustomRequest, res: Response) => {
+  const applicants = await ApplicantService.workerApplicants(req.user.id);
+  sendRes(res, 200, { results: applicants.length, applicants });
 };
 
 const deleteApplicant = async (req: CustomRequest, res: Response) => {
@@ -64,7 +58,7 @@ const deleteApplicant = async (req: CustomRequest, res: Response) => {
   if (req.user.role === "worker")
     applicant = await Applicant.findOneAndDelete({
       _id: req.params.applicantId,
-      userId: req.user.id,
+      workerId: req.user.id,
     });
   else
     applicant = await Applicant.findOneAndDelete({
@@ -117,7 +111,7 @@ const updateApplicant = async (req: CustomRequest, res: Response) => {
   const applicant = await Applicant.findOneAndUpdate(
     {
       _id: applicantId,
-      userId: req.user.id,
+      workerId: req.user.id,
     },
     { letter }
   );
@@ -143,7 +137,7 @@ const getApplicant = async (req: CustomRequest, res: Response) => {
 
   if (
     req.user.role === "worker" &&
-    req.user.id !== applicant.userId.toString()
+    req.user.id !== applicant.workerId.toString()
   )
     throw new AppError("there is no applicant here", 404);
 
@@ -153,17 +147,14 @@ const getApplicant = async (req: CustomRequest, res: Response) => {
   });
 };
 
-// Admin Controllers
-// s.getUserApplicants = async (req: CustomRequest, res: Response) => {});
-// s.getCompanyApplicants = async (req: CustomRequest, res: Response) => {});
-
 export default {
   updateApplicant,
   getApplicant,
   getJobApplicants,
   getAllApplicants,
   deleteApplicant,
-  allUserApplicants,
+  workerApplicants,
+  companyApplicants,
   replyApplicant,
   createApplicant,
 };
