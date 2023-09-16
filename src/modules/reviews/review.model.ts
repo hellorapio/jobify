@@ -1,7 +1,6 @@
-import { company } from "./../../middlewares/role.middleware";
 import mongoose, { Document, ObjectId } from "mongoose";
 
-interface IReview extends Document {
+export interface IReview extends Document {
   userId: ObjectId;
   companyId: ObjectId;
   rate: number;
@@ -19,7 +18,7 @@ const reviewSchema = new mongoose.Schema<IReview>(
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
-      path: ""
+      path: "",
     },
     rate: {
       type: Number,
