@@ -6,17 +6,19 @@ import validators from "../../utils/validators";
 import ReviewService from "./review.service";
 
 export const getReviews = catchAsync(async (req, res) => {
-  const { id } = await validationCatch(validators.mongoId, {
-    id: req.params.companyId,
-  });
-  const reviews = await ReviewService.getReviews(id);
+  const { companId } = await validationCatch(
+    reviewValidator.ids,
+    req.params
+  );
+  const reviews = await ReviewService.getReviews(companId);
   sendRes(res, 200, { result: reviews.length, reviews });
 });
 
 export const updateReview = catchAsync(async (req, res) => {
-  const { id: reviewId } = await validationCatch(validators.mongoId, {
-    id: req.params.reviewId,
-  });
+  const { reviewId } = await validationCatch(
+    reviewValidator.ids,
+    req.params
+  );
   const reviewBody = await validationCatch(
     reviewValidator.updateReview,
     req.body

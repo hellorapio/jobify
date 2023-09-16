@@ -1,6 +1,6 @@
-import mongoose, { ObjectId } from "mongoose";
+import mongoose, { ObjectId, Document } from "mongoose";
 
-interface IApplicant {
+export interface IApplicant extends Document {
   userId: ObjectId;
   companyId: ObjectId;
   status: "Pending" | "Interviewing" | "Rejected" | "Accepted";
