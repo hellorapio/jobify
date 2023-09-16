@@ -1,5 +1,6 @@
 import express from "express";
-import connectMongo from "./core/DB";
+import "express-async-errors";
+import connectMongo from "./core/db";
 import addMiddlewares from "./core/middlewares";
 import addRoutes from "./core/routes";
 

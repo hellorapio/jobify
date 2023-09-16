@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
-import { NextFunction, Response } from "express";
+import { NextFunction, Response, Request } from "express";
 import User from "../modules/auth/user.model";
 import AppError from "../utils/appError";
 import catchAsync from "../utils/catchAsync";
@@ -22,7 +22,11 @@ export const restrictTo = (...roles: string[]) => {
   };
 };
 
-export const authProtection = catchAsync(async (req, res, next) => {
+export const authProtection = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   // Getting the Token
 
   let token: string | undefined;
@@ -67,15 +71,6 @@ export const authProtection = catchAsync(async (req, res, next) => {
   // Access GRANTED HAPPY HACKING <3
   req.user = user;
   next();
-});
+};
 
-export const passwordProtection = catchAsync(async (req, res, next) => {
-  if (req.body.password || req.body.passwordConfirm)
-    return next(
-      new AppError("Passwords can't be Changed at this Route", 400)
-    );
-
-  next();
-});
-
-export default { passwordProtection, authProtection, restrictTo };
+export default { authProtection, restrictTo };

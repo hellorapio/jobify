@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { id } from "../../utils/validators";
 
 const gender = Joi.string().valid("Female", "Male");
 const name = Joi.string()
@@ -17,17 +18,18 @@ const education = Joi.array().items(Joi.string());
 const experienceYears = Joi.number().min(0);
 const age = Joi.number().min(0).integer();
 const resume = Joi.string().uri();
+const livesIn = Joi.object({
+  type: Joi.string().valid("point"),
+  coordinates,
+  address,
+});
 
 const createWorker = Joi.object({
   name: name.required(),
   photo,
   gender,
   birthDate,
-  livesIn: Joi.object({
-    type: Joi.string().valid("point"),
-    coordinates,
-    address,
-  }),
+  livesIn,
   experience,
   education,
   experienceYears,
@@ -40,11 +42,7 @@ const updateWorker = Joi.object({
   photo,
   gender,
   birthDate,
-  livesIn: Joi.object({
-    type: Joi.string().valid("point"),
-    coordinates,
-    address,
-  }),
+  livesIn,
   experience,
   education,
   experienceYears,
@@ -52,4 +50,6 @@ const updateWorker = Joi.object({
   resume,
 });
 
-export default { createWorker, updateWorker };
+const workerId = Joi.object({ workerId: id });
+
+export default { createWorker, updateWorker, workerId };

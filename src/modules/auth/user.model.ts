@@ -9,7 +9,7 @@ interface UserMethods extends Document {
   generateToken(): Promise<string>;
 }
 
-interface IUserSchema extends Document {
+export interface IUserSchema extends Document {
   email: string;
   role: "worker" | "company" | "admin";
   password: string;

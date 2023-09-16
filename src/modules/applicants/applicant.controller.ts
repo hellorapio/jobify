@@ -1,12 +1,12 @@
-//@ts-nocheck
-import catchAsync from "../../utils/catchAsync";
+import { Response } from "express";
 import AppError from "../../utils/appError";
 import sendRes from "../../utils/sendRes";
 import ApplicantService from "./applicant.service";
 import applicantValidator from "./applicant.validator";
 import validationCatch from "../../utils/validationCatch";
+import { CustomRequest } from "../../types";
 
-const createApplicant = catchAsync(async (req, res) => {
+const createApplicant = async (req: CustomRequest, res: Response) => {
   const { jobId } = await validationCatch(
     applicantValidator.ids,
     req.params
@@ -19,13 +19,14 @@ const createApplicant = catchAsync(async (req, res) => {
 
   const applicant = await ApplicantService.createApplicant(
     jobId,
+    req.user.id,
     applicantBody
   );
 
   sendRes(res, 201, applicant);
-});
+};
 
-const replyApplicant = catchAsync(async (req, res) => {
+const replyApplicant = async (req: CustomRequest, res: Response) => {
   const { applicantId } = await validationCatch(
     applicantValidator.ids,
     req.params
@@ -36,16 +37,12 @@ const replyApplicant = catchAsync(async (req, res) => {
     req.body
   );
 
-  await ApplicantService.replyApplicant(
-    allUserApplicants,
-    req.user.id,
-    status
-  );
+  await ApplicantService.replyApplicant(applicantId, req.user.id, status);
 
   sendRes(res, 200);
-});
+};
 
-const allUserApplicants = catchAsync(async (req, res) => {
+const allUserApplicants = async (req: CustomRequest, res: Response) => {
   let applicants: any[];
 
   if (req.user.role === "worker")
@@ -59,9 +56,9 @@ const allUserApplicants = catchAsync(async (req, res) => {
     results: applicants.length,
     data: applicants,
   });
-});
+};
 
-const deleteApplicant = catchAsync(async (req, res) => {
+const deleteApplicant = async (req: CustomRequest, res: Response) => {
   let applicant;
 
   if (req.user.role === "worker")
@@ -79,9 +76,9 @@ const deleteApplicant = catchAsync(async (req, res) => {
   res.status(204).json({
     status: "Success",
   });
-});
+};
 
-const getAllApplicants = catchAsync(async (req, res) => {
+const getAllApplicants = async (req: CustomRequest, res: Response) => {
   const applicants = await Applicant.find();
 
   res.status(200).json({
@@ -89,9 +86,9 @@ const getAllApplicants = catchAsync(async (req, res) => {
     results: applicants.length,
     data: applicants,
   });
-});
+};
 
-const getJobApplicants = catchAsync(async (req, res) => {
+const getJobApplicants = async (req: CustomRequest, res: Response) => {
   const { jobId } = req.params;
   const applicants = await Applicant.find({ jobId });
 
@@ -112,9 +109,9 @@ const getJobApplicants = catchAsync(async (req, res) => {
     results: applicants.length,
     data: applicants,
   });
-});
+};
 
-const updateApplicant = catchAsync(async (req, res) => {
+const updateApplicant = async (req: CustomRequest, res: Response) => {
   const { letter } = req.body;
   const { applicantId } = req.params;
   const applicant = await Applicant.findOneAndUpdate(
@@ -130,9 +127,9 @@ const updateApplicant = catchAsync(async (req, res) => {
   res.status(200).json({
     status: "Success",
   });
-});
+};
 
-const getApplicant = catchAsync(async (req, res) => {
+const getApplicant = async (req: CustomRequest, res: Response) => {
   const { applicantId } = req.params;
   const applicant = await Applicant.findById(applicantId);
 
@@ -154,11 +151,11 @@ const getApplicant = catchAsync(async (req, res) => {
     status: "Success",
     applicant,
   });
-});
+};
 
 // Admin Controllers
-// s.getUserApplicants = catchAsync(async (req, res) => {});
-// s.getCompanyApplicants = catchAsync(async (req, res) => {});
+// s.getUserApplicants = async (req: CustomRequest, res: Response) => {});
+// s.getCompanyApplicants = async (req: CustomRequest, res: Response) => {});
 
 export default {
   updateApplicant,

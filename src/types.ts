@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { TUser } from "./auth/user.model";
+import { IUserSchema } from "./modules/auth/user.model";
 
 export type EmailOptions = {
   email?: string;
@@ -14,9 +14,9 @@ export type QueryObject = {
   page?: number;
 };
 
-export interface CustomRequest extends Request {
-  user: TUser;
-}
+export type CustomRequest = Request & {
+  user: IUserSchema;
+};
 
 export type JWTObj = {
   id: string;

@@ -32,6 +32,7 @@
     "concat-map": "^0.0.1",
     "debug": "^3.2.7",
     "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^6.7.0",
     "fill-range": "^7.0.1",
