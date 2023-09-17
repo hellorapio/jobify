@@ -62,68 +62,41 @@ const deleteApplicant = async (req: Request, res: Response) => {
 };
 
 const getJobApplicants = async (req: Request, res: Response) => {
-  const { jobId } = req.params;
-  const applicants = await Applicant.find({ jobId });
-
-  if (applicants.length == 0)
-    throw new AppError("There is no Applicants on this Job", 404);
-
-  if (
-    req.user.role === "company" &&
-    req.user.id !== applicants[0].companyId!.toString()
-  )
-    throw new AppError(
-      "You are not authorized to view other companies applicants",
-      401
-    );
-
-  res.status(200).json({
-    status: "Success",
-    results: applicants.length,
-    data: applicants,
-  });
+  const { jobId } = await validationCatch(
+    applicantValidator.ids,
+    req.params
+  );
+  const applicants = await ApplicantService.getJobApplicants(
+    jobId,
+    req.user.id
+  );
+  sendRes(res, 200, { results: applicants.length, applicants });
 };
 
 const updateApplicant = async (req: Request, res: Response) => {
-  const { letter } = req.body;
-  const { applicantId } = req.params;
-  const applicant = await Applicant.findOneAndUpdate(
-    {
-      _id: applicantId,
-      workerId: req.user.id,
-    },
-    { letter }
+  const { letter } = await validationCatch(
+    applicantValidator.updateApplicantLetter,
+    req.body
   );
-
-  if (!applicant) throw new AppError("There is no applicant", 404);
-
-  res.status(200).json({
-    status: "Success",
-  });
+  const { applicantId } = await validationCatch(
+    applicantValidator.ids,
+    req.params
+  );
+  await ApplicantService.updateApplicant(applicantId, req.user.id, letter);
+  sendRes(res, 200);
 };
 
 const getApplicant = async (req: Request, res: Response) => {
-  const { applicantId } = req.params;
-  const applicant = await Applicant.findById(applicantId);
+  const { applicantId } = await validationCatch(
+    applicantValidator.ids,
+    req.params
+  );
+  const applicant = await ApplicantService.getApplicant(
+    applicantId,
+    req.user.id
+  );
 
-  if (!applicant) throw new AppError("There is no Applicant here", 404);
-
-  if (
-    req.user.role === "company" &&
-    req.user.id !== applicant.companyId.toString()
-  )
-    throw new AppError("there is no applicant here", 404);
-
-  if (
-    req.user.role === "worker" &&
-    req.user.id !== applicant.workerId.toString()
-  )
-    throw new AppError("there is no applicant here", 404);
-
-  res.status(200).json({
-    status: "Success",
-    applicant,
-  });
+  sendRes(res, 200, applicant);
 };
 
 export default {

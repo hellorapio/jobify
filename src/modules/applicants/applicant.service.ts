@@ -3,11 +3,37 @@ import Job from "../jobs/job.model";
 import Applicant, { IApplicant } from "./applicant.model";
 
 class ApplicantService {
-  static async updateApplicant() {}
+  static async updateApplicant(
+    applicantId: string,
+    workerId: string,
+    letter: string
+  ) {
+    const applicant = await Applicant.findOneAndUpdate(
+      {
+        _id: applicantId,
+        workerId,
+      },
+      { letter }
+    );
 
-  static async getApplicant() {}
+    if (!applicant) throw new AppError("There is no applicant", 404);
+  }
 
-  static async getJobApplicants() {}
+  static async getApplicant(applicantId: string, workerId: string) {
+    const applicant = await Applicant.findOne({
+      _id: applicantId,
+      workerId,
+    });
+
+    if (!applicant) throw new AppError("There is no Applicant here", 404);
+
+    return applicant;
+  }
+
+  static async getJobApplicants(jobId: string, companyId: string) {
+    const applicants = await Applicant.find({ jobId, companyId });
+    return applicants;
+  }
 
   static async deleteApplicant(applicantId: string, workerId: string) {
     const applicant = await Applicant.findOneAndDelete({

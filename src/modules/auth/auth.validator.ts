@@ -20,9 +20,6 @@ const password = Joi.string()
     "any.required": "password is required",
   });
 
-const name = Joi.string()
-  .trim()
-  .regex(/^[A-Za-z\s]+$/);
 
 const role = Joi.string().valid("worker", "company").messages({
   "any.only": "Invalid Role",
