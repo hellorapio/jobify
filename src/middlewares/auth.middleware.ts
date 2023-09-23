@@ -5,7 +5,7 @@ import User from "../modules/auth/user.model";
 import AppError from "../utils/appError";
 import config from "../config/config";
 
-export const restrictTo = (...roles: string[]) => {
+const restrictTo = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     if (req.user.role === "admin") next();
     if (!roles.includes(req.user.role))
@@ -20,7 +20,7 @@ export const restrictTo = (...roles: string[]) => {
   };
 };
 
-export const authProtection = async (
+const authProtection = async (
   req: Request,
   res: Response,
   next: NextFunction

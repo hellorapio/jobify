@@ -1,6 +1,6 @@
 import mongoose, { Document, ObjectId } from "mongoose";
 
-interface IWorker extends Document {
+export interface IWorker extends Document {
   name: string;
   photo: string;
   userId: ObjectId;
@@ -34,8 +34,8 @@ const workerSchema = new mongoose.Schema<IWorker>({
     coordinates: [Number],
     address: String,
   },
-  experience: { type: [String]},
-  education: { type: [String]},
+  experience: { type: [String] },
+  education: { type: [String] },
   experienceYears: Number,
   age: Number,
   resume: String,

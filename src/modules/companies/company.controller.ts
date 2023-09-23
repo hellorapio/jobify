@@ -17,6 +17,13 @@ const addCompany = async (req: Request, res: Response) => {
   sendRes(res, 201, company);
 };
 
-const updateCompany = async (req: Request, res: Response) => {};
+const updateCompany = async (req: Request, res: Response) => {
+  const body = await validationCatch(
+    companyValidator.updateCompany,
+    req.body
+  );
+  const company = await CompanyService
+  sendRes(res, 200, company);
+};
 
 export default { addCompany, updateCompany };

@@ -13,4 +13,13 @@ const getWorker = async (req: Request, res: Response) => {
   sendRes(res, 200, worker);
 };
 
-export default { getWorker };
+const workerUpdate = async (req: Request, res: Response) => {
+  const body = await validationCatch(
+    workerValidator.updateWorker,
+    req.body
+  );
+  const worker = await WorkerService.updateWorker(req.user.id, body);
+  sendRes(res, 200, worker);
+};
+
+export default { getWorker, workerUpdate };
