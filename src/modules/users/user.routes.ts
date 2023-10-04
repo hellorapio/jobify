@@ -1,20 +1,19 @@
-import express from "express";
+import { Router } from "express";
 
 import userController from "./user.controller";
-import roleMiddleware from "../../middlewares/role.middleware";
 import authMiddleware from "../../middlewares/auth.middleware";
 
-const router = express.Router();
+const router = Router();
 
-router.patch(
-  "/updateMe",
-  authMiddleware.authProtection,
-  authMiddleware.restrictTo("worker"),
-  userController.workerUpdate
-);
+// router.patch(
+//   "/updateMe",
+//   authMiddleware.protect,
+//   authMiddleware.restrictTo("worker"),
+//   userController.workerUpdate
+// );
 router.delete(
   "/deleteMe",
-  authMiddleware.authProtection,
+  authMiddleware.protect,
   userController.deleteMe
 );
 

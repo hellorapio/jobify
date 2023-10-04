@@ -1,9 +1,9 @@
-import express from "express";
+import { Router } from "express";
 import authMiddleware from "../../middlewares/auth.middleware";
 import companyController from "./company.controller";
 import reviewRouter from "../reviews/review.routes";
 
-const router = express.Router();
+const router = Router();
 
 router.use("/:companyId/reviews", reviewRouter);
 

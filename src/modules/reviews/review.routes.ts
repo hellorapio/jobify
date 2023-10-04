@@ -1,20 +1,28 @@
-import express from "express";
+import { Router } from "express";
 import {
   getReviews,
   updateReview,
   createReview,
 } from "./review.controller";
-import { restrictTo, authProtection } from "../../middlewares/auth.middleware";
+import authMiddleware from "../../middlewares/auth.middleware";
 
-const router = express.Router({ mergeParams: true });
+const router = Router({ mergeParams: true });
 
 router
   .route("/")
   .get(getReviews)
-  .post(authProtection, restrictTo("worker"), createReview);
+  .post(
+    authMiddleware.protect,
+    authMiddleware.restrictTo("worker"),
+    createReview
+  );
 
 router
   .route("/:reviewId")
-  .patch(authProtection, restrictTo("worker"), updateReview);
+  .patch(
+    authMiddleware.protect,
+    authMiddleware.restrictTo("worker"),
+    updateReview
+  );
 
 export default router;

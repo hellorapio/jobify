@@ -1,14 +1,13 @@
-import express from "express";
-
+import { Router } from "express";
 import applicantController from "./applicant.controller";
 import authMiddleware from "../../middlewares/auth.middleware";
 
-const router = express.Router();
+const router = Router();
 
 router
   .route("/reply/:applicantId")
   .patch(
-    authMiddleware.authProtection,
+    authMiddleware.protect,
     authMiddleware.restrictTo("company"),
     applicantController.replyApplicant
   );
@@ -16,12 +15,12 @@ router
 router
   .route("/:jobId")
   .post(
-    authMiddleware.authProtection,
+    authMiddleware.protect,
     authMiddleware.restrictTo("worker", "admin"),
     applicantController.createApplicant
   )
   .get(
-    authMiddleware.authProtection,
+    authMiddleware.protect,
     authMiddleware.restrictTo("company", "admin"),
     applicantController.getJobApplicants
   );
@@ -29,15 +28,15 @@ router
 router
   .route("/search/:applicantId")
   .delete(
-    authMiddleware.authProtection,
+    authMiddleware.protect,
     authMiddleware.restrictTo("worker", "admin"),
     applicantController.deleteApplicant
   )
   .patch(
-    authMiddleware.authProtection,
+    authMiddleware.protect,
     authMiddleware.restrictTo("worker"),
     applicantController.updateApplicant
   )
-  .get(authMiddleware.authProtection, applicantController.getApplicant);
+  .get(authMiddleware.protect, applicantController.getApplicant);
 
 export default router;

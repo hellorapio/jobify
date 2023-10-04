@@ -1,5 +1,4 @@
 import { Response, Request } from "express";
-import AppError from "../../errors/baseError";
 import sendRes from "../../utils/sendResponse";
 import ApplicantService from "./applicant.service";
 import applicantValidator from "./applicant.validator";

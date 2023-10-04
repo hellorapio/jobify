@@ -1,6 +1,6 @@
-import express from "express";
+import { Router } from "express";
 import workerController from "./worker.controller";
-const router = express.Router();
+const router = Router();
 
 router.route("/:workerId").get(workerController.getWorker);
 
