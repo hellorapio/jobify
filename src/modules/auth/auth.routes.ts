@@ -1,23 +1,18 @@
-
-import express from "express";
+import { Router } from "express";
 import authController from "./auth.controller";
 import authMiddleware from "../../middlewares/auth.middleware";
 
-const router = express.Router();
+const router = Router();
 
 router.post("/signup", authController.signup);
 router.post("/login", authController.login);
-router.get(
-  "/logout",
-  authMiddleware.authProtection,
-  authController.logout
-);
+router.get("/logout", authMiddleware.protect, authController.logout);
 
 router.post("/forgot", authController.forgotPassword);
 router.patch("/reset/:token", authController.resetPassword);
 router.patch(
   "/updatePassword",
-  authMiddleware.authProtection,
+  authMiddleware.protect,
   authController.updatePassword
 );
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import sendRes from "../../utils/sendRes";
-import validationCatch from "../../utils/validationCatch";
+import sendRes from "../../utils/sendResponse";
+import validationCatch from "../../utils/validCatch";
 import WorkerService from "./worker.service";
 import workerValidator from "./worker.validator";
 

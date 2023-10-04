@@ -1,6 +1,6 @@
-import validationCatch from "../../utils/validationCatch";
+import validationCatch from "../../utils/validCatch";
 import jobValidator from "./job.validator";
-import sendRes from "../../utils/sendRes";
+import sendRes from "../../utils/sendResponse";
 import validators from "../../utils/validators";
 import JobService from "./job.service";
 import { Request, Response } from "express";

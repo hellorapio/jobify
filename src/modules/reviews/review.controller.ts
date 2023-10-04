@@ -1,6 +1,6 @@
-import validationCatch from "../../utils/validationCatch";
+import validationCatch from "../../utils/validCatch";
 import reviewValidator from "./review.validator";
-import sendRes from "../../utils/sendRes";
+import sendRes from "../../utils/sendResponse";
 import validators from "../../utils/validators";
 import ReviewService from "./review.service";
 import { Request, Response } from "express";

@@ -1,15 +1,15 @@
-import mongoose, { Document } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
-interface UserMethods extends Document {
+interface IUserMethods extends Document {
   correctPassword(pass: string, realPass: string): Promise<boolean>;
   changedPassword(JWTTimeIssued: number): Promise<boolean>;
   logout(JWTTimeIssued: number): Promise<boolean>;
   generateToken(): Promise<string>;
 }
 
-export interface IUserSchema extends Document {
+interface IUserSchema extends Document {
   email: string;
   role: "worker" | "company" | "admin";
   password: string;
@@ -21,7 +21,9 @@ export interface IUserSchema extends Document {
   active: boolean;
 }
 
-const userSchema = new mongoose.Schema<IUserSchema>({
+export type IUser = IUserSchema & IUserMethods;
+
+const userSchema = new Schema<IUser>({
   email: {
     type: String,
     unique: true,
@@ -60,7 +62,7 @@ const userSchema = new mongoose.Schema<IUserSchema>({
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
-  this.password = await bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 8);
 
   next();
 });
@@ -120,7 +122,6 @@ userSchema.methods.logout = async function (JWTTimeIssued: number) {
   return false;
 };
 
-export default mongoose.model<IUserSchema & UserMethods>(
-  "User",
-  userSchema
-);
+const User = model<IUser>("User", userSchema);
+
+export default User;

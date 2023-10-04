@@ -1,9 +1,9 @@
 import { Response, Request } from "express";
-import AppError from "../../utils/appError";
-import sendRes from "../../utils/sendRes";
+import AppError from "../../errors/baseError";
+import sendRes from "../../utils/sendResponse";
 import ApplicantService from "./applicant.service";
 import applicantValidator from "./applicant.validator";
-import validationCatch from "../../utils/validationCatch";
+import validationCatch from "../../utils/validCatch";
 
 const createApplicant = async (req: Request, res: Response) => {
   const { jobId } = await validationCatch(

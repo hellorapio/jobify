@@ -2,15 +2,18 @@ import nodemailer from "nodemailer";
 import { EmailOptions } from "../types";
 import SMTPConnection from "nodemailer/lib/smtp-connection";
 import config from "../config/config";
-const { emailPass, emailPort, emailUser, emailHost } = config;
+
+const {
+  email: { pass, port, user, host },
+} = config;
 
 const sendEmail = async (options: EmailOptions) => {
   const transporter = nodemailer.createTransport({
-    host: emailHost,
-    port: Number(emailPort),
+    host,
+    port: Number(port),
     auth: {
-      user: emailUser,
-      pass: emailPass,
+      user,
+      pass,
     },
   } as SMTPConnection.Options);
 

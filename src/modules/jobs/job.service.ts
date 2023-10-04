@@ -1,4 +1,4 @@
-import AppError from "../../utils/appError";
+import AppError from "../../errors/baseError";
 import Job, { IJob } from "./job.model";
 
 class JobService {

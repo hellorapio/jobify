@@ -1,4 +1,4 @@
-import AppError from "../../utils/appError";
+import AppError from "../../errors/baseError";
 import Review, { IReview } from "./review.model";
 
 class ReviewService {
@@ -40,7 +40,7 @@ class ReviewService {
 
     return review;
   }
-  
+
   static async deleteReview() {}
 }
 

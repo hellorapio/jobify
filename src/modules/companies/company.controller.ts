@@ -1,7 +1,7 @@
-import validationCatch from "../../utils/validationCatch";
+import validationCatch from "../../utils/validCatch";
 import companyValidator from "./company.validator";
 import CompanyService from "./company.service";
-import sendRes from "../../utils/sendRes";
+import sendRes from "../../utils/sendResponse";
 import { Request, Response } from "express";
 
 const addCompany = async (req: Request, res: Response) => {
@@ -22,7 +22,7 @@ const updateCompany = async (req: Request, res: Response) => {
     companyValidator.updateCompany,
     req.body
   );
-  const company = await CompanyService
+  const company = await CompanyService;
   sendRes(res, 200, company);
 };
 

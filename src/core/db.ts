@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 import config from "../config/config";
 
-const connectMongo = async () => {
-  const DB = config.DB.replace("<PASSWORD>", config.DBPassword);
-
-  await mongoose.connect(DB, {}).then(() => {
-    console.log("Connected to MongoDB");
+const connectDB = async () => {
+  await mongoose.connect(config.database, {}).then(() => {
+    console.log("MongoDB is up");
   });
 };
 
-export default connectMongo;
+export default connectDB;

@@ -19,3 +19,5 @@ process.on("unhandledRejection", (err: Error) => {
     process.exit(1);
   });
 });
+
+// Listen for SIGTERM

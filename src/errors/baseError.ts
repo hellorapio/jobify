@@ -1,4 +1,4 @@
-class AppError extends Error {
+class BaseError extends Error {
   status: string;
   isOperational: boolean;
   code?: number;
@@ -6,7 +6,6 @@ class AppError extends Error {
   value?: string;
   constructor(message: string, public statusCode: number) {
     super(message);
-    this.statusCode = statusCode;
     this.status = `${statusCode}`.startsWith("5") ? "error" : "fail";
     this.isOperational = true;
 
@@ -14,4 +13,4 @@ class AppError extends Error {
   }
 }
 
-export default AppError;
+export default BaseError;

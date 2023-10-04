@@ -1,4 +1,4 @@
-import { IUserSchema } from "./modules/auth/user.model";
+import { IUser } from "./modules/users/user.model";
 
 export type EmailOptions = {
   email?: string;
@@ -9,7 +9,7 @@ export type EmailOptions = {
 declare global {
   namespace Express {
     interface Request {
-      user: IUserSchema;
+      user: IUser;
     }
   }
 }

@@ -1,8 +1,11 @@
 import crypto from "crypto";
-import User from "./user.model";
-import AppError from "../../utils/appError";
+import User from "../users/user.model";
 import sendEmail from "../../utils/email";
-import { signToken } from "../../utils/jwt";
+import jwt from "../../utils/jwt";
+import NotAuthorized from "../../errors/notAuthorized";
+import NotFound from "../../errors/notFound";
+import InternalError from "../../errors/internalError";
+import BadRequest from "../../errors/badRequest";
 
 class AuthService {
   static async login({
@@ -15,9 +18,9 @@ class AuthService {
     const user = await User.findOne({ email }).select("+password");
 
     if (!user || !(await user.correctPassword(password, user.password)))
-      throw new AppError("Incorrect Email or Password", 401);
-    signToken(user._id);
-    return signToken(user._id);
+      throw new NotAuthorized("Incorrect Email or Password");
+
+    return await jwt.sign(user._id);
   }
 
   static async signup({
@@ -36,7 +39,7 @@ class AuthService {
       password,
     });
 
-    return signToken(user._id);
+    return await jwt.sign(user._id);
   }
 
   static async forgotPassword(
@@ -45,7 +48,7 @@ class AuthService {
     host: string
   ) {
     const user = await User.findOne({ email });
-    if (!user) throw new AppError("User is not Found", 404);
+    if (!user) throw new NotFound("User is not Found");
 
     const token = await user.generateToken();
     await user.save({ validateBeforeSave: false });
@@ -72,9 +75,8 @@ class AuthService {
 
       await user.save({ validateBeforeSave: false });
 
-      throw new AppError(
-        "There was an Error Sending this Email, Please try again Later",
-        500
+      throw new InternalError(
+        "There was an Error Sending this Email, Please try again Later"
       );
     }
   }
@@ -97,9 +99,8 @@ class AuthService {
     });
 
     if (!user)
-      throw new AppError(
-        "There is No Token on this Path or Maybe it has Expired",
-        400
+      throw new BadRequest(
+        "There is No Token on this Path or Maybe it has Expired"
       );
 
     user.password = password;
@@ -107,7 +108,7 @@ class AuthService {
     user.passwordResetToken = undefined;
     await user.save();
 
-    return signToken(user._id);
+    return await jwt.sign(user._id);
   }
 
   static async updatePassword(
@@ -122,21 +123,19 @@ class AuthService {
   ) {
     const user = await User.findById(id).select("+password");
 
-    if (!user) throw new AppError("There is no user", 404);
+    if (!user) throw new NotFound("There is no user");
 
     if (!(await user.correctPassword(currentPassword, user.password)))
-      throw new AppError("Your password is Incorrect", 401);
+      throw new NotAuthorized("Your password is Incorrect");
 
     user.password = password;
     await user.save();
 
-    return signToken(user._id);
+    return await jwt.sign(user._id);
   }
 
   static async logout(id: string) {
-    await User.findByIdAndUpdate(id, {
-      lastLogout: Date.now(),
-    });
+    await User.findByIdAndUpdate(id, { lastLogout: Date.now() });
   }
 }
 

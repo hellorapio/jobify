@@ -1,4 +1,6 @@
 import Joi from "joi";
+import { IUser } from "../users/user.model";
+import validCatch from "../../utils/validCatch";
 
 const email = Joi.string()
   .lowercase()
@@ -19,7 +21,6 @@ const password = Joi.string()
   .messages({
     "any.required": "password is required",
   });
-
 
 const role = Joi.string().valid("worker", "company").messages({
   "any.only": "Invalid Role",
@@ -66,10 +67,27 @@ const forgotPassword = Joi.object({
   email,
 });
 
-export default {
-  login,
-  signup,
-  resetPassword,
-  updatePassword,
-  forgotPassword,
-};
+class AuthValidator {
+  static async login(body: IUser) {
+    const data = await validCatch(login, body);
+    return data;
+  }
+  static async signup(body: IUser) {
+    const data = await validCatch(signup, body);
+    return data;
+  }
+  static async resetPassword(body: any) {
+    const data = await validCatch(resetPassword, body);
+    return data;
+  }
+  static async updatePassword(body: IUser) {
+    const data = await validCatch(updatePassword, body);
+    return data;
+  }
+  static async forgotPassword(body: IUser) {
+    const data = await validCatch(forgotPassword, body);
+    return data;
+  }
+}
+
+export default AuthValidator;

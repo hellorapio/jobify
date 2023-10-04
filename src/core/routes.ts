@@ -1,5 +1,5 @@
+import NotFound from "../errors/notFound";
 import errorHandler from "./../middlewares/error.middleware";
-import AppError from "./../utils/appError";
 import jobRouter from "../modules/jobs/job.routes";
 import applicantRouter from "../modules/applicants/applicant.routes";
 import userRouter from "../modules/users/user.routes";
@@ -17,9 +17,17 @@ const addRoutes = (app: Express) => {
   app.use("/api/v1/auth", authRouter);
   app.use("/api/v1/reviews", reviewRouter);
   app.use("/api/v1/workers", workerRouter);
-  app.all("*", (req, res, next) => {
-    next(new AppError(`Can't find any routes on ${req.originalUrl}`, 404));
+
+  app.get("/health", (req, res) => {
+    res.status(200).json({
+      status: "Server is Live",
+    });
   });
+
+  app.all("*", (req, res) => {
+    throw new NotFound(`Can't find any routes on ${req.originalUrl}`);
+  });
+
   app.use(errorHandler);
 };
 

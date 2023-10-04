@@ -7,6 +7,7 @@ import sanitize from "express-mongo-sanitize";
 import morgan from "morgan";
 import helmet from "helmet";
 import hpp from "hpp";
+import cookieParser from "cookie-parser";
 
 import config from "./../config/config";
 
@@ -28,6 +29,8 @@ const addMiddlewares = async (app: Express) => {
       limit: "10kb",
     })
   );
+  
+  app.use(cookieParser())
 
   app.use(sanitize());
   app.use(xss());

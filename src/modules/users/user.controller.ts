@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import User from "../auth/user.model";
+import User from "./user.model";
 import Company from "../companies/company.model";
 import Worker from "../workers/worker.model";
 

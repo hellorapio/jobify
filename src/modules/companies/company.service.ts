@@ -1,4 +1,4 @@
-import AppError from "../../utils/appError";
+import AppError from "../../errors/baseError";
 import Company, { ICompany } from "./company.model";
 
 class CompanyService {
