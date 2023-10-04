@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "nodemon ./src/server.ts",
     "build": "npm install && tsc -p .",
-    "prod": "node ./src/server.ts",
+    "prod": "node ./src/server.js",
     "debug": "ndb server.ts"
   },
   "name": "node",
