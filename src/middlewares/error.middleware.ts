@@ -47,9 +47,9 @@ const handleJWTExpiredErrors = () =>
 
 export default (
   err: AppError,
-  req: Request,
+  _: Request,
   res: Response,
-  next: NextFunction
+  __: NextFunction
 ) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "err";

@@ -1,22 +1,9 @@
 import { NextFunction, Response, Request } from "express";
-import User from "../modules/users/user.model";
+import User from "../modules/user/model/user.model";
 import jwt from "../utils/jwt";
-import Forbidden from "../errors/forbidden";
 import NotAuthorized from "../errors/notAuthorized";
 
-const restrictTo = (...roles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    if (req.user.role === "admin") return next();
-    if (!roles.includes(req.user.role)) throw new Forbidden();
-    next();
-  };
-};
-
-const protect = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const protect = async (req: Request, _: Response, next: NextFunction) => {
   // 1) Getting the Token
 
   let token: string | undefined;
@@ -48,10 +35,9 @@ const protect = async (
     throw new NotAuthorized(
       "Your password has been changed or you have logged out lately"
     );
-
   // Access GRANTED HAPPY HACKING <3
   req.user = user;
   next();
 };
 
-export default { protect, restrictTo };
+export default protect;

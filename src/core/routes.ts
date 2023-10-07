@@ -1,12 +1,12 @@
 import NotFound from "../errors/notFound";
 import errorHandler from "./../middlewares/error.middleware";
-import jobRouter from "../modules/jobs/job.routes";
-import applicantRouter from "../modules/applicants/applicant.routes";
-import userRouter from "../modules/users/user.routes";
+import jobRouter from "../modules/job/job.routes";
+import applicantRouter from "../modules/applicant/applicant.routes";
+import userRouter from "../modules/user/user.routes";
 import authRouter from "../modules/auth/auth.routes";
-import companyRouter from "../modules/companies/company.routes";
-import workerRouter from "../modules/workers/worker.routes";
-import reviewRouter from "../modules/reviews/review.routes";
+import companyRouter from "../modules/company/company.routes";
+import workerRouter from "../modules/worker/worker.routes";
+import reviewRouter from "../modules/review/review.routes";
 import { Express } from "express";
 
 const addRoutes = (app: Express) => {
@@ -18,13 +18,13 @@ const addRoutes = (app: Express) => {
   app.use("/api/v1/reviews", reviewRouter);
   app.use("/api/v1/workers", workerRouter);
 
-  app.get("/health", (req, res) => {
+  app.get("/health", (_, res) => {
     res.status(200).json({
       status: "Server is Live",
     });
   });
 
-  app.all("*", (req, res) => {
+  app.all("*", (req, _) => {
     throw new NotFound(`Can't find any routes on ${req.originalUrl}`);
   });
 

@@ -1,9 +1,26 @@
-import { IUser } from "./modules/users/user.model";
+import { IUser } from "./modules/user/model/user.interface";
 
 export type EmailOptions = {
-  email?: string;
+  email: string;
+  from: string;
   message: string;
   subject: string;
+};
+
+export type Login = {
+  email: string;
+  password: string;
+};
+
+export type Signup = {
+  email: string;
+  password: string;
+  role: "worker" | "company";
+};
+
+export type UpdatePassword = {
+  password: string;
+  currentPassword: string;
 };
 
 declare global {
