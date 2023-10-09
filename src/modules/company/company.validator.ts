@@ -3,12 +3,10 @@ import companyJoi from "./company.joi";
 
 class CompanyValidator {
   static async createCompany(body: Object) {
-    const data = validCatch(companyJoi.createCompany, body);
-    return data;
+    return await validCatch(companyJoi.createCompany, body);
   }
   static async updateCompany(body: Object) {
-    const data = validCatch(companyJoi.updateCompany, body);
-    return data;
+    return await validCatch(companyJoi.updateCompany, body);
   }
 }
 

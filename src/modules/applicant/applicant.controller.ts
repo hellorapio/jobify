@@ -1,41 +1,25 @@
 import { Response, Request } from "express";
 import sendRes from "../../utils/sendResponse";
 import ApplicantService from "./applicant.service";
-import applicantValidator from "./applicant.joi";
-import validationCatch from "../../utils/validCatch";
+import ApplicantValidator from "./applicant.validator";
 
 class ApplicantController {
   static async createApplicant(req: Request, res: Response) {
-    const { jobId } = await validationCatch(
-      applicantValidator.ids,
-      req.params
-    );
-
-    const applicantBody = await validationCatch(
-      applicantValidator.createApplicant,
-      req.body
-    );
-
+    const { jobId } = await ApplicantValidator.ids(req.params);
+    const body = await ApplicantValidator.createApplicant(req.body);
     const applicant = await ApplicantService.createApplicant(
       jobId,
       req.user.id,
-      applicantBody
+      body
     );
-
     sendRes(res, 201, applicant);
   }
 
   static async replyApplicant(req: Request, res: Response) {
-    const { applicantId } = await validationCatch(
-      applicantValidator.ids,
-      req.params
-    );
-
-    const status = await validationCatch(
-      applicantValidator.updateApplicantStatus,
+    const { applicantId } = await ApplicantValidator.ids(req.params);
+    const status = await ApplicantValidator.updateApplicantStatus(
       req.body
     );
-
     await ApplicantService.replyApplicant(
       applicantId,
       req.user.id,
@@ -60,20 +44,13 @@ class ApplicantController {
   }
 
   static async deleteApplicant(req: Request, res: Response) {
-    const { applicantId } = await validationCatch(
-      applicantValidator.ids,
-      req.params
-    );
-
+    const { applicantId } = await ApplicantValidator.ids(req.params);
     await ApplicantService.deleteApplicant(applicantId, req.user.id);
     sendRes(res, 204);
   }
 
   static async getJobApplicants(req: Request, res: Response) {
-    const { jobId } = await validationCatch(
-      applicantValidator.ids,
-      req.params
-    );
+    const { jobId } = await ApplicantValidator.ids(req.params);
     const applicants = await ApplicantService.getJobApplicants(
       jobId,
       req.user.id
@@ -82,14 +59,11 @@ class ApplicantController {
   }
 
   static async updateApplicant(req: Request, res: Response) {
-    const { letter } = await validationCatch(
-      applicantValidator.updateApplicantLetter,
+    const { letter } = await ApplicantValidator.updateApplicantLetter(
       req.body
     );
-    const { applicantId } = await validationCatch(
-      applicantValidator.ids,
-      req.params
-    );
+    const { applicantId } = await ApplicantValidator.ids(req.params);
+
     await ApplicantService.updateApplicant(
       applicantId,
       req.user.id,
@@ -99,10 +73,7 @@ class ApplicantController {
   }
 
   static async getApplicant(req: Request, res: Response) {
-    const { applicantId } = await validationCatch(
-      applicantValidator.ids,
-      req.params
-    );
+    const { applicantId } = await ApplicantValidator.ids(req.params);
     const applicant = await ApplicantService.getApplicant(
       applicantId,
       req.user.id

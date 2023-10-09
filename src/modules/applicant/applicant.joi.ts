@@ -1,5 +1,5 @@
 import Joi from "joi";
-// import { id } from "../../utils/validators";
+import validators from "../../utils/validators";
 
 const status = Joi.string().valid(
   "Pending",
@@ -23,9 +23,9 @@ const updateApplicantLetter = Joi.object({
 });
 
 const ids = Joi.object({
-  // applicantId: id,
-  // jobId: id,
-  // companyId: id,
+  applicantId: validators.id,
+  jobId: validators.id,
+  companyId: validators.id,
 });
 
 export default {

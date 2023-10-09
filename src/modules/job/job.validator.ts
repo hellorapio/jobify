@@ -3,17 +3,15 @@ import jobJoi from "./job.joi";
 
 class JobValidator {
   static async jobId(id: object) {
-    const data = await validCatch(jobJoi.jobId, id);
-    return data;
+    return await validCatch(jobJoi.jobId, id);
   }
 
   static async createJob(body: object) {
-    const data = await validCatch(jobJoi.createJob, body);
-    return data;
+    return await validCatch(jobJoi.createJob, body);
   }
+
   static async updateJob(body: object) {
-    const data = await validCatch(jobJoi.updateJob, body);
-    return data;
+    return await validCatch(jobJoi.updateJob, body);
   }
 }
 

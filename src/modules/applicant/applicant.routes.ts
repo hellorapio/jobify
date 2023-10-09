@@ -7,33 +7,20 @@ const router = Router();
 
 router
   .route("/reply/:applicantId")
-  .patch(
-    protect,
-    restrictTo("company"),
-    applicantController.replyApplicant
-  );
+  .all(protect)
+  .patch(restrictTo("company"), applicantController.replyApplicant);
 
 router
   .route("/:jobId")
-  .post(protect, restrictTo("worker"), applicantController.createApplicant)
-  .get(
-    protect,
-    restrictTo("company"),
-    applicantController.getJobApplicants
-  );
+  .all(protect)
+  .post(restrictTo("worker"), applicantController.createApplicant)
+  .get(restrictTo("company"), applicantController.getJobApplicants);
 
 router
   .route("/search/:applicantId")
-  .get(protect, applicantController.getApplicant)
-  .delete(
-    protect,
-    restrictTo("worker"),
-    applicantController.deleteApplicant
-  )
-  .patch(
-    protect,
-    restrictTo("worker"),
-    applicantController.updateApplicant
-  );
+  .all(protect)
+  .get(applicantController.getApplicant)
+  .delete(restrictTo("worker"), applicantController.deleteApplicant)
+  .patch(restrictTo("worker"), applicantController.updateApplicant);
 
 export default router;

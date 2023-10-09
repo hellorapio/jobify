@@ -3,12 +3,15 @@ import workerJoi from "./worker.joi";
 
 class WorkerValidator {
   static async workerId(body: object) {
-    const data = await validCatch(workerJoi.workerId, body);
-    return data;
+    return await validCatch(workerJoi.workerId, body);
   }
+
   static async updateWorker(body: object) {
-    const data = await validCatch(workerJoi.updateWorker, body);
-    return data;
+    return await validCatch(workerJoi.updateWorker, body);
+  }
+
+  static async createWorker(body: object) {
+    return await validCatch(workerJoi.updateWorker, body);
   }
 }
 

@@ -3,18 +3,15 @@ import reviewJoi from "./review.joi";
 
 class ReviewValidator {
   static async ids(id: object) {
-    const data = await validCatch(reviewJoi.ids, id);
-    return data;
+    return await validCatch(reviewJoi.ids, id);
   }
 
   static async updateReview(body: object) {
-    const data = await validCatch(reviewJoi.updateReview, body);
-    return data;
+    return await validCatch(reviewJoi.updateReview, body);
   }
 
   static async createReview(body: object) {
-    const data = await validCatch(reviewJoi.createReview, body);
-    return data;
+    return await validCatch(reviewJoi.createReview, body);
   }
 }
 

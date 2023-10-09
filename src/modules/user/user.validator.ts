@@ -3,8 +3,7 @@ import userJoi from "./user.joi";
 
 class UserValidator {
   static async updateMe(body: object) {
-    const data = validCatch(userJoi.updateMe, body);
-    return data;
+    return await validCatch(userJoi.updateMe, body);
   }
 }
 

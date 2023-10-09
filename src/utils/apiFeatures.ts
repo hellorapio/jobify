@@ -1,16 +1,12 @@
-//@ts-nocheck
-import mongoose, { Model } from "mongoose";
+import { Query } from "mongoose";
 import { QueryObject } from "../types";
 
-class APIFeatures {
-  constructor(public query: any, public expressQuery: QueryObject) {
-    this.query = query;
-    this.expressQuery = expressQuery;
-  }
+class APIFeatures<T> {
+  constructor(public query: Query<T[], T>, public queryObj: QueryObject) {}
 
   filter() {
     // Removing these Fields for now
-    let queryObj = structuredClone(this.expressQuery);
+    let queryObj = structuredClone(this.queryObj);
     const unWantedFields: string[] = ["page", "sort", "fields", "limit"];
     unWantedFields.forEach(
       (element) => delete queryObj[element as keyof QueryObject]
@@ -27,25 +23,26 @@ class APIFeatures {
   }
 
   sort() {
-    if (this.expressQuery.sort)
-      this.query.sort(this.expressQuery.sort.split(",").join(" "));
+    if (this.queryObj.sort)
+      this.query.sort(this.queryObj.sort.split(",").join(" "));
     else this.query.sort("datePosted");
 
     return this;
   }
 
   paginate() {
-    const page = this.expressQuery.page || 1;
-    const limit = this.expressQuery.limit || 20;
+    const page = this.queryObj.page || 1;
+    const limit = this.queryObj.limit || 20;
     const skips = (page - 1) * limit;
+    this.query.find();
     this.query.skip(skips).limit(limit);
 
     return this;
   }
 
   fieldsSelect() {
-    if (this.expressQuery.fields)
-      this.query.select(this.expressQuery.fields.split(",").join(" "));
+    if (this.queryObj.fields)
+      this.query.select(this.queryObj.fields.split(",").join(" "));
     this.query.select("-__v");
 
     return this;

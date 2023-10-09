@@ -4,28 +4,27 @@ import authJoi from "./auth.joi";
 
 class AuthValidator {
   static async login(body: Partial<IUser>) {
-    const data = await validCatch(authJoi.login, body);
-    return data;
+    return await validCatch(authJoi.login, body);
   }
+
   static async signup(body: Partial<IUser>) {
-    const data = await validCatch(authJoi.signup, body);
-    return data;
+    return await validCatch(authJoi.signup, body);
   }
+
   static async token(token: object) {
-    const data = await validCatch(authJoi.token, token);
-    return data;
+    return await validCatch(authJoi.token, token);
   }
+
   static async resetPassword(body: object) {
-    const data = await validCatch(authJoi.resetPassword, body);
-    return data;
+    return await validCatch(authJoi.resetPassword, body);
   }
+
   static async updatePassword(body: Partial<IUser>) {
-    const data = await validCatch(authJoi.updatePassword, body);
-    return data;
+    return await validCatch(authJoi.updatePassword, body);
   }
+
   static async forgotPassword(body: Partial<IUser>) {
-    const data = await validCatch(authJoi.forgotPassword, body);
-    return data;
+    return await validCatch(authJoi.forgotPassword, body);
   }
 }
 
