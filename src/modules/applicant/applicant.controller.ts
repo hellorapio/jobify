@@ -1,13 +1,23 @@
 import { Response, Request } from "express";
 import sendRes from "../../utils/sendResponse";
-import ApplicantService from "./applicant.service";
-import ApplicantValidator from "./applicant.validator";
+import applicantService from "./applicant.service";
+import applicantValidator from "./applicant.validator";
+import BaseController from "../../bases/base.controller";
+import { IApplicant } from "./model/applicant.interface";
 
-class ApplicantController {
-  static async createApplicant(req: Request, res: Response) {
-    const { jobId } = await ApplicantValidator.ids(req.params);
-    const body = await ApplicantValidator.createApplicant(req.body);
-    const applicant = await ApplicantService.createApplicant(
+class ApplicantController extends BaseController<
+  IApplicant,
+  typeof applicantService,
+  typeof applicantValidator
+> {
+  constructor() {
+    super(applicantService, applicantValidator);
+  }
+
+  async createApplicant(req: Request, res: Response) {
+    const { jobId } = await this.validator.ids(req.params);
+    const body = await this.validator.createApplicant(req.body);
+    const applicant = await this.service.createApplicant(
       jobId,
       req.user.id,
       body
@@ -15,66 +25,52 @@ class ApplicantController {
     sendRes(res, 201, applicant);
   }
 
-  static async replyApplicant(req: Request, res: Response) {
-    const { applicantId } = await ApplicantValidator.ids(req.params);
-    const status = await ApplicantValidator.updateApplicantStatus(
-      req.body
-    );
-    await ApplicantService.replyApplicant(
-      applicantId,
-      req.user.id,
-      status
-    );
+  async replyApplicant(req: Request, res: Response) {
+    const { applicantId } = await this.validator.ids(req.params);
+    const status = await this.validator.updateApplicantStatus(req.body);
+    await this.service.replyApplicant(applicantId, req.user.id, status);
 
     sendRes(res, 200);
   }
 
-  static async workerApplicants(req: Request, res: Response) {
-    const applicants = await ApplicantService.workerApplicants(
-      req.user.id
-    );
+  async workerApplicants(req: Request, res: Response) {
+    const applicants = await this.service.workerApplicants(req.user.id);
     sendRes(res, 200, { results: applicants.length, applicants });
   }
 
-  static async companyApplicants(req: Request, res: Response) {
-    const applicants = await ApplicantService.workerApplicants(
-      req.user.id
-    );
+  async companyApplicants(req: Request, res: Response) {
+    const applicants = await this.service.workerApplicants(req.user.id);
     sendRes(res, 200, { results: applicants.length, applicants });
   }
 
-  static async deleteApplicant(req: Request, res: Response) {
-    const { applicantId } = await ApplicantValidator.ids(req.params);
-    await ApplicantService.deleteApplicant(applicantId, req.user.id);
+  async deleteApplicant(req: Request, res: Response) {
+    const { applicantId } = await this.validator.ids(req.params);
+    await this.service.deleteApplicant(applicantId, req.user.id);
     sendRes(res, 204);
   }
 
-  static async getJobApplicants(req: Request, res: Response) {
-    const { jobId } = await ApplicantValidator.ids(req.params);
-    const applicants = await ApplicantService.getJobApplicants(
+  async getJobApplicants(req: Request, res: Response) {
+    const { jobId } = await this.validator.ids(req.params);
+    const applicants = await this.service.getJobApplicants(
       jobId,
       req.user.id
     );
     sendRes(res, 200, { results: applicants.length, applicants });
   }
 
-  static async updateApplicant(req: Request, res: Response) {
-    const { letter } = await ApplicantValidator.updateApplicantLetter(
+  async updateApplicant(req: Request, res: Response) {
+    const { letter } = await this.validator.updateApplicantLetter(
       req.body
     );
-    const { applicantId } = await ApplicantValidator.ids(req.params);
+    const { applicantId } = await this.validator.ids(req.params);
 
-    await ApplicantService.updateApplicant(
-      applicantId,
-      req.user.id,
-      letter
-    );
+    await this.service.updateApplicant(applicantId, req.user.id, letter);
     sendRes(res, 200);
   }
 
-  static async getApplicant(req: Request, res: Response) {
-    const { applicantId } = await ApplicantValidator.ids(req.params);
-    const applicant = await ApplicantService.getApplicant(
+  async getApplicant(req: Request, res: Response) {
+    const { applicantId } = await this.validator.ids(req.params);
+    const applicant = await this.service.getApplicant(
       applicantId,
       req.user.id
     );
@@ -83,4 +79,4 @@ class ApplicantController {
   }
 }
 
-export default ApplicantController;
+export default ApplicantController.getInstance();

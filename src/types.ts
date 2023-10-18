@@ -16,6 +16,7 @@ export type Signup = {
   email: string;
   password: string;
   role: "worker" | "company";
+  name: string;
 };
 
 export type UpdatePassword = {

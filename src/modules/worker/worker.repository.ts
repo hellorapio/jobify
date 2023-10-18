@@ -1,4 +1,4 @@
-import BaseRepository from "../../repository/baseRepository";
+import BaseRepository from "../../bases/base.repository";
 import { IWorker } from "./model/worker.interface";
 import Worker from "./model/worker.model";
 
@@ -8,4 +8,4 @@ class WorkerRepository extends BaseRepository<IWorker> {
   }
 }
 
-export default new WorkerRepository();
+export default WorkerRepository.getInstance();

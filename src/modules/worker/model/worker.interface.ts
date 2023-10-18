@@ -16,4 +16,6 @@ export interface IWorker extends Document {
   experienceYears: number;
   age: number;
   resume: string;
+  username: string;
+  active: boolean;
 }

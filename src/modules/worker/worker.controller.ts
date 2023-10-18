@@ -1,26 +1,32 @@
 import { Request, Response } from "express";
+import { IWorker } from "./model/worker.interface";
+import service from "./worker.service";
+import validator from "./worker.validator";
 import sendResponse from "../../utils/sendResponse";
-import WorkerService from "./worker.service";
-import WorkerValidator from "./worker.validator";
+import BaseController from "../../bases/base.controller";
 
-class WorkerController {
-  static async getWorker(req: Request, res: Response) {
-    const { workerId } = await WorkerValidator.workerId(req.params);
-    const worker = await WorkerService.getWorker(workerId);
+class WorkerController extends BaseController<IWorker, typeof service> {
+  constructor() {
+    super(service, validator);
+    this.me = this.me.bind(this);
+  }
+
+  override async get(req: Request, res: Response) {
+    const { username } = await this.validator.username(req.params);
+    const worker = await this.service.get(username);
     sendResponse(res, 200, worker);
   }
 
-  static async workerUpdate(req: Request, res: Response) {
-    const body = await WorkerValidator.updateWorker(req.body);
-    const worker = await WorkerService.updateWorker(req.user.id, body);
+  override async update(req: Request, res: Response) {
+    const body = await this.validator.update(req.body);
+    const worker = await this.service.update(req.user.id, body);
     sendResponse(res, 200, worker);
   }
 
-  static async createWorker(req: Request, res: Response) {
-    const body = await WorkerValidator.createWorker(req.body);
-    const worker = await WorkerService.createWorker(req.user.id, body);
-    sendResponse(res, 201, worker);
+  async me(req: Request, res: Response) {
+    const worker = await this.service.me(req.user.id);
+    sendResponse(res, 200, worker);
   }
 }
 
-export default WorkerController;
+export default WorkerController.getInstance();

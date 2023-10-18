@@ -1,19 +1,25 @@
+import BaseService from "../../bases/base.service";
+import { IUser } from "./model/user.interface";
 import userRepository from "./user.repository";
 
-class UserService {
-  static async me(id: string) {
-    const user = await userRepository.findById(id);
+class UserService extends BaseService<IUser, typeof userRepository> {
+  constructor() {
+    super(userRepository);
+  }
+
+  async me(id: string) {
+    const user = await this.repo.findById(id);
     return user;
   }
 
-  static async updateMe(id: string, body: object) {
-    const user = await userRepository.updateOneById(id, body);
+  async updateMe(id: string, body: object) {
+    const user = await this.repo.updateOneById(id, body);
     return user;
   }
 
-  static async deleteMe(id: string) {
-    await userRepository.updateOneById(id, { active: false });
+  override async delete(id: string) {
+    await this.repo.updateOneById(id, { active: false });
   }
 }
 
-export default UserService;
+export default UserService.getInstance();

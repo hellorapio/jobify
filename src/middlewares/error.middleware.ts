@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import AppError from "../errors/baseError";
+import AppError from "../bases/base.error";
 import config from "../config/config";
 
 const sendErrorDev = (err: AppError, res: Response) => {

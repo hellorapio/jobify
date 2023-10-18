@@ -1,47 +1,23 @@
-import sendRes from "../../utils/sendResponse";
-import JobValidator from "./job.validator";
-import JobService from "./job.service";
-import { Request, Response } from "express";
 import sendResponse from "../../utils/sendResponse";
+import jobValidator from "./job.validator";
+import jobService from "./job.service";
+import { Request, Response } from "express";
+import BaseController from "../../bases/base.controller";
+import { IJob } from "./model/job.interface";
 
-class JobController {
-  static async getAllJobs(_: Request, res: Response) {
-    const jobs = await JobService.getAllJobs();
-    sendRes(res, 200, { results: jobs.length, jobs });
+class JobController extends BaseController<IJob, typeof jobService> {
+  constructor() {
+    super(jobService, jobValidator);
+    this.getJobStats = this.getJobStats.bind(this);
   }
 
-  static async getJob(req: Request, res: Response) {
-    const { id } = await JobValidator.jobId(req.params);
-    const job = await JobService.getJob(id);
-    sendRes(res, 200, job);
-  }
-
-  static async createJob(req: Request, res: Response) {
-    const jobBody = await JobValidator.createJob(req.body);
-    const job = await JobService.createJob(jobBody);
-    sendRes(res, 201, job);
-  }
-
-  static async updateJob(req: Request, res: Response) {
-    const jobBody = await JobValidator.updateJob(req.body);
-    const { id } = await JobValidator.jobId(req.params);
-    const job = await JobService.updateJob(id, jobBody);
-    sendRes(res, 200, job);
-  }
-
-  static async deleteJob(req: Request, res: Response) {
-    const { id } = await JobValidator.jobId(req.params);
-    await JobService.deleteJob(id);
-    sendRes(res, 204);
-  }
-
-  static async getJobStats(_: Request, res: Response) {
-    const job = await JobService.getJobStats();
+  async getJobStats(_: Request, res: Response) {
+    const job = await this.service.getJobStats();
     sendResponse(res, 200, job);
   }
 }
 
-export default JobController;
+export default JobController.getInstance();
 
 // export const wantedJobs = async (
 //   req: Request,

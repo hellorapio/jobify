@@ -1,10 +1,10 @@
-import validCatch from "../../utils/validCatch";
+import BaseValidator from "../../bases/base.validator";
 import userJoi from "./user.joi";
 
-class UserValidator {
-  static async updateMe(body: object) {
-    return await validCatch(userJoi.updateMe, body);
+class UserValidator extends BaseValidator {
+  constructor() {
+    super(userJoi);
   }
 }
 
-export default UserValidator;
+export default UserValidator.getInstance();

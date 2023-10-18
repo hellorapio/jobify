@@ -3,7 +3,7 @@ import { Document, ObjectId } from "mongoose";
 export interface ICompany extends Document {
   name: string;
   photo: string;
-  companyId: ObjectId;
+  userId: ObjectId;
   founded: Date;
   companyDescription: string;
   numberOfEmployees: number;
@@ -21,4 +21,5 @@ export interface ICompany extends Document {
     coordinates: [number, number];
     address: string;
   }[];
+  active: boolean;
 }

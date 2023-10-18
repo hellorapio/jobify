@@ -1,4 +1,4 @@
-import BaseRepository from "../../repository/baseRepository";
+import BaseRepository from "../../bases/base.repository";
 import { IApplicant } from "./model/applicant.interface";
 import Applicant from "./model/applicant.model";
 
@@ -8,4 +8,4 @@ class ApplicantRepository extends BaseRepository<IApplicant> {
   }
 }
 
-export default new ApplicantRepository();
+export default ApplicantRepository.getInstance();

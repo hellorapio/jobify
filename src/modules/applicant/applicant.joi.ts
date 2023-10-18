@@ -10,7 +10,7 @@ const status = Joi.string().valid(
 
 const letter = Joi.string().min(50).trim();
 
-const createApplicant = Joi.object({
+const create = Joi.object({
   letter: letter.required(),
 });
 
@@ -29,7 +29,7 @@ const ids = Joi.object({
 });
 
 export default {
-  createApplicant,
+  create,
   updateApplicantStatus,
   updateApplicantLetter,
   ids,

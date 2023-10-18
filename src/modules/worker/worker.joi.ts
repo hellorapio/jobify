@@ -2,13 +2,7 @@ import Joi from "joi";
 import validators from "../../utils/validators";
 
 const gender = Joi.string().valid("Female", "Male");
-const name = Joi.string()
-  .min(3)
-  .max(30)
-  .regex(/^[A-Za-z\s]+$/)
-  .message(
-    "Please don't include numbers or special chracters in your name"
-  );
+
 const photo = Joi.string().uri();
 const birthDate = Joi.date().max("now");
 const address = Joi.string().alphanum();
@@ -24,8 +18,8 @@ const livesIn = Joi.object({
   address,
 });
 
-const createWorker = Joi.object({
-  name: name.required(),
+const update = Joi.object({
+  name: validators.name,
   photo,
   gender,
   birthDate,
@@ -35,21 +29,10 @@ const createWorker = Joi.object({
   experienceYears,
   age,
   resume,
+  username: validators.username,
 });
 
-const updateWorker = Joi.object({
-  name,
-  photo,
-  gender,
-  birthDate,
-  livesIn,
-  experience,
-  education,
-  experienceYears,
-  age,
-  resume,
-});
+const workerId = Joi.object({ workerId: validators.id.required() });
+const username = Joi.object({ username: validators.username.required() });
 
-const workerId = Joi.object({ workerId: validators.id });
-
-export default { createWorker, updateWorker, workerId };
+export default { update, workerId, username };

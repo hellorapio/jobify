@@ -11,18 +11,18 @@ const ids = Joi.object({
   reviewId: validators.id,
 });
 
-const createReview = Joi.object({
+const create = Joi.object({
   review: review,
   rate: rate.required(),
   pros,
   cons,
 });
 
-const updateReview = Joi.object({
+const update = Joi.object({
   review,
   rate,
   pros,
   cons,
 });
 
-export default { createReview, updateReview, ids };
+export default { create, update, ids };

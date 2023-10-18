@@ -1,24 +1,24 @@
 import { Request, Response } from "express";
 import sendResponse from "../../utils/sendResponse";
-import UserService from "./user.service";
-import UserValidator from "./user.validator";
+import userService from "./user.service";
+import userValidator from "./user.validator";
+import BaseController from "../../bases/base.controller";
+import { IUser } from "./model/user.interface";
 
-class UserController {
-  static async me(req: Request, res: Response) {
-    const user = await UserService.me(req.user.id);
+class UserController extends BaseController<IUser, typeof userService> {
+  constructor() {
+    super(userService, userValidator);
+  }
+
+  async me(req: Request, res: Response) {
+    const user = await this.service.me(req.user.id);
     sendResponse(res, 200, user);
   }
 
-  static async updateMe(req: Request, res: Response) {
-    const body = await UserValidator.updateMe(req.body);
-    const user = await UserService.updateMe(req.user.id, body);
-    sendResponse(res, 200, user);
-  }
-
-  static async deleteMe(req: Request, res: Response) {
-    await UserService.deleteMe(req.user.id);
+  override async delete(req: Request, res: Response) {
+    await this.service.delete(req.user.id);
     sendResponse(res, 204, undefined, "");
   }
 }
 
-export default UserController;
+export default UserController.getInstance();

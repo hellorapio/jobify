@@ -6,6 +6,14 @@ const id = Joi.string()
   .regex(/^[0-9a-fA-F]{24}$/)
   .message("Invalid id");
 
+const name = Joi.string()
+  .min(3)
+  .max(30)
+  .regex(/^[A-Za-z\s]+$/)
+  .message(
+    "Please don't include numbers or special chracters in your name"
+  );
+
 const email = Joi.string()
   .lowercase()
   .trim()
@@ -16,4 +24,10 @@ const email = Joi.string()
     "any.required": "email is required",
   });
 
-export default { id, email };
+const username = Joi.string()
+  .trim()
+  .lowercase()
+  .regex(/^[a-zA-Z0-9-]*$/)
+  .message("Username is not Valid");
+
+export default { id, email, username, name };

@@ -1,37 +1,14 @@
-import NotFound from "../../errors/notFound";
+import BaseService from "../../bases/base.service";
 import jobRepository from "./job.repository";
 import { IJob } from "./model/job.interface";
 
-class JobService {
-  static async createJob(jobBody: IJob) {
-    return await jobRepository.insertOne(jobBody);
+class JobService extends BaseService<IJob, typeof jobRepository> {
+  constructor() {
+    super(jobRepository);
   }
 
-  static async updateJob(id: string, jobBody: IJob) {
-    const job = await jobRepository.updateOneById(id, jobBody);
-    if (!job) throw new NotFound("Error 404 Job Isn't Found");
-    return job;
-  }
-
-  static async getJob(id: string) {
-    const job = await jobRepository.findById(id);
-    if (!job) throw new NotFound("Error 404 Job Isn't Found");
-    return job;
-  }
-
-  static async deleteJob(id: string) {
-    const job = await jobRepository.deleteOneById(id);
-    if (!job) throw new NotFound("Error 404 Job Isn't Found");
-    return job;
-  }
-
-  static async getAllJobs() {
-    const jobs = await jobRepository.find({});
-    return jobs;
-  }
-
-  static async getJobStats() {
-    const job = jobRepository.aggregate([
+  async getJobStats() {
+    const job = this.repo.aggregate([
       {
         $group: {
           _id: "$educationLevel",
@@ -46,8 +23,9 @@ class JobService {
         $sort: { count: -1 },
       },
     ]);
+
     return job;
   }
 }
 
-export default JobService;
+export default JobService.getInstance();

@@ -1,4 +1,3 @@
-import slugify from "slugify";
 import { Schema, model, Types } from "mongoose";
 import { IJob } from "./job.interface";
 
@@ -74,17 +73,6 @@ const jobSchema = new Schema<IJob>(
     toObject: { virtuals: true },
   }
 );
-
-jobSchema.virtual("monthlyPay").get(function () {
-  return this.salary / 12;
-});
-
-jobSchema.pre("save", function (next) {
-  this.slug = slugify(this.title + "-" + this.companyId, {
-    lower: true,
-  });
-  next();
-});
 
 const Job = model<IJob>("Job", jobSchema);
 

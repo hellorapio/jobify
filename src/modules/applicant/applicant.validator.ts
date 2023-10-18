@@ -1,13 +1,13 @@
+import BaseValidator from "../../bases/base.validator";
 import validCatch from "../../utils/validCatch";
 import applicantJoi from "./applicant.joi";
 
-class ApplicantValidator {
+class ApplicantValidator extends BaseValidator {
+  constructor() {
+    super(applicantJoi);
+  }
   static async ids(body: object) {
     return await validCatch(applicantJoi.ids, body);
-  }
-
-  static async createApplicant(body: object) {
-    return await validCatch(applicantJoi.createApplicant, body);
   }
 
   static async updateApplicantStatus(body: object) {
@@ -19,4 +19,4 @@ class ApplicantValidator {
   }
 }
 
-export default ApplicantValidator;
+export default ApplicantValidator.getInstance();

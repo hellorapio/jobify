@@ -1,22 +1,22 @@
 import { Router } from "express";
-
-import JobController from "./job.controller";
+import controller from "./job.controller";
 import restrictTo from "../../middlewares/restrict.middleware";
 import protect from "../../middlewares/auth.middleware";
+
 const router = Router();
 
-router.route("/job-stats").get(JobController.getJobStats);
+router.route("/job-stats").get(controller.getJobStats);
 // router.route("/top-wanted-jobs").get(wantedJobs, getAllJobs);
 
 router
   .route("/")
-  .get(JobController.getAllJobs)
-  .post(protect, restrictTo("company"), JobController.createJob);
+  .get(controller.getAll)
+  .post(protect, restrictTo("company"), controller.create);
 
 router
   .route("/:id")
-  .get(JobController.getJob)
-  .patch(JobController.updateJob)
-  .delete(protect, restrictTo(), JobController.deleteJob);
+  .get(controller.get)
+  .patch(controller.update)
+  .delete(protect, restrictTo(), controller.delete);
 
 export default router;

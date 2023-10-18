@@ -1,18 +1,10 @@
-import validCatch from "../../utils/validCatch";
+import BaseValidator from "../../bases/base.validator";
 import jobJoi from "./job.joi";
 
-class JobValidator {
-  static async jobId(id: object) {
-    return await validCatch(jobJoi.jobId, id);
-  }
-
-  static async createJob(body: object) {
-    return await validCatch(jobJoi.createJob, body);
-  }
-
-  static async updateJob(body: object) {
-    return await validCatch(jobJoi.updateJob, body);
+class JobValidator extends BaseValidator {
+  constructor() {
+    super(jobJoi);
   }
 }
 
-export default JobValidator;
+export default JobValidator.getInstance();

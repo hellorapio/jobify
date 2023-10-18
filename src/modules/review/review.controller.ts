@@ -1,37 +1,47 @@
+//@ts-nocheck
 import { Request, Response } from "express";
-import ReviewService from "./review.service";
-import ReviewValidator from "./review.validator";
-import sendRes from "../../utils/sendResponse";
+import reviewService from "./review.service";
+import reviewValidator from "./review.validator";
+import sendResponse from "../../utils/sendResponse";
+import BaseController from "../../bases/base.controller";
+import { IReview } from "./model/review.interface";
 
-class ReviewController {
-  static async getReviews(req: Request, res: Response) {
-    const { companyId } = await ReviewValidator.ids(req.params);
-    const reviews = await ReviewService.getReviews(companyId);
-    sendRes(res, 200, { result: reviews.length, reviews });
+class ReviewController extends BaseController<
+  IReview,
+  typeof reviewService
+> {
+  constructor() {
+    super(reviewService, reviewValidator);
   }
 
-  static async updateReview(req: Request, res: Response) {
-    const { reviewId } = await ReviewValidator.ids(req.params);
-    const reviewBody = await ReviewValidator.updateReview(req.body);
-    const review = await ReviewService.updateReview(
+  async getReviews(req: Request, res: Response) {
+    const { companyId } = await this.validator.ids(req.params);
+    const reviews = await this.service.getReviews(companyId);
+    sendResponse(res, 200, { result: reviews.length, reviews });
+  }
+
+  async updateReview(req: Request, res: Response) {
+    const { reviewId } = await this.validator.ids(req.params);
+    const reviewBody = await this.validator.update(req.body);
+    const review = await this.service.updateReview(
       req.user.id,
       reviewId,
       reviewBody
     );
 
-    sendRes(res, 200, { review });
+    sendResponse(res, 200, { review });
   }
 
-  static async createReview(req: Request, res: Response) {
-    const { companyId } = await ReviewValidator.ids(req.params);
-    const reviewBody = await ReviewValidator.createReview(req.body);
-    const review = await ReviewService.createReview(
+  async createReview(req: Request, res: Response) {
+    const { companyId } = await this.validator.ids(req.params);
+    const reviewBody = await this.validator.create(req.body);
+    const review = await this.service.createReview(
       companyId,
       req.user.id,
       reviewBody
     );
 
-    sendRes(res, 201, { review });
+    sendResponse(res, 201, { review });
   }
 }
 

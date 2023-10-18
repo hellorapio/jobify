@@ -1,7 +1,17 @@
 import { Model, PipelineStage } from "mongoose";
 
 class BaseRepository<T> {
-  constructor(public model: Model<T>) {}
+  constructor(protected model: Model<T>) {}
+
+  //@ts-ignore
+  protected static instance: this;
+
+  public static getInstance() {
+    if (!this.instance)
+      //@ts-ignore
+      this.instance = new this();
+    return this.instance;
+  }
 
   async insertOne(payload: Partial<T>) {
     return await this.model.create(payload);

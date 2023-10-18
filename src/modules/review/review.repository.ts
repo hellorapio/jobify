@@ -1,4 +1,4 @@
-import BaseRepository from "../../repository/baseRepository";
+import BaseRepository from "../../bases/base.repository";
 import { IReview } from "./model/review.interface";
 import Review from "./model/review.model";
 
@@ -8,4 +8,4 @@ class ReviewRepository extends BaseRepository<IReview> {
   }
 }
 
-export default new ReviewRepository();
+export default ReviewRepository.getInstance();

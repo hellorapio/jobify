@@ -38,7 +38,7 @@ const applyUrl = Joi.string().uri().trim().lowercase();
 const skills = Joi.array().items(Joi.string());
 const benefits = Joi.array().items(Joi.string());
 
-const createJob = Joi.object({
+const create = Joi.object({
   title: title.required(),
   description: description.required(),
   experienceLevel,
@@ -54,7 +54,7 @@ const createJob = Joi.object({
   currency,
 });
 
-const updateJob = Joi.object({
+const update = Joi.object({
   title,
   description,
   experienceLevel,
@@ -72,4 +72,4 @@ const updateJob = Joi.object({
 
 const jobId = Joi.object({ id: validators.id.required() });
 
-export default { createJob, updateJob, jobId };
+export default { create, update, jobId };

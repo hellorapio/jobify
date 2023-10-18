@@ -1,13 +1,7 @@
 import Joi from "joi";
+import validators from "../../utils/validators";
 
 const companyDescription = Joi.string().min(120).trim();
-const name = Joi.string()
-  .min(3)
-  .max(30)
-  .regex(/^[A-Za-z\s]+$/)
-  .message(
-    "Please don't include numbers or special chracters in your name"
-  );
 const photo = Joi.string().uri();
 const numberOfEmployees = Joi.number().integer().positive();
 const revenue = Joi.number().integer().positive();
@@ -28,20 +22,20 @@ const locations = Joi.array().items(
 );
 const founded = Joi.date().max("now");
 
-const createCompany = Joi.object({
-  name: name.required(),
-  photo,
-  companyDescription,
-  numberOfEmployees,
-  revenue,
-  contactInformation,
-  industry,
-  locations,
-  founded,
-});
+// const createCompany = Joi.object({
+//   name: validators.name.required(),
+//   photo,
+//   companyDescription,
+//   numberOfEmployees,
+//   revenue,
+//   contactInformation,
+//   industry,
+//   locations,
+//   founded,
+// });
 
 const updateCompany = Joi.object({
-  name,
+  name: validators.name,
   photo,
   companyDescription,
   numberOfEmployees,
@@ -52,4 +46,4 @@ const updateCompany = Joi.object({
   founded,
 });
 
-export default { createCompany, updateCompany };
+export default { updateCompany };

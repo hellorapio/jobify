@@ -1,17 +1,27 @@
 import crypto from "crypto";
+import { Request } from "express";
 import userRepository from "../user/user.repository";
+import WorkerRepository from "../worker/worker.repository";
+import CompanyRepository from "../company/company.repository";
 import jwt from "../../utils/jwt";
+import Email from "../../utils/email";
 import NotAuthorized from "../../errors/notAuthorized";
 import NotFound from "../../errors/notFound";
 import InternalError from "../../errors/internalError";
 import BadRequest from "../../errors/badRequest";
-import Email from "../../utils/email";
 import { Login, Signup, UpdatePassword } from "../../types";
-import { Request } from "express";
 
 class AuthService {
-  static async login({ email, password }: Login) {
-    const user = await userRepository.findOne({ email }, "+password");
+  private static instance: AuthService;
+  private constructor(private repo: typeof userRepository) {}
+  public static getInstance() {
+    if (!AuthService.instance)
+      AuthService.instance = new AuthService(userRepository);
+    return AuthService.instance;
+  }
+
+  async login({ email, password }: Login) {
+    const user = await this.repo.findOne({ email }, "+password");
 
     if (!user || !(await user.correctPassword(password, user.password)))
       throw new NotAuthorized("Incorrect Email or Password");
@@ -19,18 +29,30 @@ class AuthService {
     return await jwt.sign(user.id);
   }
 
-  static async signup(body: Signup) {
-    const user = await userRepository.insertOne({
+  async signup(body: Signup) {
+    // Refactor to transactions Easily
+    const user = await this.repo.insertOne({
       role: body.role,
       email: body.email,
       password: body.password,
     });
 
+    if (body.role === "company")
+      await CompanyRepository.insertOne({
+        userId: user._id,
+        name: body.name,
+      });
+    else if (body.role === "worker")
+      await WorkerRepository.insertOne({
+        userId: user._id,
+        name: body.name,
+      });
+
     return await jwt.sign(user.id);
   }
 
-  static async forgotPassword(email: string, req: Request) {
-    const user = await userRepository.findOne({ email });
+  async forgotPassword(email: string, req: Request) {
+    const user = await this.repo.findOne({ email });
     if (!user) throw new NotFound("User is not Found");
 
     const token = await user.generateToken();
@@ -51,13 +73,13 @@ class AuthService {
     }
   }
 
-  static async resetPassword(token: string, password: string) {
+  async resetPassword(token: string, password: string) {
     const hashedToken = crypto
       .createHash("sha256")
       .update(token)
       .digest("hex");
 
-    const user = await userRepository.findOne({
+    const user = await this.repo.findOne({
       passwordResetToken: hashedToken,
       passwordResetExpires: { $gt: Date.now() },
     });
@@ -75,11 +97,11 @@ class AuthService {
     return await jwt.sign(user.id);
   }
 
-  static async updatePassword(
+  async updatePassword(
     id: string,
     { currentPassword, password }: UpdatePassword
   ) {
-    const user = await userRepository.findById(id, "+password");
+    const user = await this.repo.findById(id, "+password");
 
     if (!user) throw new NotFound("There is no user");
 
@@ -92,9 +114,9 @@ class AuthService {
     return await jwt.sign(user.id);
   }
 
-  static async logout(id: string) {
-    await userRepository.updateOneById(id, { loggedOutAt: new Date() });
+  async logout(id: string) {
+    await this.repo.updateOneById(id, { loggedOutAt: new Date() });
   }
 }
 
-export default AuthService;
+export default AuthService.getInstance();

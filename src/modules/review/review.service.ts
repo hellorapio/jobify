@@ -2,19 +2,24 @@ import { ObjectId } from "mongoose";
 import NotFound from "../../errors/notFound";
 import { IReview } from "./model/review.interface";
 import reviewRepository from "./review.repository";
+import BaseService from "../../bases/base.service";
 
-class ReviewService {
-  static async getReviews(companyId: ObjectId) {
-    const reviews = await reviewRepository.find({ companyId });
+class ReviewService extends BaseService<IReview> {
+  constructor() {
+    super(reviewRepository);
+  }
+
+  async getReviews(companyId: ObjectId) {
+    const reviews = await this.repo.find({ companyId });
     return reviews;
   }
 
-  static async createReview(
+  async createReview(
     companyId: ObjectId,
     userId: ObjectId,
     reviewData: IReview
   ) {
-    const review = await reviewRepository.insertOne({
+    const review = await this.repo.insertOne({
       ...reviewData,
       userId,
       companyId,
@@ -23,12 +28,12 @@ class ReviewService {
     return review;
   }
 
-  static async updateReview(
+  async updateReview(
     userId: ObjectId,
     reviewId: string,
     reviewData: IReview
   ) {
-    const review = await reviewRepository.updateOne(
+    const review = await this.repo.updateOne(
       {
         _id: reviewId,
         userId,
@@ -41,10 +46,10 @@ class ReviewService {
     return review;
   }
 
-  static async deleteReview(reviewId: string) {
-    const review = await reviewRepository.deleteOneById(reviewId);
+  async deleteReview(reviewId: string) {
+    const review = await this.repo.deleteOneById(reviewId);
     if (!review) throw new NotFound("No review was found");
   }
 }
 
-export default ReviewService;
+export default ReviewService.getInstance();

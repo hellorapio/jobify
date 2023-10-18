@@ -4,7 +4,7 @@ import { ICompany } from "./company.interface";
 const companySchema = new Schema<ICompany>({
   name: String,
   photo: String,
-  companyId: Types.ObjectId,
+  userId: Types.ObjectId,
   founded: Date,
   companyDescription: String,
   numberOfEmployees: Number,
@@ -31,6 +31,7 @@ const companySchema = new Schema<ICompany>({
       },
     ],
   },
+  active: Boolean,
 });
 
 const Company = model<ICompany>("company", companySchema);

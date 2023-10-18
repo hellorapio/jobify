@@ -1,13 +1,15 @@
 import { Schema, model, Types } from "mongoose";
 import { IWorker } from "./worker.interface";
+import addHooks from "./worker.hooks";
 
 const workerSchema = new Schema<IWorker>({
   name: String,
   photo: String,
-  userId: Types.ObjectId,
-  gender: {
-    type: String,
+  userId: {
+    type: Types.ObjectId,
+    unique: true,
   },
+  gender: String,
   birthDate: Date,
   livesIn: {
     type: {
@@ -17,12 +19,19 @@ const workerSchema = new Schema<IWorker>({
     coordinates: [Number],
     address: String,
   },
-  experience: { type: [String] },
-  education: { type: [String] },
+  experience: [String],
+  education: [String],
   experienceYears: Number,
   age: Number,
   resume: String,
+  username: {
+    type: String,
+    unique: true,
+  },
+  active: Boolean,
 });
+
+addHooks(workerSchema);
 
 const Worker = model<IWorker>("worker", workerSchema);
 

@@ -1,23 +1,28 @@
 import { IWorker } from "./model/worker.interface";
 import NotFound from "../../errors/notFound";
-import workerRepository from "./worker.repository";
-import { ObjectId } from "mongoose";
+import repository from "./worker.repository";
+import BaseService from "../../bases/base.service";
 
-class WorkerService {
-  static async getWorker(workerId: string) {
-    const worker = await workerRepository.findById(workerId);
+class WorkerService extends BaseService<IWorker, typeof repository> {
+  constructor() {
+    super(repository);
+  }
+
+  override async get(username: string) {
+    const worker = await this.repo.findOne({ username });
     if (!worker) throw new NotFound("There is no user found");
     return worker;
   }
 
-  static async updateWorker(workerId: ObjectId, body: IWorker) {
-    const worker = await workerRepository.updateOne(
-      { userId: workerId },
-      body
-    );
+  override async update(id: any, body: IWorker) {
+    const worker = await this.repo.updateOne({ userId: id }, body);
     if (!worker) throw new NotFound("There is no user Found");
     return worker;
   }
+
+  async me(id: any) {
+    return await this.repo.findOne({ userId: id });
+  }
 }
 
-export default WorkerService;
+export default WorkerService.getInstance();

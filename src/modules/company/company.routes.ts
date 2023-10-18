@@ -11,7 +11,6 @@ router.use("/:companyId/reviews", reviewRouter);
 router
   .route("/me")
   .all(protect, restrictTo("company"))
-  .post(CompanyController.addCompany)
   .patch(CompanyController.updateCompany);
 
 export default router;
