@@ -17,6 +17,10 @@ class BaseValidator {
   async id(data: object) {
     return await validCatch(this.joi.id, data);
   }
+  
+  async ids(data: object) {
+    return await validCatch(this.joi.ids, data);
+  }
 
   async create(data: object) {
     return await validCatch(this.joi.create, data);

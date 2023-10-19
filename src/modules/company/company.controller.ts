@@ -10,13 +10,7 @@ class CompanyController extends BaseController<ICompany> {
     super(companyService, companyValidator);
   }
 
-  // static async addCompany(req: Request, res: Response) {
-  //   const body = await CompanyValidator.createCompany(req.body);
-  //   const company = await CompanyService.createCompany(req.user.id, body);
-  //   sendRes(res, 201, company);
-  // }
-
-  async updateCompany(req: Request, res: Response) {
+  override async update(req: Request, res: Response) {
     const body = await this.validator.update(req.body);
     const company = await this.service.update(req.user.id, body);
     sendRes(res, 200, company);

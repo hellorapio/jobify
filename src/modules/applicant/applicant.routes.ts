@@ -13,7 +13,7 @@ router
 router
   .route("/:jobId")
   .all(protect)
-  .post(restrictTo("worker"), controller.createApplicant)
+  .post(restrictTo("worker"), controller.create)
   .get(restrictTo("company"), controller.getJobApplicants);
 
 router

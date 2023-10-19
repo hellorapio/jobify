@@ -20,6 +20,7 @@ const locations = Joi.array().items(
     address: Joi.string().trim(),
   })
 );
+
 const founded = Joi.date().max("now");
 
 // const createCompany = Joi.object({
@@ -34,7 +35,7 @@ const founded = Joi.date().max("now");
 //   founded,
 // });
 
-const updateCompany = Joi.object({
+const update = Joi.object({
   name: validators.name,
   photo,
   companyDescription,
@@ -46,4 +47,4 @@ const updateCompany = Joi.object({
   founded,
 });
 
-export default { updateCompany };
+export default { update };

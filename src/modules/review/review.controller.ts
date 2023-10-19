@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Request, Response } from "express";
 import reviewService from "./review.service";
 import reviewValidator from "./review.validator";

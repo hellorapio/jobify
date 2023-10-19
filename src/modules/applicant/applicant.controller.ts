@@ -14,10 +14,10 @@ class ApplicantController extends BaseController<
     super(applicantService, applicantValidator);
   }
 
-  async createApplicant(req: Request, res: Response) {
+  override async create(req: Request, res: Response) {
     const { jobId } = await this.validator.ids(req.params);
-    const body = await this.validator.createApplicant(req.body);
-    const applicant = await this.service.createApplicant(
+    const body = await this.validator.create(req.body);
+    const applicant = await this.service.create(
       jobId,
       req.user.id,
       body

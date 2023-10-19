@@ -14,7 +14,7 @@ class BaseService<T, S extends BaseRepository<T> = BaseRepository<T>> {
     return this.instance;
   }
 
-  async create(body: Partial<T>): Promise<T> {
+  async create(body: Partial<T>){
     return await this.repo.insertOne(body);
   }
 

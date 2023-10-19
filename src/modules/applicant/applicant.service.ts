@@ -1,5 +1,6 @@
-import AppError from "../../bases/base.error";
 import BaseService from "../../bases/base.service";
+import BadRequest from "../../errors/badRequest";
+import NotFound from "../../errors/notFound";
 import jobRepository from "../job/job.repository";
 import applicantRepository from "./applicant.repository";
 import { IApplicant } from "./model/applicant.interface";
@@ -22,7 +23,7 @@ class ApplicantService extends BaseService<IApplicant> {
       { letter }
     );
 
-    if (!applicant) throw new AppError("There is no applicant", 404);
+    if (!applicant) throw new NotFound("There is no applicant");
   }
 
   async getApplicant(applicantId: string, workerId: any) {
@@ -31,7 +32,7 @@ class ApplicantService extends BaseService<IApplicant> {
       workerId,
     });
 
-    if (!applicant) throw new AppError("There is no Applicant here", 404);
+    if (!applicant) throw new NotFound("There is no Applicant here");
 
     return applicant;
   }
@@ -47,7 +48,7 @@ class ApplicantService extends BaseService<IApplicant> {
       workerId,
     });
 
-    if (!applicant) throw new AppError("There is no Applicant here", 404);
+    if (!applicant) throw new NotFound("There is no Applicant here");
   }
 
   async workerApplicants(workerId: any) {
@@ -68,24 +69,24 @@ class ApplicantService extends BaseService<IApplicant> {
       { status }
     );
 
-    if (!applicant)
-      throw new AppError("There is no applicant over here", 404);
+    if (!applicant) throw new NotFound("There is no applicant over here");
   }
 
-  async createApplicant(
+  //@ts-ignore
+  override async create(
     jobId: any,
     workerId: any,
     { letter }: IApplicant
   ) {
     const job = await jobRepository.findById(jobId).select("companyId");
-    if (!job) throw new AppError("there is No Job", 404);
+    if (!job) throw new NotFound("there is No Job");
 
     const duplicate = await this.repo.find({
       workerId,
       jobId,
     });
     if (duplicate)
-      throw new AppError("You have Applied to this Job already", 400);
+      throw new BadRequest("You have Applied to this Job already");
 
     const applicant = await this.repo.insertOne({
       companyId: job.companyId,

@@ -39,7 +39,7 @@ const login = Joi.object({
 });
 
 const signup = Joi.object({
-  name: validators.name,
+  name: validators.name.required(),
   email,
   role,
   password: newPass,

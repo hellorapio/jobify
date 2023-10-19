@@ -25,7 +25,7 @@ const email = Joi.string()
   });
 
 const username = Joi.string()
-  .trim()
+  .trim().min(5)
   .lowercase()
   .regex(/^[a-zA-Z0-9-]*$/)
   .message("Username is not Valid");

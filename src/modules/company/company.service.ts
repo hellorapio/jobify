@@ -5,19 +5,19 @@ import { ObjectId } from "mongoose";
 import BaseService from "../../bases/base.service";
 
 class CompanyService extends BaseService<ICompany> {
-constructor() {
+  constructor() {
     super(companyRepository);
   }
 
-  async createCompany(userId: ObjectId, companyBody: ICompany) {
+  override async create(body: Partial<ICompany>, userId?: ObjectId) {
     return await this.repo.insertOne({
-      ...companyBody,
+      ...body,
       userId,
     });
   }
 
-  async updateCompany(userId: ObjectId, companyBody: ICompany) {
-    const company = await this.repo.updateOne({ userId }, companyBody);
+  override async update(userId: any, body: Partial<ICompany>) {
+    const company = await this.repo.updateOne({ userId }, body);
 
     if (!company) throw new NotFound("There is no user found");
     return company;

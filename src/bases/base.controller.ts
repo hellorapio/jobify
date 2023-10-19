@@ -16,7 +16,7 @@ class BaseController<
     this.get = this.get.bind(this);
   }
   //@ts-ignore
-  protected static instance: this;
+  protected static instance: any;
 
   public static getInstance() {
     if (!this.instance)
