@@ -34,6 +34,6 @@ const companySchema = new Schema<ICompany>({
   active: Boolean,
 });
 
-const Company = model<ICompany>("company", companySchema);
+const Company = model<ICompany>("Company", companySchema);
 
 export default Company;

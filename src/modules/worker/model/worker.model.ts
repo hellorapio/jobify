@@ -9,6 +9,7 @@ const workerSchema = new Schema<IWorker>(
     userId: {
       type: Types.ObjectId,
       unique: true,
+      ref: "User",
     },
     gender: String,
     birthDate: Date,
@@ -37,6 +38,6 @@ const workerSchema = new Schema<IWorker>(
 
 addHooks(workerSchema);
 
-const Worker = model<IWorker>("worker", workerSchema);
+const Worker = model<IWorker>("Worker", workerSchema);
 
 export default Worker;

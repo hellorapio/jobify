@@ -13,9 +13,9 @@ class ReviewController extends BaseController<
     super(reviewService, reviewValidator);
   }
 
-  async getReviews(req: Request, res: Response) {
+  override async getAll(req: Request, res: Response) {
     const { companyId } = await this.validator.ids(req.params);
-    const reviews = await this.service.getReviews(companyId);
+    const reviews = await this.service.getAll(companyId);
     sendResponse(res, 200, { result: reviews.length, reviews });
   }
 
@@ -31,17 +31,17 @@ class ReviewController extends BaseController<
     sendResponse(res, 200, { review });
   }
 
-  async createReview(req: Request, res: Response) {
+  override async create(req: Request, res: Response) {
     const { companyId } = await this.validator.ids(req.params);
     const reviewBody = await this.validator.create(req.body);
-    const review = await this.service.createReview(
+    const review = await this.service.create(
+      reviewBody,
       companyId,
-      req.user.id,
-      reviewBody
+      req.user.id
     );
 
     sendResponse(res, 201, { review });
   }
 }
 
-export default ReviewController;
+export default ReviewController.getInstance();

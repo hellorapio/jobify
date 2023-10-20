@@ -1,4 +1,3 @@
-import { ObjectId } from "mongoose";
 import NotFound from "../../errors/notFound";
 import { IReview } from "./model/review.interface";
 import reviewRepository from "./review.repository";
@@ -9,18 +8,14 @@ class ReviewService extends BaseService<IReview> {
     super(reviewRepository);
   }
 
-  async getReviews(companyId: ObjectId) {
+  override async getAll(companyId?: any) {
     const reviews = await this.repo.find({ companyId });
     return reviews;
   }
 
-  async createReview(
-    companyId: ObjectId,
-    userId: ObjectId,
-    reviewData: IReview
-  ) {
+  override async create(body: object, companyId?: any, userId?: any) {
     const review = await this.repo.insertOne({
-      ...reviewData,
+      ...body,
       userId,
       companyId,
     });
@@ -28,11 +23,7 @@ class ReviewService extends BaseService<IReview> {
     return review;
   }
 
-  async updateReview(
-    userId: ObjectId,
-    reviewId: string,
-    reviewData: IReview
-  ) {
+  async updateReview(userId: any, reviewId: string, reviewData: IReview) {
     const review = await this.repo.updateOne(
       {
         _id: reviewId,
@@ -46,7 +37,7 @@ class ReviewService extends BaseService<IReview> {
     return review;
   }
 
-  async deleteReview(reviewId: string) {
+  override async delete(reviewId: string) {
     const review = await this.repo.deleteOneById(reviewId);
     if (!review) throw new NotFound("No review was found");
   }

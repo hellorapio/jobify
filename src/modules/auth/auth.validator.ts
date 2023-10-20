@@ -1,6 +1,5 @@
 import { Schema } from "joi";
 import validCatch from "../../utils/validCatch";
-import { IUser } from "../user/model/user.interface";
 import authJoi from "./auth.joi";
 
 class AuthValidator {
@@ -12,11 +11,11 @@ class AuthValidator {
     return AuthValidator.instance;
   }
 
-  async login(body: Partial<IUser>) {
+  async login(body: object) {
     return await validCatch(this.joi.login, body);
   }
 
-  async signup(body: Partial<IUser>) {
+  async signup(body: object) {
     return await validCatch(this.joi.signup, body);
   }
 
@@ -28,11 +27,11 @@ class AuthValidator {
     return await validCatch(this.joi.resetPassword, body);
   }
 
-  async updatePassword(body: Partial<IUser>) {
+  async updatePassword(body: object) {
     return await validCatch(this.joi.updatePassword, body);
   }
 
-  async forgotPassword(body: Partial<IUser>) {
+  async forgotPassword(body: object) {
     return await validCatch(this.joi.forgotPassword, body);
   }
 }

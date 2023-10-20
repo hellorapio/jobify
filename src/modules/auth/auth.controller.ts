@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 
 class AuthController {
   private static instance: AuthController;
+  
   private constructor(
     private service: typeof authService,
     private validator: typeof authValidator
@@ -16,6 +17,7 @@ class AuthController {
     this.resetPassword = this.resetPassword.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
   }
+
   public static getInstance() {
     if (!AuthController.instance)
       AuthController.instance = new AuthController(

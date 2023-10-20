@@ -23,6 +23,6 @@ const applicantSchema = new Schema<IApplicant>({
   },
 });
 
-const Applicant = model<IApplicant>("applicant", applicantSchema);
+const Applicant = model<IApplicant>("Applicant", applicantSchema);
 
 export default Applicant;

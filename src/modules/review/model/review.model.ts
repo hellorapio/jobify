@@ -1,37 +1,26 @@
 import { Schema, model, Types } from "mongoose";
 import { IReview } from "./review.interface";
+import addHooks from "./review.hooks";
 
 const reviewSchema = new Schema<IReview>(
   {
-    userId: {
-      type: Types.ObjectId,
-      ref: "Worker",
-    },
-    companyId: {
-      type: Types.ObjectId,
-      ref: "Company",
-      path: "",
-    },
-    rate: {
-      type: Number,
-      min: 1,
-      max: 5,
-      required: [true, "There is no review without a rate"],
-    },
+    userId: Types.ObjectId,
+    companyId: Types.ObjectId,
+    rate: Number,
     pros: String,
     cons: String,
     review: String,
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    versionKey: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
 
-reviewSchema.pre(/^find/, function (next) {
-  //@ts-ignore
-  this.populate({ path: "userId", select: "name photo" });
+addHooks(reviewSchema);
 
-  next();
-});
-
-const Review = model<IReview>("review", reviewSchema);
+const Review = model<IReview>("Review", reviewSchema);
 
 export default Review;
