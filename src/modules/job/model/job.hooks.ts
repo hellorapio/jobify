@@ -4,9 +4,9 @@ import slugify from "slugify";
 import { randomBytes } from "crypto";
 
 const addHooks = (schema: Schema<IJob>) => {
-  schema.virtual("monthlyPay").get(function () {
-    return this.salary / 12;
-  });
+  // schema.virtual("monthlyPay").get(function () {
+  //   return this.salary / 12;
+  // });
 
   schema.pre("save", function (next) {
     if (!this.isNew) return next();

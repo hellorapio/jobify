@@ -12,7 +12,7 @@ export interface IJob extends Document {
     address: string;
   };
   datePosted: Date;
-  companyId: ObjectId;
+  company: ObjectId;
   remote: boolean;
   jobFunction:
     | "engineering"

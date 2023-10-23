@@ -6,7 +6,7 @@ const workerSchema = new Schema<IWorker>(
   {
     name: String,
     photo: String,
-    userId: {
+    user: {
       type: Types.ObjectId,
       unique: true,
       ref: "User",

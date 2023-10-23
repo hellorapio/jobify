@@ -7,7 +7,7 @@ const pros = Joi.string().trim();
 const cons = Joi.string().trim();
 
 const ids = Joi.object({
-  companyId: validators.id,
+  username: validators.username,
   reviewId: validators.id,
 });
 

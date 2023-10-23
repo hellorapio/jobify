@@ -15,13 +15,13 @@ class WorkerService extends BaseService<IWorker, typeof repository> {
   }
 
   override async update(id: any, body: IWorker) {
-    const worker = await this.repo.updateOne({ userId: id }, body);
+    const worker = await this.repo.updateOne({ user: id }, body);
     if (!worker) throw new NotFound("There is no user Found");
     return worker;
   }
 
   async me(id: any) {
-    return await this.repo.findOne({ userId: id });
+    return await this.repo.findOne({ user: id });
   }
 }
 

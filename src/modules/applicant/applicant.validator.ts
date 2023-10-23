@@ -10,12 +10,12 @@ class ApplicantValidator extends BaseValidator {
     return await validCatch(applicantJoi.ids, body);
   }
 
-  static async updateApplicantStatus(body: object) {
-    return await validCatch(applicantJoi.updateApplicantStatus, body);
+  static async updateStatus(body: object) {
+    return await validCatch(applicantJoi.updateStatus, body);
   }
 
-  static async updateApplicantLetter(body: object) {
-    return await validCatch(applicantJoi.updateApplicantLetter, body);
+  static async updateLetter(body: object) {
+    return await validCatch(applicantJoi.updateLetter, body);
   }
 }
 

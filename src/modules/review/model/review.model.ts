@@ -4,8 +4,8 @@ import addHooks from "./review.hooks";
 
 const reviewSchema = new Schema<IReview>(
   {
-    userId: Types.ObjectId,
-    companyId: Types.ObjectId,
+    user: Types.ObjectId,
+    company: String,
     rate: Number,
     pros: String,
     cons: String,
@@ -18,6 +18,8 @@ const reviewSchema = new Schema<IReview>(
     toObject: { virtuals: true },
   }
 );
+
+reviewSchema.index({ user: 1, company: 1 }, { unique: true });
 
 addHooks(reviewSchema);
 

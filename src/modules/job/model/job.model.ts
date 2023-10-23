@@ -1,5 +1,6 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model } from "mongoose";
 import { IJob } from "./job.interface";
+import addHooks from "./job.hooks";
 
 const jobSchema = new Schema<IJob>(
   {
@@ -15,10 +16,7 @@ const jobSchema = new Schema<IJob>(
         address: String,
       },
     },
-    companyId: {
-      type: Types.ObjectId,
-      ref: "User",
-    },
+    company: String,
     salary: {
       type: Number,
       default: 0,
@@ -45,7 +43,7 @@ const jobSchema = new Schema<IJob>(
     },
     experienceLevel: {
       type: String,
-      default: "mid",
+      default: "entry",
     },
     educationLevel: {
       type: String,
@@ -73,6 +71,10 @@ const jobSchema = new Schema<IJob>(
     toObject: { virtuals: true },
   }
 );
+
+jobSchema.index({ company: 1 });
+
+addHooks(jobSchema);
 
 const Job = model<IJob>("Job", jobSchema);
 

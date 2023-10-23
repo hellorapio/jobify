@@ -1,46 +1,46 @@
 import { Request, Response } from "express";
-import reviewService from "./review.service";
+import service from "./review.service";
 import reviewValidator from "./review.validator";
 import sendResponse from "../../utils/sendResponse";
 import BaseController from "../../bases/base.controller";
 import { IReview } from "./model/review.interface";
 
-class ReviewController extends BaseController<
-  IReview,
-  typeof reviewService
-> {
+class ReviewController extends BaseController<IReview, typeof service> {
   constructor() {
-    super(reviewService, reviewValidator);
+    super(service, reviewValidator);
+    this.reviewStats = this.reviewStats.bind(this);
   }
 
   override async getAll(req: Request, res: Response) {
-    const { companyId } = await this.validator.ids(req.params);
-    const reviews = await this.service.getAll(companyId);
+    const { username } = await this.validator.ids(req.params);
+    const reviews = await this.service.getAll(username);
     sendResponse(res, 200, { result: reviews.length, reviews });
   }
 
-  async updateReview(req: Request, res: Response) {
-    const { reviewId } = await this.validator.ids(req.params);
-    const reviewBody = await this.validator.update(req.body);
-    const review = await this.service.updateReview(
-      req.user.id,
-      reviewId,
-      reviewBody
-    );
-
+  override async update(req: Request, res: Response) {
+    const { username } = await this.validator.ids(req.params);
+    const body = await this.validator.update(req.body);
+    const review = await this.service.update(req.user.id, body, username);
     sendResponse(res, 200, { review });
   }
 
   override async create(req: Request, res: Response) {
-    const { companyId } = await this.validator.ids(req.params);
-    const reviewBody = await this.validator.create(req.body);
-    const review = await this.service.create(
-      reviewBody,
-      companyId,
-      req.user.id
-    );
-
+    const { username } = await this.validator.ids(req.params);
+    const body = await this.validator.create(req.body);
+    const review = await this.service.create(body, username, req.user.id);
     sendResponse(res, 201, { review });
+  }
+
+  override async delete(req: Request, res: Response) {
+    const { username } = await this.validator.ids(req.params);
+    await this.service.delete(username, req.user.id);
+    sendResponse(res, 204);
+  }
+
+  async reviewStats(req: Request, res: Response) {
+    const { username } = await this.validator.ids(req.params);
+    const stats = await this.service.reviewStats(username);
+    sendResponse(res, 200, { stats });
   }
 }
 

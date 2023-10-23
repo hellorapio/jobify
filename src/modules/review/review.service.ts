@@ -2,43 +2,64 @@ import NotFound from "../../errors/notFound";
 import { IReview } from "./model/review.interface";
 import reviewRepository from "./review.repository";
 import BaseService from "../../bases/base.service";
+import companyRepository from "../company/company.repository";
 
 class ReviewService extends BaseService<IReview> {
   constructor() {
     super(reviewRepository);
   }
 
-  override async getAll(companyId?: any) {
-    const reviews = await this.repo.find({ companyId });
+  override async getAll(company?: any) {
+    const reviews = await this.repo.find(company ? { company } : {});
     return reviews;
   }
 
-  override async create(body: object, companyId?: any, userId?: any) {
+  async reviewStats(company: string) {
+    return await this.repo.aggregate([
+      { $match: { company } },
+      {
+        $group: {
+          _id: null,
+          avgRate: { $avg: "$rate" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+  }
+
+  override async create(body: object, company?: any, user?: any) {
+    const username = await companyRepository.findOne({
+      username: company,
+    });
+
+    if (!username) throw new NotFound("Company is Not Found");
+
     const review = await this.repo.insertOne({
       ...body,
-      userId,
-      companyId,
+      user,
+      company,
     });
 
     return review;
   }
-
-  async updateReview(userId: any, reviewId: string, reviewData: IReview) {
+  override async update(user: any, body: IReview, company?: any) {
     const review = await this.repo.updateOne(
       {
-        _id: reviewId,
-        userId,
+        user,
+        company,
       },
-      reviewData
+      body
     );
-
     if (!review) throw new NotFound("No review was found");
 
     return review;
   }
 
-  override async delete(reviewId: string) {
-    const review = await this.repo.deleteOneById(reviewId);
+  override async delete(company: string, user?: any) {
+    const review = await this.repo.deleteOne({
+      user,
+      company,
+    });
     if (!review) throw new NotFound("No review was found");
   }
 }

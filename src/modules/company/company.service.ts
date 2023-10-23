@@ -9,15 +9,15 @@ class CompanyService extends BaseService<ICompany> {
     super(companyRepository);
   }
 
-  override async create(body: Partial<ICompany>, userId?: ObjectId) {
+  override async create(body: Partial<ICompany>, user?: ObjectId) {
     return await this.repo.insertOne({
       ...body,
-      userId,
+      user,
     });
   }
 
-  override async update(userId: any, body: Partial<ICompany>) {
-    const company = await this.repo.updateOne({ userId }, body);
+  override async update(user: any, body: Partial<ICompany>) {
+    const company = await this.repo.updateOne({ user }, body);
 
     if (!company) throw new NotFound("There is no user found");
     return company;

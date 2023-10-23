@@ -1,5 +1,5 @@
 import BaseService from "../../bases/base.service";
-import BadRequest from "../../errors/badRequest";
+// import BadRequest from "../../errors/badRequest";
 import NotFound from "../../errors/notFound";
 import jobRepository from "../job/job.repository";
 import applicantRepository from "./applicant.repository";
@@ -10,15 +10,11 @@ class ApplicantService extends BaseService<IApplicant> {
     super(applicantRepository);
   }
 
-  async updateApplicant(
-    applicantId: string,
-    workerId: any,
-    letter: string
-  ) {
+  async updateApplicant(applicantId: string, worker: any, letter: string) {
     const applicant = await this.repo.updateOne(
       {
         _id: applicantId,
-        workerId,
+        worker,
       },
       { letter }
     );
@@ -26,10 +22,10 @@ class ApplicantService extends BaseService<IApplicant> {
     if (!applicant) throw new NotFound("There is no applicant");
   }
 
-  async getApplicant(applicantId: string, workerId: any) {
+  async getApplicant(applicantId: string, worker: any) {
     const applicant = await this.repo.findOne({
       _id: applicantId,
-      workerId,
+      worker,
     });
 
     if (!applicant) throw new NotFound("There is no Applicant here");
@@ -37,61 +33,49 @@ class ApplicantService extends BaseService<IApplicant> {
     return applicant;
   }
 
-  async getJobApplicants(jobId: any, companyId: any) {
-    const applicants = await this.repo.find({ jobId, companyId });
+  async getJobApplicants(job: any, company: any) {
+    const applicants = await this.repo.find({ job, company });
     return applicants;
   }
 
-  async deleteApplicant(applicantId: string, workerId: any) {
+  async deleteApplicant(applicantId: string, worker: any) {
     const applicant = await this.repo.deleteOne({
       _id: applicantId,
-      workerId,
+      worker,
     });
 
     if (!applicant) throw new NotFound("There is no Applicant here");
   }
 
-  async workerApplicants(workerId: any) {
-    return await this.repo.find({ workerId });
+  async workerApplicants(worker: any) {
+    return await this.repo.find({ worker });
   }
 
-  async companyApplicants(companyId: any) {
-    return await this.repo.find({ companyId });
+  async companyApplicants(company: any) {
+    return await this.repo.find({ company });
   }
 
   async replyApplicant(
     applicantId: string,
-    companyId: any,
+    company: any,
     { status }: IApplicant
   ) {
     const applicant = await this.repo.updateOne(
-      { _id: applicantId, companyId },
+      { _id: applicantId, company },
       { status }
     );
 
     if (!applicant) throw new NotFound("There is no applicant over here");
   }
 
-  //@ts-ignore
-  override async create(
-    jobId: any,
-    workerId: any,
-    { letter }: IApplicant
-  ) {
-    const job = await jobRepository.findById(jobId).select("companyId");
-    if (!job) throw new NotFound("there is No Job");
-
-    const duplicate = await this.repo.find({
-      workerId,
-      jobId,
-    });
-    if (duplicate)
-      throw new BadRequest("You have Applied to this Job already");
+  override async create({ letter }: IApplicant, job?: any, worker?: any) {
+    const jobDoc = await jobRepository.findById(job, "company");
+    if (!jobDoc) throw new NotFound("there is No Job");
 
     const applicant = await this.repo.insertOne({
-      companyId: job.companyId,
-      workerId,
-      jobId,
+      company: jobDoc.company,
+      worker,
+      job,
       letter,
     });
     return applicant;

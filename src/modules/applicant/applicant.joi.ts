@@ -14,23 +14,23 @@ const create = Joi.object({
   letter: letter.required(),
 });
 
-const updateApplicantStatus = Joi.object({
+const updateStatus = Joi.object({
   status,
 });
 
-const updateApplicantLetter = Joi.object({
+const updateLetter = Joi.object({
   letter,
 });
 
 const ids = Joi.object({
   applicantId: validators.id,
-  jobId: validators.id,
-  companyId: validators.id,
+  job: validators.id,
+  company: validators.id,
 });
 
 export default {
   create,
-  updateApplicantStatus,
-  updateApplicantLetter,
+  updateStatus,
+  updateLetter,
   ids,
 };

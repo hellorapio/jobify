@@ -40,12 +40,12 @@ class AuthService {
 
     if (body.role === "company")
       await companyRepository.insertOne({
-        userId: user._id,
+        user: user._id,
         name: body.name,
       });
     else if (body.role === "worker")
       await workerRepository.insertOne({
-        userId: user._id,
+        user: user._id,
         name: body.name,
       });
 

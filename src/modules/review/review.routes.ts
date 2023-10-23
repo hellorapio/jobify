@@ -5,14 +5,15 @@ import restrictTo from "../../middlewares/restrict.middleware";
 
 const router = Router({ mergeParams: true });
 
-router
-  .route("/")
-  .all(protect)
-  .get(controller.getAll)
-  .post(restrictTo("worker"), controller.create);
+router.route("/stats").all(protect).get(controller.reviewStats);
+
+router.get("/", protect, controller.getAll);
 
 router
-  .route("/:reviewId")
-  .patch(protect, restrictTo("worker"), controller.updateReview);
+  .route("/")
+  .all(protect, restrictTo("worker"))
+  .post(controller.create)
+  .patch(controller.update)
+  .delete(controller.delete);
 
 export default router;

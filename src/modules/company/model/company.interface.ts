@@ -3,10 +3,12 @@ import { Document, ObjectId } from "mongoose";
 export interface ICompany extends Document {
   name: string;
   photo: string;
-  userId: ObjectId;
+  user: ObjectId;
   founded: Date;
   companyDescription: string;
   numberOfEmployees: number;
+  ratingsAverage: number;
+  ratingsCount: number;
   revenue: number;
   contactInformation: {
     website: string;
@@ -22,4 +24,5 @@ export interface ICompany extends Document {
     address: string;
   }[];
   active: boolean;
+  username: string;
 }

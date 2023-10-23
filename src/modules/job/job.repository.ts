@@ -6,6 +6,10 @@ class JobRepository extends BaseRepository<IJob> {
   constructor() {
     super(Job);
   }
+
+  override async findById(id: string, select: string = "") {
+    return await this.model.findById(id).select(select);
+  }
 }
 
 export default JobRepository.getInstance();

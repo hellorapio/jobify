@@ -2,6 +2,7 @@ import { Router } from "express";
 import controller from "./job.controller";
 import restrictTo from "../../middlewares/restrict.middleware";
 import protect from "../../middlewares/auth.middleware";
+import applicantRouter from "../applicant/applicant.routes";
 
 const router = Router();
 
@@ -12,6 +13,8 @@ router
   .route("/")
   .get(controller.getAll)
   .post(protect, restrictTo("company"), controller.create);
+
+router.use("/:job", applicantRouter);
 
 router
   .route("/:id")

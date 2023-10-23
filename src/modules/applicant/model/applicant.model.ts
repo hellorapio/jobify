@@ -2,15 +2,15 @@ import { model, Schema, Types } from "mongoose";
 import { IApplicant } from "./applicant.interface";
 
 const applicantSchema = new Schema<IApplicant>({
-  workerId: {
+  worker: {
     type: Types.ObjectId,
     ref: "Worker",
   },
-  jobId: {
+  job: {
     type: Types.ObjectId,
     ref: "Job",
   },
-  companyId: {
+  company: {
     type: Types.ObjectId,
     ref: "company",
   },
@@ -22,6 +22,8 @@ const applicantSchema = new Schema<IApplicant>({
     type: String,
   },
 });
+
+applicantSchema.index({ workerId: 1, jobId: 1 }, { unique: true });
 
 const Applicant = model<IApplicant>("Applicant", applicantSchema);
 

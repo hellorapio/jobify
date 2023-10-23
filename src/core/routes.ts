@@ -6,7 +6,7 @@ import userRouter from "../modules/user/user.routes";
 import authRouter from "../modules/auth/auth.routes";
 import companyRouter from "../modules/company/company.routes";
 import workerRouter from "../modules/worker/worker.routes";
-import reviewRouter from "../modules/review/review.routes";
+// import reviewRouter from "../modules/review/review.routes";
 import { Express } from "express";
 
 const addRoutes = (app: Express) => {
@@ -15,8 +15,8 @@ const addRoutes = (app: Express) => {
   app.use("/api/v1/jobs", jobRouter);
   app.use("/api/v1/users", userRouter);
   app.use("/api/v1/auth", authRouter);
-  app.use("/api/v1/reviews", reviewRouter);
   app.use("/api/v1/workers", workerRouter);
+  // app.use("/api/v1/reviews", reviewRouter);
 
   app.get("/health", (_, res) => {
     res.status(200).json({

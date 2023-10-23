@@ -1,8 +1,8 @@
 import { Document, ObjectId } from "mongoose";
 
 export interface IReview extends Document {
-  userId: ObjectId;
-  companyId: ObjectId;
+  user: ObjectId;
+  company: string;
   rate: number;
   pros: string;
   cons: string;

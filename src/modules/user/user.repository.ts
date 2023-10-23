@@ -6,6 +6,7 @@ class UserRepository extends BaseRepository<IUser> {
   constructor() {
     super(User);
   }
+
   override async findOne(filter: object, select: string = "") {
     return await this.model.findOne(filter).select(select);
   }
