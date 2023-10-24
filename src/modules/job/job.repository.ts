@@ -12,4 +12,4 @@ class JobRepository extends BaseRepository<IJob> {
   }
 }
 
-export default JobRepository.getInstance();
+export default JobRepository.getInstance<JobRepository>();

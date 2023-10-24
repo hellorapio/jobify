@@ -7,4 +7,4 @@ class CompanyValidator extends BaseValidator {
   }
 }
 
-export default CompanyValidator.getInstance();
+export default CompanyValidator.getInstance<CompanyValidator>();

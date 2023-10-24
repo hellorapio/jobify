@@ -2,7 +2,7 @@ import Joi from "joi";
 import validators from "../../utils/validators";
 
 const title = Joi.string().trim();
-const description = Joi.string().min(100).trim();
+const description = Joi.string().min(50).trim();
 const currency = Joi.string().valid("GBP", "EUR", "YEN", "USD", "CHF");
 const employmentType = Joi.string().valid(
   "full-time",
@@ -54,6 +54,8 @@ const create = Joi.object({
   currency,
 });
 
+// if remote was true it shouldn't provide location
+
 const update = Joi.object({
   title,
   description,
@@ -71,5 +73,7 @@ const update = Joi.object({
 });
 
 const jobId = Joi.object({ id: validators.id.required() });
+const username = Joi.object({ username: validators.username });
+const slug = Joi.object({ slug: validators.username });
 
-export default { create, update, jobId };
+export default { create, update, jobId, username, slug };

@@ -8,4 +8,4 @@ class ReviewValidator extends BaseValidator {
 
 }
 
-export default ReviewValidator.getInstance();
+export default ReviewValidator.getInstance<ReviewValidator>();

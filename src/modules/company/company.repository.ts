@@ -9,4 +9,4 @@ class CompanyRepository extends BaseRepository<ICompany> {
 
 }
 
-export default CompanyRepository.getInstance();
+export default CompanyRepository.getInstance<CompanyRepository>();

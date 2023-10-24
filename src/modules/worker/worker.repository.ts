@@ -8,4 +8,4 @@ class WorkerRepository extends BaseRepository<IWorker> {
   }
 }
 
-export default WorkerRepository.getInstance();
+export default WorkerRepository.getInstance<WorkerRepository>();

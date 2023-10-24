@@ -16,4 +16,4 @@ class UserRepository extends BaseRepository<IUser> {
   }
 }
 
-export default UserRepository.getInstance();
+export default UserRepository.getInstance<UserRepository>();

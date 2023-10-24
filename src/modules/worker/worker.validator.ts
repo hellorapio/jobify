@@ -12,4 +12,4 @@ class WorkerValidator extends BaseValidator {
   }
 }
 
-export default WorkerValidator.getInstance();
+export default WorkerValidator.getInstance<WorkerValidator>();

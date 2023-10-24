@@ -7,4 +7,4 @@ class JobValidator extends BaseValidator {
   }
 }
 
-export default JobValidator.getInstance();
+export default JobValidator.getInstance<JobValidator>();

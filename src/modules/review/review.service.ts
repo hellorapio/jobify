@@ -64,4 +64,4 @@ class ReviewService extends BaseService<IReview> {
   }
 }
 
-export default ReviewService.getInstance();
+export default ReviewService.getInstance<ReviewService>();

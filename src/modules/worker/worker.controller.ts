@@ -29,4 +29,4 @@ class WorkerController extends BaseController<IWorker, typeof service> {
   }
 }
 
-export default WorkerController.getInstance();
+export default WorkerController.getInstance<WorkerController>();

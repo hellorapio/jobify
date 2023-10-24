@@ -4,20 +4,17 @@ import { Schema } from "joi";
 class BaseValidator {
   constructor(protected joi: Record<string, Schema>) {}
 
-  //@ts-ignore
-  protected static instance: this;
+  protected static instance: any;
 
-  public static getInstance() {
-    if (!this.instance)
-      //@ts-ignore
-      this.instance = new this();
+  public static getInstance<T>(): T {
+    if (!this.instance) this.instance = new (this as any)();
     return this.instance;
   }
 
   async id(data: object) {
     return await validCatch(this.joi.id, data);
   }
-  
+
   async ids(data: object) {
     return await validCatch(this.joi.ids, data);
   }
@@ -32,6 +29,10 @@ class BaseValidator {
 
   async username(data: object) {
     return await validCatch(this.joi.username, data);
+  }
+
+  async slug(data: object) {
+    return await validCatch(this.joi.slug, data);
   }
 }
 

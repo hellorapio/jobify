@@ -8,4 +8,4 @@ class ApplicantRepository extends BaseRepository<IApplicant> {
   }
 }
 
-export default ApplicantRepository.getInstance();
+export default ApplicantRepository.getInstance<ApplicantRepository>();

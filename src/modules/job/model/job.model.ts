@@ -25,10 +25,6 @@ const jobSchema = new Schema<IJob>(
       type: String,
       default: "USD",
     },
-    datePosted: {
-      type: Date,
-      default: Date.now,
-    },
     remote: {
       type: Boolean,
       default: false,
@@ -69,6 +65,8 @@ const jobSchema = new Schema<IJob>(
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    versionKey: false,
+    timestamps: true,
   }
 );
 

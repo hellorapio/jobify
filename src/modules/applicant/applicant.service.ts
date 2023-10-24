@@ -71,9 +71,8 @@ class ApplicantService extends BaseService<IApplicant> {
   override async create({ letter }: IApplicant, job?: any, worker?: any) {
     const jobDoc = await jobRepository.findById(job, "company");
     if (!jobDoc) throw new NotFound("there is No Job");
-
     const applicant = await this.repo.insertOne({
-      company: jobDoc.company,
+      // company: jobDoc.company,
       worker,
       job,
       letter,
@@ -82,4 +81,4 @@ class ApplicantService extends BaseService<IApplicant> {
   }
 }
 
-export default ApplicantService.getInstance();
+export default ApplicantService.getInstance<ApplicantService>();

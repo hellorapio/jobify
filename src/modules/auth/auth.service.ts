@@ -35,7 +35,6 @@ class AuthService {
       role: body.role,
       email: body.email,
       password: body.password,
-      name: body.name,
     });
 
     if (body.role === "company")

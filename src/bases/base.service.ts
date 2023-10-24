@@ -4,13 +4,11 @@ import BaseRepository from "./base.repository";
 class BaseService<T, S extends BaseRepository<T> = BaseRepository<T>> {
   constructor(protected repo: S) {}
 
-  //@ts-ignore
-  protected static instance: this;
+  protected static instance: any;
 
-  public static getInstance() {
+  public static getInstance<T>(): T {
     if (!this.instance)
-      //@ts-ignore
-      this.instance = new this();
+      this.instance = new (this as any)();
     return this.instance;
   }
 

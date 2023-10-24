@@ -44,4 +44,4 @@ class ReviewController extends BaseController<IReview, typeof service> {
   }
 }
 
-export default ReviewController.getInstance();
+export default ReviewController.getInstance<ReviewController>();

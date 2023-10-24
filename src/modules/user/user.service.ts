@@ -22,4 +22,4 @@ class UserService extends BaseService<IUser, typeof userRepository> {
   }
 }
 
-export default UserService.getInstance();
+export default UserService.getInstance<UserService>();

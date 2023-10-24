@@ -6,17 +6,14 @@ class ApplicantValidator extends BaseValidator {
   constructor() {
     super(applicantJoi);
   }
-  static async ids(body: object) {
-    return await validCatch(applicantJoi.ids, body);
+
+  async updateStatus(body: object) {
+    return await validCatch(this.joi.updateStatus, body);
   }
 
-  static async updateStatus(body: object) {
-    return await validCatch(applicantJoi.updateStatus, body);
-  }
-
-  static async updateLetter(body: object) {
-    return await validCatch(applicantJoi.updateLetter, body);
+  async updateLetter(body: object) {
+    return await validCatch(this.joi.updateLetter, body);
   }
 }
 
-export default ApplicantValidator.getInstance();
+export default ApplicantValidator.getInstance<ApplicantValidator>();

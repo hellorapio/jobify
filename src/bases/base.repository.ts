@@ -3,13 +3,10 @@ import { Model, PipelineStage } from "mongoose";
 class BaseRepository<T> {
   constructor(protected model: Model<T>) {}
 
-  //@ts-ignore
-  protected static instance: this;
+  protected static instance: any;
 
-  public static getInstance() {
-    if (!this.instance)
-      //@ts-ignore
-      this.instance = new this();
+  public static getInstance<T>(): T {
+    if (!this.instance) this.instance = new (this as any)();
     return this.instance;
   }
 

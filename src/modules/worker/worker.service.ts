@@ -25,4 +25,4 @@ class WorkerService extends BaseService<IWorker, typeof repository> {
   }
 }
 
-export default WorkerService.getInstance();
+export default WorkerService.getInstance<WorkerService>();

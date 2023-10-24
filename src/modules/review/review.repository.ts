@@ -8,4 +8,4 @@ class ReviewRepository extends BaseRepository<IReview> {
   }
 }
 
-export default ReviewRepository.getInstance();
+export default ReviewRepository.getInstance<ReviewRepository>();

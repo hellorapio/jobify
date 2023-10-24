@@ -8,6 +8,7 @@ import { IUser } from "./model/user.interface";
 class UserController extends BaseController<IUser, typeof userService> {
   constructor() {
     super(userService, userValidator);
+    this.me = this.me.bind(this);
   }
 
   async me(req: Request, res: Response) {
@@ -21,4 +22,4 @@ class UserController extends BaseController<IUser, typeof userService> {
   }
 }
 
-export default UserController.getInstance();
+export default UserController.getInstance<UserController>();

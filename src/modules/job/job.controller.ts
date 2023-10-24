@@ -8,16 +8,41 @@ import { IJob } from "./model/job.interface";
 class JobController extends BaseController<IJob, typeof jobService> {
   constructor() {
     super(jobService, jobValidator);
-    this.getJobStats = this.getJobStats.bind(this);
   }
 
-  async getJobStats(_: Request, res: Response) {
-    const job = await this.service.getJobStats();
+  override async getAll(req: Request, res: Response) {
+    const { username } = await this.validator.username(req.params);
+    const jobs = await this.service.getAll(username);
+    sendResponse(res, 200, { results: jobs.length, jobs });
+  }
+
+  override async update(req: Request, res: Response) {
+    const { slug } = await this.validator.slug(req.params);
+    const body = await this.validator.update(req.body);
+    const job = await this.service.update(slug, body, req.user.id);
     sendResponse(res, 200, job);
+  }
+
+  override async get(req: Request, res: Response) {
+    const { slug } = await this.validator.slug(req.params);
+    const job = await this.service.get(slug);
+    sendResponse(res, 200, job);
+  }
+
+  override async delete(req: Request, res: Response) {
+    const { slug } = await this.validator.slug(req.params);
+    await this.service.delete(slug, req.user.id);
+    sendResponse(res, 204);
+  }
+
+  override async create(req: Request, res: Response) {
+    const body = await this.validator.create(req.body);
+    const job = await this.service.create(body, req.user.id);
+    sendResponse(res, 201, job);
   }
 }
 
-export default JobController.getInstance();
+export default JobController.getInstance<JobController>();
 
 // export const wantedJobs = async (
 //   req: Request,

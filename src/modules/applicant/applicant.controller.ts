@@ -71,4 +71,4 @@ class ApplicantController extends BaseController<
   }
 }
 
-export default ApplicantController.getInstance();
+export default ApplicantController.getInstance<ApplicantController>();

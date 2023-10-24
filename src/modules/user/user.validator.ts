@@ -7,4 +7,4 @@ class UserValidator extends BaseValidator {
   }
 }
 
-export default UserValidator.getInstance();
+export default UserValidator.getInstance<UserValidator>();

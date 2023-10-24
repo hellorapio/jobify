@@ -1,7 +1,8 @@
-import { Document, ObjectId } from "mongoose";
+import { Document } from "mongoose";
 
 export interface IJob extends Document {
   title: string;
+  companyName: string;
   description: string;
   salary: number;
   currency: "GBP" | "EUR" | "YEN" | "USD" | "CHF";
@@ -12,7 +13,7 @@ export interface IJob extends Document {
     address: string;
   };
   datePosted: Date;
-  company: ObjectId;
+  company: string;
   remote: boolean;
   jobFunction:
     | "engineering"

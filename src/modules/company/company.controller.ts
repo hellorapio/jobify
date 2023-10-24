@@ -17,4 +17,4 @@ class CompanyController extends BaseController<ICompany> {
   }
 }
 
-export default CompanyController.getInstance();
+export default CompanyController.getInstance<CompanyController>();

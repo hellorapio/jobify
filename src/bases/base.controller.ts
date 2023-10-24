@@ -15,13 +15,10 @@ class BaseController<
     this.getAll = this.getAll.bind(this);
     this.get = this.get.bind(this);
   }
-  //@ts-ignore
   protected static instance: any;
 
-  public static getInstance() {
-    if (!this.instance)
-      //@ts-ignore
-      this.instance = new this();
+  public static getInstance<T>(): T {
+    if (!this.instance) this.instance = new (this as any)();
     return this.instance;
   }
 
