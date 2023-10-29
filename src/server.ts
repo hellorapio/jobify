@@ -1,4 +1,5 @@
-require("dotenv").config({ path: `${__dirname}/config/.env` });
+if (process.env.NODE_ENV !== "production ")
+  require("dotenv").config({ path: `${__dirname}/config/.env` });
 import config from "./config/config";
 import app from "./app";
 
