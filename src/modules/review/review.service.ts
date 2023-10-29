@@ -2,7 +2,7 @@ import NotFound from "../../errors/notFound";
 import { IReview } from "./model/review.interface";
 import reviewRepository from "./review.repository";
 import BaseService from "../../bases/base.service";
-import companyRepository from "../company/company.repository";
+import userRepository from "../user/user.repository";
 
 class ReviewService extends BaseService<IReview> {
   constructor() {
@@ -10,55 +10,61 @@ class ReviewService extends BaseService<IReview> {
   }
 
   override async getAll(company?: any) {
-    const reviews = await this.repo.find(company ? { company } : {});
-    return reviews;
-  }
-
-  async reviewStats(company: string) {
-    return await this.repo.aggregate([
-      { $match: { company } },
-      {
-        $group: {
-          _id: null,
-          avgRate: { $avg: "$rate" },
-          count: { $sum: 1 },
-        },
-      },
-    ]);
+    if (company) {
+      const u = await userRepository.findOne({
+        username: company,
+        role: "company",
+      });
+      
+      if (!u) throw new NotFound("Company Not Found");
+      const reviews = await this.repo.find({ company: u.id });
+      return reviews;
+    } else {
+      const reviews = await this.repo.find({});
+      return reviews;
+    }
   }
 
   override async create(body: object, company?: any, user?: any) {
-    const username = await companyRepository.findOne({
+    const u = await userRepository.findOne({
       username: company,
+      role: "company",
     });
-
-    if (!username) throw new NotFound("Company is Not Found");
-
+    if (!u) throw new NotFound("User Not Found");
     const review = await this.repo.insertOne({
       ...body,
       user,
-      company,
+      company: u.id,
     });
 
     return review;
   }
   override async update(user: any, body: IReview, company?: any) {
+    const u = await userRepository.findOne({
+      username: company,
+      role: "company",
+    });
+    if (!u) throw new NotFound("User Not Found");
     const review = await this.repo.updateOne(
       {
         user,
-        company,
+        company: u.id,
       },
       body
     );
     if (!review) throw new NotFound("No review was found");
-
     return review;
   }
 
-  override async delete(company: string, user?: any) {
+  override async delete(company: any, user?: any) {
+    const u = await userRepository.findOne({
+      username: company,
+      role: "company",
+    });
+    if (!u) throw new NotFound("User Not Found");
     const review = await this.repo.deleteOne({
       user,
-      company,
+      company: u.id,
     });
     if (!review) throw new NotFound("No review was found");
   }

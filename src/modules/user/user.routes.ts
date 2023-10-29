@@ -1,15 +1,21 @@
 import { Router } from "express";
 
-import userController from "./user.controller";
+import controller from "./user.controller";
 import protect from "../../middlewares/auth.middleware";
-
+import reviewRouter from "../review/review.routes";
+import jobController from "../job/job.controller";
 const router = Router();
 
 router
   .route("/me")
   .all(protect)
-  .get(userController.me)
-  .patch(userController.update)
-  .delete(userController.delete);
+  .get(controller.me)
+  .patch(controller.update)
+  .delete(controller.delete);
+
+router.route("/:username").all(protect).get(controller.get);
+
+router.use("/:username/reviews", reviewRouter);
+router.use("/:username/jobs", jobController.getAll);
 
 export default router;

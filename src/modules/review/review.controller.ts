@@ -8,7 +8,6 @@ import { IReview } from "./model/review.interface";
 class ReviewController extends BaseController<IReview, typeof service> {
   constructor() {
     super(service, reviewValidator);
-    this.reviewStats = this.reviewStats.bind(this);
   }
 
   override async getAll(req: Request, res: Response) {
@@ -37,11 +36,6 @@ class ReviewController extends BaseController<IReview, typeof service> {
     sendResponse(res, 204);
   }
 
-  async reviewStats(req: Request, res: Response) {
-    const { username } = await this.validator.ids(req.params);
-    const stats = await this.service.reviewStats(username);
-    sendResponse(res, 200, { stats });
-  }
 }
 
 export default ReviewController.getInstance<ReviewController>();

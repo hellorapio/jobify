@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import config from "./../config/config";
 
 const addMiddlewares = async (app: Express) => {
+  app.set("trust proxy", true);
   app.use(helmet());
 
   if (config.env === "development") app.use(morgan("dev"));

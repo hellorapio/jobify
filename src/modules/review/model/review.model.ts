@@ -4,8 +4,8 @@ import addHooks from "./review.hooks";
 
 const reviewSchema = new Schema<IReview>(
   {
-    user: Types.ObjectId,
-    company: String,
+    user: { type: Types.ObjectId, ref: "User" },
+    company: { type: Types.ObjectId, ref: "User" },
     rate: Number,
     pros: String,
     cons: String,

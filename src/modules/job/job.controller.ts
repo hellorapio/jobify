@@ -8,6 +8,13 @@ import { IJob } from "./model/job.interface";
 class JobController extends BaseController<IJob, typeof jobService> {
   constructor() {
     super(jobService, jobValidator);
+    this.jobsWithin = this.jobsWithin.bind(this);
+  }
+
+  async jobsWithin(req: Request, res: Response) {
+    const query = await this.validator.withIn(req.query);
+    const jobs = await this.service.withIn(query);
+    sendResponse(res, 200, { results: jobs.length, jobs });
   }
 
   override async getAll(req: Request, res: Response) {
@@ -36,21 +43,13 @@ class JobController extends BaseController<IJob, typeof jobService> {
   }
 
   override async create(req: Request, res: Response) {
+    const { name, id } = req.user;
     const body = await this.validator.create(req.body);
-    const job = await this.service.create(body, req.user.id);
+    const job = await this.service.create(body, id, name);
     sendResponse(res, 201, job);
   }
 }
 
 export default JobController.getInstance<JobController>();
 
-// export const wantedJobs = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   req.query.limit = "5";
-//   req.query.fields = "title,salary.value";
-//   req.query.sort = "-salary.value";
-//   next();
-// };
+

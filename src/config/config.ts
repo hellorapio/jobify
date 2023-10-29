@@ -14,6 +14,9 @@ const config = {
     user: process.env.EMAIL_USER || "",
     pass: process.env.EMAIL_PASS || "",
   },
+  apis: {
+    address: process.env.ADDRESS_API || "",
+  },
 };
 
 export default config;

@@ -5,22 +5,22 @@ import restrictTo from "../../middlewares/restrict.middleware";
 
 const router = Router({ mergeParams: true });
 
+// Add Notifications on these for workers
 router
   .route("/reply/:applicantId")
   .all(protect)
   .patch(restrictTo("company"), controller.replyApplicant);
 
-router
-  .route("/search/:applicantId")
-  .all(protect)
-  .get(controller.getApplicant)
-  .delete(restrictTo("worker"), controller.deleteApplicant)
-  .patch(restrictTo("worker"), controller.updateApplicant);
+// Implement Logic to get User or Company Applicants
+
+// Implement Logic to gather data about applicants for users or companies
 
 router
   .route("/")
   .all(protect)
+  .get(restrictTo("company"), controller.getAll)
   .post(restrictTo("worker"), controller.create)
-  .get(restrictTo("company"), controller.getAll);
+  .patch(restrictTo("worker"), controller.updateApplicant)
+  .delete(restrictTo("worker"), controller.deleteApplicant);
 
 export default router;

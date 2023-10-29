@@ -25,7 +25,7 @@ class APIFeatures<T> {
   sort() {
     if (this.queryObj.sort)
       this.query.sort(this.queryObj.sort.split(",").join(" "));
-    else this.query.sort("datePosted");
+    else this.query.sort("createdAt");
 
     return this;
   }
@@ -43,7 +43,7 @@ class APIFeatures<T> {
   fieldsSelect() {
     if (this.queryObj.fields)
       this.query.select(this.queryObj.fields.split(",").join(" "));
-    this.query.select("-__v");
+    this.query.select("");
 
     return this;
   }

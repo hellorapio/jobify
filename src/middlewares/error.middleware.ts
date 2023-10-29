@@ -12,17 +12,10 @@ const sendErrorDev = (err: AppError, res: Response) => {
 };
 
 const sendErrorProd = (err: AppError, res: Response) => {
-  if (err.isOperational) {
-    res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message,
-    });
-  } else {
-    res.status(500).json({
-      status: "error",
-      message: "Something Went Wrong",
-    });
-  }
+  res.status(err.statusCode || 500).json({
+    status: err.status || "error",
+    message: err.message || "Something Went Wrong",
+  });
 };
 
 const handleCastError = (err: AppError) => {
@@ -33,7 +26,7 @@ const handleCastError = (err: AppError) => {
 const handleDuplicateFields = (err: AppError) => {
   const dup = err.message.match(/"([^"]+)"/)![0];
   const message = `Duplicate Field: ${dup}`;
-  return new AppError(message, 400);
+  return new AppError(message, 409);
 };
 
 const handleMongooseValidation = (err: AppError) =>

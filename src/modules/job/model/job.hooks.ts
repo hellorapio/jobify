@@ -2,17 +2,66 @@ import { IJob } from "./job.interface";
 import { Schema } from "mongoose";
 import slugify from "slugify";
 import { randomBytes } from "crypto";
+import userRepository from "../../user/user.repository";
 
 const addHooks = (schema: Schema<IJob>) => {
   // schema.virtual("monthlyPay").get(function () {
   //   return this.salary / 12;
   // });
 
+  // Add active false Hook on jobs
+
   schema.pre("save", function (next) {
     if (!this.isNew) return next();
     this.slug = slugify(this.title + randomBytes(3).toString("hex"), {
       lower: true,
       trim: true,
+      remove: /[#(){}[\].$*]/,
+    });
+    next();
+  });
+
+  schema.statics.calculateJobs = async function (company: any) {
+    const jobsNumber = await this.aggregate([
+      { $match: { company, isActive: true } },
+      { $group: { _id: company, count: { $sum: 1 } } },
+    ]);
+    if (jobsNumber.length > 0)
+      await userRepository.updateOneById(jobsNumber[0]._id, {
+        jobs: jobsNumber[0].count,
+      });
+    else
+      await userRepository.updateOneById(company, {
+        jobs: 0,
+      });
+  };
+
+  schema.post("save", async function (doc) {
+    //@ts-ignore
+    await doc.constructor.calculateJobs(doc.company);
+  });
+
+  schema.post("findOneAndUpdate", async function (doc) {
+    if (doc && this.get("$set").isActive === false)
+      await doc.constructor.calculateJobs(doc.company);
+  });
+
+  schema.pre("find", function (next) {
+    this.find({ isActive: true });
+    next();
+  });
+
+  schema.pre("findOneAndUpdate", function (next) {
+    if (
+      //@ts-ignore
+      this.getUpdate().isActive === false ||
+      //@ts-ignore
+      this.getUpdate().applicants >= 0
+    )
+      return next();
+    this.populate({
+      path: "company",
+      select: "-_id name photo username",
     });
     next();
   });

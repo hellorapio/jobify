@@ -1,32 +1,20 @@
 import { Schema } from "mongoose";
 import { IReview } from "./review.interface";
-import companyRepository from "../../company/company.repository";
+import userRepository from "../../user/user.repository";
 
 const addHooks = (schema: Schema<IReview>) => {
-  schema.virtual("userData", {
-    ref: "Worker",
-    localField: "user",
-    foreignField: "user",
-    justOne: true,
-  });
-
-  schema.virtual("companyData", {
-    ref: "Company",
-    localField: "company",
-    foreignField: "username",
-    justOne: true,
-  });
-
   schema.pre(/^find/, function (next) {
     //@ts-ignore
+    this.select(" -_id");
+    //@ts-ignore
     this.populate({
-      path: "userData",
-      select: "name username photo -_id -user",
+      path: "user",
+      select: "name username photo -_id",
     });
     next();
   });
 
-  schema.statics.addRatings = async function (company: string) {
+  schema.statics.addRatings = async function (company: any) {
     const stats = await this.aggregate([
       { $match: { company } },
       {
@@ -39,19 +27,23 @@ const addHooks = (schema: Schema<IReview>) => {
     ]);
 
     if (stats.length > 0)
-      await companyRepository.updateOne(
-        { username: company },
-        { ratingsCount: stats[0].count, ratingsAverage: +stats[0].avg.toFixed(1) }
-      );
+      await userRepository.updateOneById(stats[0]._id, {
+        ratingsCount: stats[0].count,
+        ratingsAverage: +stats[0].avg.toFixed(1),
+      });
+    else
+      await userRepository.updateOneById(company, {
+        ratingsCount: 0,
+        ratingsAverage: 0,
+      });
   };
-
-  schema.post("save", async function () {
-    //@ts-ignore
-    await this.constructor.addRatings(this.company);
-  });
 
   schema.post(/^findOneAnd/, async function (doc) {
     if (doc) await doc.constructor.addRatings(doc.company);
+  });
+
+  schema.post(/^save/, async function (doc) {
+    await doc.constructor.addRatings(doc.company);
   });
 };
 

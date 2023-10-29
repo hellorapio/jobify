@@ -5,8 +5,6 @@ import restrictTo from "../../middlewares/restrict.middleware";
 
 const router = Router({ mergeParams: true });
 
-router.route("/stats").all(protect).get(controller.reviewStats);
-
 router.get("/", protect, controller.getAll);
 
 router

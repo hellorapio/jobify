@@ -18,14 +18,11 @@ const email = Joi.string()
   .lowercase()
   .trim()
   .email()
-  .message("Email is not Valid")
-  .required()
-  .messages({
-    "any.required": "email is required",
-  });
+  .message("Email is not Valid");
 
 const username = Joi.string()
-  .trim().min(5)
+  .trim()
+  .min(5)
   .lowercase()
   .regex(/^[a-zA-Z0-9-]*$/)
   .message("Username is not Valid");

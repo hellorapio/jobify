@@ -38,6 +38,18 @@ const applyUrl = Joi.string().uri().trim().lowercase();
 const skills = Joi.array().items(Joi.string());
 const benefits = Joi.array().items(Joi.string());
 
+const address = Joi.string()
+  .trim()
+  .regex(/^[a-zA-Z0-9-\s]*$/);
+const country = Joi.string().trim();
+const city = Joi.string().trim();
+const location = Joi.object({
+  coordinates: Joi.array().items(
+    Joi.number().min(-180).max(180).required(),
+    Joi.number().min(-90).max(90).required()
+  ),
+});
+
 const create = Joi.object({
   title: title.required(),
   description: description.required(),
@@ -49,6 +61,10 @@ const create = Joi.object({
   benefits: benefits.required(),
   jobFunction,
   remote,
+  location,
+  address,
+  city: city.required(),
+  country: country.required(),
   salary,
   employmentType,
   currency,
@@ -66,14 +82,30 @@ const update = Joi.object({
   skills,
   benefits,
   jobFunction,
+  address,
   remote,
+  location,
+  city,
+  country,
   salary,
   employmentType,
   currency,
 });
 
-const jobId = Joi.object({ id: validators.id.required() });
+const distance = Joi.number().min(1);
+const unit = Joi.string().valid("km", "mi");
+const lat = Joi.number().min(-90).max(90);
+const lng = Joi.number().min(-180).max(180);
+
+const withIn = Joi.object({
+  lng,
+  lat,
+  address,
+  distance,
+  unit,
+});
+
 const username = Joi.object({ username: validators.username });
 const slug = Joi.object({ slug: validators.username });
 
-export default { create, update, jobId, username, slug };
+export default { create, update, username, slug, withIn };

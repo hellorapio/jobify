@@ -5,7 +5,11 @@ import userValidator from "./user.validator";
 import BaseController from "../../bases/base.controller";
 import { IUser } from "./model/user.interface";
 
-class UserController extends BaseController<IUser, typeof userService> {
+class UserController extends BaseController<
+  IUser,
+  typeof userService,
+  typeof userValidator
+> {
   constructor() {
     super(userService, userValidator);
     this.me = this.me.bind(this);
@@ -13,6 +17,21 @@ class UserController extends BaseController<IUser, typeof userService> {
 
   async me(req: Request, res: Response) {
     const user = await this.service.me(req.user.id);
+    sendResponse(res, 200, user);
+  }
+
+  override async get(req: Request, res: Response) {
+    const { username } = await this.validator.username(req.params);
+    const user = await this.service.get(username);
+    sendResponse(res, 200, user);
+  }
+
+  override async update(req: Request, res: Response) {
+    const body =
+      req.user.role === "worker"
+        ? await this.validator.updateWorker(req.body)
+        : await this.validator.updateCompany(req.body);
+    const user = await this.service.update(req.user.id, body);
     sendResponse(res, 200, user);
   }
 

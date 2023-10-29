@@ -1,8 +1,6 @@
 import crypto from "crypto";
 import { Request } from "express";
 import userRepository from "../user/user.repository";
-import workerRepository from "../worker/worker.repository";
-import companyRepository from "../company/company.repository";
 import jwt from "../../utils/jwt";
 import Email from "../../utils/email";
 import NotAuthorized from "../../errors/notAuthorized";
@@ -30,23 +28,12 @@ class AuthService {
   }
 
   async signup(body: Signup) {
-    // Refactor to transactions
     const user = await this.repo.insertOne({
       role: body.role,
       email: body.email,
       password: body.password,
+      name: body.name,
     });
-
-    if (body.role === "company")
-      await companyRepository.insertOne({
-        user: user._id,
-        name: body.name,
-      });
-    else if (body.role === "worker")
-      await workerRepository.insertOne({
-        user: user._id,
-        name: body.name,
-      });
 
     return await jwt.sign(user.id);
   }

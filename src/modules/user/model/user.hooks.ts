@@ -1,7 +1,8 @@
 import { IUser } from "./user.interface";
 import { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
-import crypto from "crypto";
+import { randomBytes, createHash } from "crypto";
+import slugify from "slugify";
 
 const addHooks = async (schema: Schema<IUser>) => {
   schema.pre("save", async function (next) {
@@ -43,16 +44,24 @@ const addHooks = async (schema: Schema<IUser>) => {
   };
 
   schema.methods.generateToken = async function () {
-    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetToken = randomBytes(32).toString("hex");
 
-    this.passwordResetToken = crypto
-      .createHash("sha256")
+    this.passwordResetToken = createHash("sha256")
       .update(resetToken)
       .digest("hex");
 
     this.passwordResetExpires = Date.now() + 60 * 60 * 1000;
     return resetToken;
   };
+
+  schema.pre("save", async function (next) {
+    if (!this.isNew) return next();
+    this.username = slugify(this.name + randomBytes(3).toString("hex"), {
+      lower: true,
+      trim: true,
+    });
+    next();
+  });
 };
 
 export default addHooks;

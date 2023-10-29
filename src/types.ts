@@ -32,6 +32,13 @@ declare global {
   }
 }
 
+export type JobsWithIn = {
+  lat: number;
+  lng: number;
+  unit: "mi" | "km";
+  distance: number;
+};
+
 export type QueryObject = {
   sort?: string;
   fields?: string;

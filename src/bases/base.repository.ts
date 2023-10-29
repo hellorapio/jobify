@@ -14,7 +14,7 @@ class BaseRepository<T> {
     return await this.model.create(payload);
   }
 
-  async find(filter: Partial<T>) {
+  async find(filter: Partial<T> | any) {
     return await this.model.find(filter);
   }
 
@@ -26,7 +26,7 @@ class BaseRepository<T> {
     return await this.model.findById(id);
   }
 
-  async updateOne(filter: Partial<T>, payload: Partial<T>) {
+  async updateOne(filter: Partial<T>, payload: Partial<T> | any) {
     return await this.model.findOneAndUpdate(filter, payload, {
       new: true,
     });
