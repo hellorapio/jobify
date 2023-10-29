@@ -8,11 +8,12 @@ import morgan from "morgan";
 import helmet from "helmet";
 import hpp from "hpp";
 import cookieParser from "cookie-parser";
+import compression from "compression";
 
 import config from "./../config/config";
 
 const addMiddlewares = async (app: Express) => {
-  app.set("trust proxy", true);
+  app.enable("trust proxy");
   app.use(helmet());
 
   if (config.env === "development") app.use(morgan("dev"));
@@ -36,6 +37,8 @@ const addMiddlewares = async (app: Express) => {
   app.use(sanitize());
   app.use(xss());
   app.use(hpp());
+
+  app.use(compression());
 };
 
 export default addMiddlewares;
