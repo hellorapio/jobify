@@ -19,7 +19,7 @@ const addMiddlewares = async (app: Express) => {
   if (config.env === "development") app.use(morgan("dev"));
 
   const limiter = rateLimit({
-    max: 200,
+    max: 100,
     windowMs: 60 * 60 * 1000,
     message: "You have exceeded Requests per hour",
   });
