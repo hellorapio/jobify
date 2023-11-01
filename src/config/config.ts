@@ -17,6 +17,11 @@ const config = {
   apis: {
     address: process.env.ADDRESS_API || "",
   },
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
+    apiSecret: process.env.CLOUDINARY_API_SECRET || "",
+    apiKey: process.env.CLOUDINARY_API_KEY || "",
+  },
 };
 
 export default config;

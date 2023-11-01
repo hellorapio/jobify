@@ -9,11 +9,14 @@ import helmet from "helmet";
 import hpp from "hpp";
 import cookieParser from "cookie-parser";
 import compression from "compression";
-
+import cors from "cors";
 import config from "./../config/config";
 
 const addMiddlewares = async (app: Express) => {
   app.enable("trust proxy");
+
+  app.use(cors());
+  app.options("*", cors());
   app.use(helmet());
 
   if (config.env === "development") app.use(morgan("dev"));
@@ -26,12 +29,8 @@ const addMiddlewares = async (app: Express) => {
 
   app.use("/api", limiter);
 
-  app.use(
-    express.json({
-      limit: "10kb",
-    })
-  );
-
+  app.use(express.json({ limit: "10kb" }));
+  app.use(express.urlencoded({ extended: true, limit: "10kb" }));
   app.use(cookieParser());
 
   app.use(sanitize());

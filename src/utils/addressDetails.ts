@@ -9,7 +9,8 @@ const addressDetails = async (address: string) => {
   if (data.status === 404)
     throw new NotFound("There is No Location with Given inputs");
   if (!data.ok) throw new InternalError("Something Went Wrong");
-  return await data.json();
+  const { lon, lat } = await data.json();
+  return { lon, lat };
 };
 
 export default addressDetails;

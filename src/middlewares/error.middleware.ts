@@ -38,6 +38,9 @@ const handleJWTErrors = () =>
 const handleJWTExpiredErrors = () =>
   new AppError("Your token has Been Expired please Login Back", 401);
 
+const handleMulterError = () =>
+  new AppError("ThE File is too Big, Maximum allowed size is 2mb", 400);
+
 export default (
   err: AppError,
   _: Request,
@@ -57,6 +60,7 @@ export default (
     if (err.code === 11000) error = handleDuplicateFields(err);
     if (err.name === "TokenExpiredError") error = handleJWTExpiredErrors();
     if (err.name === "JsonWebTokenError") error = handleJWTErrors();
+    if (err.name === "MulterError") error = handleMulterError();
     sendErrorProd(error, res);
   }
 };

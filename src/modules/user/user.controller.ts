@@ -4,6 +4,7 @@ import userService from "./user.service";
 import userValidator from "./user.validator";
 import BaseController from "../../bases/base.controller";
 import { IUser } from "./model/user.interface";
+import uploadImg from "../../utils/cloudinary";
 
 class UserController extends BaseController<
   IUser,
@@ -31,6 +32,8 @@ class UserController extends BaseController<
       req.user.role === "worker"
         ? await this.validator.updateWorker(req.body)
         : await this.validator.updateCompany(req.body);
+    if (body.photo !== "")
+      body.photo = req.file ? await uploadImg(req.file.path) : undefined;
     const user = await this.service.update(req.user.id, body);
     sendResponse(res, 200, user);
   }

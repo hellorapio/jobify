@@ -12,7 +12,7 @@ const coordinates = Joi.array().items(
 // Company
 
 const companyDescription = Joi.string().min(60).trim();
-const photo = Joi.string().uri();
+const photo = Joi.string().valid("");
 const numberOfEmployees = Joi.number().integer().positive();
 const revenue = Joi.number().integer().positive();
 const contactInformation = Joi.object({

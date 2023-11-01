@@ -57,6 +57,12 @@ class ApplicantService extends BaseService<IApplicant> {
     });
     return applicant;
   }
+
+  async getUserApplicants(id: string, role: string) {
+    return role === "worker"
+      ? await this.repo.find({ worker: id })
+      : await this.repo.find({ company: id });
+  }
 }
 
 export default ApplicantService.getInstance<ApplicantService>();

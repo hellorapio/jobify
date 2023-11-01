@@ -1,7 +1,7 @@
 import NotFound from "../errors/notFound";
 import errorHandler from "./../middlewares/error.middleware";
 import jobRouter from "../modules/job/job.routes";
-import applicantRouter from "../modules/applicant/applicant.routes";
+import { applicantRouter } from "../modules/applicant/applicant.routes";
 import userRouter from "../modules/user/user.routes";
 import authRouter from "../modules/auth/auth.routes";
 // import reviewRouter from "../modules/review/review.routes";

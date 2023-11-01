@@ -3,19 +3,15 @@ import controller from "./applicant.controller";
 import protect from "../../middlewares/auth.middleware";
 import restrictTo from "../../middlewares/restrict.middleware";
 
-const router = Router({ mergeParams: true });
+const applicantJobsrouter = Router({ mergeParams: true });
 
 // Add Notifications on these for workers
-router
+applicantJobsrouter
   .route("/reply/:applicantId")
   .all(protect)
   .patch(restrictTo("company"), controller.replyApplicant);
 
-// Implement Logic to get User or Company Applicants
-
-// Implement Logic to gather data about applicants for users or companies
-
-router
+applicantJobsrouter
   .route("/")
   .all(protect)
   .get(restrictTo("company"), controller.getAll)
@@ -23,4 +19,11 @@ router
   .patch(restrictTo("worker"), controller.updateApplicant)
   .delete(restrictTo("worker"), controller.deleteApplicant);
 
-export default router;
+export const applicantRouter = Router();
+
+applicantRouter
+  .route("/me")
+  .all(protect)
+  .get(controller.currentUserApplicants);
+
+export default applicantJobsrouter;

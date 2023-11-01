@@ -15,6 +15,7 @@ class ApplicantController extends BaseController<
     this.deleteApplicant = this.deleteApplicant.bind(this);
     this.updateApplicant = this.updateApplicant.bind(this);
     this.replyApplicant = this.replyApplicant.bind(this);
+    this.currentUserApplicants = this.currentUserApplicants.bind(this);
   }
 
   override async create(req: Request, res: Response) {
@@ -49,6 +50,12 @@ class ApplicantController extends BaseController<
     const { status } = await this.validator.updateStatus(req.body);
     await this.service.replyApplicant(applicantId, req.user.id, status);
     sendResponse(res, 200);
+  }
+
+  async currentUserApplicants(req: Request, res: Response) {
+    const { id, role } = req.user;
+    const applicants = await this.service.getUserApplicants(id, role);
+    sendResponse(res, 200, applicants);
   }
 }
 
