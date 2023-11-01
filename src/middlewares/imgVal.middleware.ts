@@ -9,7 +9,6 @@ const imgValidator = async (
   next: NextFunction
 ) => {
   if (req.file) {
-    console.log(req.file);
     const result = await validateMIMEType(req.file.path, {
       allowMimeTypes: ["image/jpeg", "image/jpg", "image/png"],
     });
