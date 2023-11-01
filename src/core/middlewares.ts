@@ -18,7 +18,10 @@ const addMiddlewares = async (app: Express) => {
   app.use(cors());
   app.options("*", cors());
   app.use(helmet());
-
+  app.use((req, _, next) => {
+    console.log(req.ip);
+    next();
+  });
   if (config.env === "development") app.use(morgan("dev"));
 
   const limiter = rateLimit({
