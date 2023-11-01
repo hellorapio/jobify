@@ -32,12 +32,8 @@ class UserController extends BaseController<
       req.user.role === "worker"
         ? await this.validator.updateWorker(req.body)
         : await this.validator.updateCompany(req.body);
-
     if (body.photo !== "")
-      body.photo = req.file
-        ? await uploadImg(req.file.filename)
-        : undefined;
-
+      body.photo = req.file ? await uploadImg(req.file.path) : undefined;
     const user = await this.service.update(req.user.id, body);
     sendResponse(res, 200, user);
   }

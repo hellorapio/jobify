@@ -1,10 +1,9 @@
 import multer from "multer";
 import BadRequest from "../errors/badRequest";
-import path from "path";
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    cb(null, path.join(__dirname, "../../public/images"));
+    cb(null, "/public/images");
   },
   filename: (req, file, cb) => {
     const fileName = `user-${req.user.id}.${file.mimetype.split("/")[1]}`;
@@ -22,7 +21,7 @@ const upload = multer({
   storage,
   fileFilter: filter,
   limits: {
-    fileSize: 1024 * 1024 * 3,
+    fileSize: 1024 * 1024 * 2,
   },
 });
 
