@@ -13,15 +13,12 @@ import cors from "cors";
 import config from "./../config/config";
 
 const addMiddlewares = async (app: Express) => {
-  app.enable("trust proxy");
+  app.set("trust proxy", 1);
 
   app.use(cors());
   app.options("*", cors());
   app.use(helmet());
-  app.use((req, _, next) => {
-    console.log(req.ip);
-    next();
-  });
+
   if (config.env === "development") app.use(morgan("dev"));
 
   const limiter = rateLimit({
