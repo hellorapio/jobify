@@ -11,7 +11,7 @@ cloudinary.config({
 
 const uploadImg = async (img: string) => {
   const { url } = await cloudinary.uploader.upload(
-    path.join(__dirname, "../../public/images/", img),
+    path.join(__dirname, "../../../public/images/", img),
     {
       folder: "users",
       overwrite: true,
@@ -25,7 +25,7 @@ const uploadImg = async (img: string) => {
     }
   );
 
-  await unlink(path.join(__dirname, "../../public/images/", img));
+  await unlink(path.join(__dirname, "../../../public/images/", img));
   return url;
 };
 

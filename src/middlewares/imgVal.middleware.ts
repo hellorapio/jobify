@@ -11,7 +11,7 @@ const imgValidator = async (
 ) => {
   if (req.file) {
     const result = await validateMIMEType(
-      path.join(__dirname, "../../public/images/", req.file.filename),
+      path.join(__dirname, "../../../public/images/", req.file.filename),
       {
         allowMimeTypes: ["image/jpeg", "image/jpg", "image/png"],
       }
