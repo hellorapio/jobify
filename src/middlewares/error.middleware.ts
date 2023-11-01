@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import AppError from "../bases/base.error";
 import config from "../config/config";
+import BadRequest from "../errors/badRequest";
 
 const sendErrorDev = (err: AppError, res: Response) => {
   res.status(err.statusCode).json({
@@ -39,7 +40,7 @@ const handleJWTExpiredErrors = () =>
   new AppError("Your token has Been Expired please Login Back", 401);
 
 const handleMulterError = () =>
-  new AppError("ThE File is too Big, Maximum allowed size is 2mb", 400);
+  new BadRequest("ThE File is too Big, Maximum allowed size is 2mb");
 
 export default (
   err: AppError,
@@ -52,7 +53,10 @@ export default (
 
   if (config.env === "development") sendErrorDev(err, res);
   else {
-    let error = structuredClone(err);
+    let error: AppError | any = {}
+    error.message = err.message
+    error.statusCode = err.statusCode
+    error.status = err.status
 
     if (err.name === "ValidationError")
       error = handleMongooseValidation(err);
