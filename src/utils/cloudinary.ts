@@ -9,7 +9,7 @@ cloudinary.config({
 });
 
 const uploadImg = async (img: string) => {
-  const { url } = await cloudinary.uploader.upload(img, {
+  const { secure_url } = await cloudinary.uploader.upload(img, {
     folder: "users",
     overwrite: true,
     use_filename: true,
@@ -22,7 +22,7 @@ const uploadImg = async (img: string) => {
   });
 
   await unlink(img);
-  return url;
+  return secure_url;
 };
 
 export default uploadImg;
