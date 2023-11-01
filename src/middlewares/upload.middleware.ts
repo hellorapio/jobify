@@ -1,9 +1,10 @@
 import multer from "multer";
 import BadRequest from "../errors/badRequest";
+import path from "path";
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    cb(null, `${__dirname}/../../public/images`);
+    cb(null, path.join(__dirname, "../../public/images"));
   },
   filename: (req, file, cb) => {
     const fileName = `user-${req.user.id}.${file.mimetype.split("/")[1]}`;
