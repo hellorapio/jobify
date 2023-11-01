@@ -3,7 +3,7 @@ import BadRequest from "../errors/badRequest";
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
-    cb(null, "public/images");
+    cb(null, `${__dirname}/../../public/images`);
   },
   filename: (req, file, cb) => {
     const fileName = `user-${req.user.id}.${file.mimetype.split("/")[1]}`;
