@@ -1,4 +1,5 @@
 import BaseRepository from "../../bases/base.repository";
+import APIFeatures from "../../utils/apiFeatures";
 import { IJob } from "./model/job.interface";
 import Job from "./model/job.model";
 
@@ -7,9 +8,18 @@ class JobRepository extends BaseRepository<IJob> {
     super(Job);
   }
 
+  override async find(filter: any, queryObj?: any): Promise<any> {
+    return await new APIFeatures(this.model.find(filter), queryObj)
+      .filter()
+      .fieldsSelect()
+      .paginate()
+      .sort().query;
+  }
+
   override async findById(id: string, select: string = "") {
     return await this.model.findById(id).select(select);
   }
+
   override async findOne(filter: object, select: string = "") {
     return await this.model.findOne(filter).select(select);
   }

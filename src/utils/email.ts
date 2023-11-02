@@ -49,8 +49,8 @@ Thank you,`;
 
   static async sendWelcome(email: string) {
     await this.sendEmail({
-      from: "Jobify <info@hellorapio.me",
-      message: "Welcome to Jobify, our Beautiful Platform",
+      from: "info@hellorapio.me",
+      message: "First test using Brevo",
       email,
       subject: "Welcome to Jobify, our Beautiful Platform",
     });

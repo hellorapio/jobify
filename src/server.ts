@@ -32,12 +32,17 @@ process.on("SIGTERM", () => {
 
 // Added Image Validation and Image upload for users to cloudinary --DONE
 // Adding real delete on jobs not just deactivation
-// Adding API Features on all Find() Queries
-// Implementing Notifications
-// Implementing Payments
+// Adding API Features on all Find() Queries -- PROGRESS
+// Implementing Notifications -- PROGRESS
+// Implementing Payments --PROGRESS
 // Making reciepts and sending them to emails about subscriptions
 // Adding aggregation Framework to My Applicants
 // Missing with some Geo operators on the jobs Geo Query
 // Making function that gets lng and lat from the locationIQ API -- DONE
 // Adding lng and lat to every collection that has address key
 // Calculating distances on every job from the user's location
+
+// EMAIL_HOST=sandbox.smtp.mailtrap.io
+// EMAIL_PORT=587
+// EMAIL_USER=08cb44ce455ee3
+// EMAIL_PASS=55c60ea8cac126

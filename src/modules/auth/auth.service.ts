@@ -34,7 +34,7 @@ class AuthService {
       password: body.password,
       name: body.name,
     });
-
+    await Email.sendWelcome(body.email);
     return await jwt.sign(user.id);
   }
 
