@@ -28,16 +28,22 @@ process.on("SIGTERM", () => {
 });
 
 // Some Security Features related to auth and verification
+// Email Verification on signup with Welcome Message -- TESTING
+// Login Attempts
+// Require password on high value action such as Changing emails
+// Using Refresh Tokens
+// Prevent CSRF
 // See if there is any features i can add later and making some brain storming
 
 // Added Image Validation and Image upload for users to cloudinary --DONE
 // Adding real delete on jobs not just deactivation
 // Adding API Features on all Find() Queries -- PROGRESS
 // Implementing Notifications -- PROGRESS
-// Implementing Payments --PROGRESS
-// Making reciepts and sending them to emails about subscriptions
+// Implementing Payments -- PROGRESS
+// Adding Stripe
+// Making reciepts and sending them to emails (PDFs) about subscriptions
 // Adding aggregation Framework to My Applicants
 // Missing with some Geo operators on the jobs Geo Query
 // Making function that gets lng and lat from the locationIQ API -- DONE
-// Adding lng and lat to every collection that has address key
+// Adding lng and lat to every collection that has address key through Mongoose Hooks
 // Calculating distances on every job from the user's location

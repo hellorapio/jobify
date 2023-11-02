@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 
 class AuthController {
   private static instance: AuthController;
-  
+
   private constructor(
     private service: typeof authService,
     private validator: typeof authValidator
@@ -16,6 +16,7 @@ class AuthController {
     this.forgotPassword = this.forgotPassword.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
+    this.verifyUser = this.verifyUser.bind(this);
   }
 
   public static getInstance() {
@@ -29,7 +30,10 @@ class AuthController {
 
   async signup(req: Request, res: Response) {
     const validatedUser = await this.validator.signup(req.body);
-    const token = await this.service.signup(validatedUser);
+    const token = await this.service.signup(
+      validatedUser,
+      req.protocol + "://" + req.hostname + "api/v1"
+    );
     sendResponse(res, 201, undefined, token);
   }
 
@@ -41,7 +45,10 @@ class AuthController {
 
   async forgotPassword(req: Request, res: Response) {
     const { email } = await this.validator.forgotPassword(req.body);
-    await this.service.forgotPassword(email, req);
+    await this.service.forgotPassword(
+      email,
+      req.protocol + "://" + req.hostname + "api/v1"
+    );
     sendResponse(res, 200, "Reset Link has been Sent to the Email");
   }
 
@@ -62,6 +69,12 @@ class AuthController {
   async logout(req: Request, res: Response) {
     await this.service.logout(req.user.id);
     sendResponse(res, 200, undefined, "");
+  }
+
+  async verifyUser(req: Request, res: Response) {
+    const { token } = await this.validator.token(req.params);
+    await this.service.verifyUser(token);
+    sendResponse(res, 200, "The Email has been Verified");
   }
 }
 

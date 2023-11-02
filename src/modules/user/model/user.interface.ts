@@ -57,8 +57,13 @@ interface IUserSchema extends Document, CompanySchema, WorkerSchema {
   passwordResetExpires: Date | undefined;
   loggedOutAt: Date;
   joinDate: Date;
+  isVerifiedAt: Date;
+  verificationToken: string;
+  verificationTokenExpires: Date;
+  isVerified: boolean;
   active: boolean;
   username: string;
+  loginAttempts: number;
 }
 
 export type IUser = IUserSchema & IUserMethods;

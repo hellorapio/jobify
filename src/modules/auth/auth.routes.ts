@@ -8,8 +8,10 @@ router.post("/signup", controller.signup);
 router.post("/login", controller.login);
 router.post("/logout", protect, controller.logout);
 
+router.post("/email-verification/:token");
+router.patch("/reset/:token", controller.resetPassword);
+
 router.post("/password/forgot", controller.forgotPassword);
 router.patch("/password/update", protect, controller.updatePassword);
-router.patch("/reset/:token", controller.resetPassword);
 
 export default router;

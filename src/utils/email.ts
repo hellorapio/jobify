@@ -3,10 +3,21 @@ import { EmailOptions } from "../types";
 import SMTPConnection from "nodemailer/lib/smtp-connection";
 import config from "../config/config";
 
-interface ResetPass {
+type ResetPass = {
   resetURL: string;
   email: string;
-}
+};
+
+type Verification = {
+  verify: string;
+  email: string;
+  name: string;
+};
+
+type Welcome = {
+  email: string;
+  name: string;
+};
 
 const {
   email: { pass, port, user, host },
@@ -47,12 +58,44 @@ Thank you,`;
     });
   }
 
-  static async sendWelcome(email: string) {
+  static async sendWelcome({ email, name }: Welcome) {
+    const message = `Dear ${name},
+    Thank you for signing up for our services. To ensure the security and accuracy of your account,`;
     await this.sendEmail({
       from: "info@hellorapio.me",
-      message: "First test using Brevo",
-      email,
       subject: "Welcome to Jobify, our Beautiful Platform",
+      message,
+      email,
+    });
+  }
+
+  static async sendVerification({ name, verify, email }: Verification) {
+    const message = `Dear ${name},
+    Thank you for signing up for our services. To ensure the security and accuracy of your account,
+    we require you to verify your email address. 
+    This step is essential to access all the features and benefits our platform has to offer
+    
+    Please follow the instructions below to complete the verification process:
+    
+    Click on the following link: ${verify}
+    
+    If the link doesn't work, you can copy and paste it into your web browser's address bar.
+    
+    You will be directed to a verification page.
+    
+    Follow the on-screen instructions to confirm your email address.
+    
+    If you did not sign up for our services or did not request this email, please ignore it. 
+    Your account will not be activated unless you complete the verification process.
+    
+    Thank you for choosing our services. If you have any questions or need assistance, 
+    lease don't hesitate to contact our support team at fake@jobify.com`;
+
+    await this.sendEmail({
+      from: "info@jobify.me",
+      subject: "Jobify: Please verify your email address",
+      message,
+      email,
     });
   }
 }
