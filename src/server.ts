@@ -41,8 +41,3 @@ process.on("SIGTERM", () => {
 // Making function that gets lng and lat from the locationIQ API -- DONE
 // Adding lng and lat to every collection that has address key
 // Calculating distances on every job from the user's location
-
-// EMAIL_HOST=sandbox.smtp.mailtrap.io
-// EMAIL_PORT=587
-// EMAIL_USER=08cb44ce455ee3
-// EMAIL_PASS=55c60ea8cac126
