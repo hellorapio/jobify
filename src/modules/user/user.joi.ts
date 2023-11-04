@@ -39,7 +39,7 @@ const birthDate = Joi.date().max("now");
 const experience = Joi.array().items(Joi.string());
 const education = Joi.array().items(Joi.string());
 const experienceYears = Joi.number().min(0);
-const age = Joi.number().min(6).integer();
+const DOB = Joi.date().max("now");
 const resume = Joi.string().uri();
 
 const updateWorker = Joi.object({
@@ -52,7 +52,7 @@ const updateWorker = Joi.object({
   experience,
   education,
   experienceYears,
-  age,
+  DOB,
   resume,
   username: validators.username,
 });

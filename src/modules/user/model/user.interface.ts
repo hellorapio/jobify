@@ -36,13 +36,13 @@ interface WorkerSchema {
   birthDate: Date;
   address: string;
   livesIn: {
-    type: "point";
+    type: "Point";
     coordinates: [number, number];
   };
   experience: string[];
   education: string[];
   experienceYears: number;
-  age: number;
+  DOB: Date;
   resume: string;
 }
 

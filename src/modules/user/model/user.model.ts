@@ -11,11 +11,15 @@ const userSchema = new Schema<IUser>(
     experience: { type: [String], default: undefined },
     education: { type: [String], default: undefined },
     experienceYears: Number,
-    age: Number,
+    DOB: Date,
     resume: String,
     address: String,
     livesIn: {
-      type: { type: String, enum: ["Point"], default: undefined },
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: undefined,
+      },
       coordinates: { type: [Number], default: undefined },
     },
     jobs: Number,

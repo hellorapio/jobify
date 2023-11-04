@@ -10,6 +10,9 @@ class UserRepository extends BaseRepository<IUser> {
   override async findOne(filter: object, select: string = "") {
     return await this.model.findOne(filter).select(select);
   }
+  override async updateOne(filter: object, body: object, f: string = "") {
+    return await this.model.findOneAndUpdate(filter, body).select(f);
+  }
 
   override async findById(id: string, select: string = "") {
     return await this.model.findById(id).select(select);

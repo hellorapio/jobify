@@ -32,7 +32,7 @@ class AuthController {
     const validatedUser = await this.validator.signup(req.body);
     const token = await this.service.signup(
       validatedUser,
-      req.protocol + "://" + req.hostname + "api/v1"
+      req.protocol + "://" + req.hostname + "/api/v1"
     );
     sendResponse(res, 201, undefined, token);
   }
@@ -47,7 +47,7 @@ class AuthController {
     const { email } = await this.validator.forgotPassword(req.body);
     await this.service.forgotPassword(
       email,
-      req.protocol + "://" + req.hostname + "api/v1"
+      req.protocol + "://" + req.hostname + "/api/v1"
     );
     sendResponse(res, 200, "Reset Link has been Sent to the Email");
   }

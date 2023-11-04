@@ -40,15 +40,14 @@ const benefits = Joi.array().items(Joi.string());
 
 const address = Joi.string()
   .trim()
-  .regex(/^[a-zA-Z0-9-\s]*$/);
-const country = Joi.string().trim();
-const city = Joi.string().trim();
-const location = Joi.object({
-  coordinates: Joi.array().items(
-    Joi.number().min(-180).max(180).required(),
-    Joi.number().min(-90).max(90).required()
-  ),
-});
+  .regex(/^[a-zA-Z0-9-,\s]*$/);
+
+// const location = Joi.object({
+//   coordinates: Joi.array().items(
+//     Joi.number().min(-180).max(180).required(),
+//     Joi.number().min(-90).max(90).required()
+//   ),
+// });
 
 const create = Joi.object({
   title: title.required(),
@@ -61,10 +60,8 @@ const create = Joi.object({
   benefits: benefits.required(),
   jobFunction,
   remote,
-  location,
-  address,
-  city: city.required(),
-  country: country.required(),
+  // location,
+  address: address.required(),
   salary,
   employmentType,
   currency,
@@ -84,9 +81,7 @@ const update = Joi.object({
   jobFunction,
   address,
   remote,
-  location,
-  city,
-  country,
+  // location,
   salary,
   employmentType,
   currency,

@@ -123,7 +123,8 @@ class AuthService {
         isVerified: true,
         isVerifiedAt: new Date(),
         $unset: { verificationToken: "", verificationTokenExpires: "" },
-      }
+      },
+      "+email"
     );
 
     if (!user)

@@ -10,7 +10,6 @@ export interface IJob extends Document {
   location: {
     type: "Point";
     coordinates: [number, number];
-    address: string;
   };
   address: string;
   company: ObjectId;

@@ -3,6 +3,7 @@ import { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { randomBytes, createHash } from "crypto";
 import slugify from "slugify";
+import addressDetails from "../../../utils/addressDetails";
 
 const addHooks = async (schema: Schema<IUser>) => {
   schema.pre("save", async function (next) {
@@ -56,6 +57,11 @@ const addHooks = async (schema: Schema<IUser>) => {
 
   schema.pre("save", async function (next) {
     if (!this.isNew) return next();
+    if (this.address) {
+      const { lon, lat } = await addressDetails(this.address);
+      this.livesIn.coordinates = [lon, lat];
+      this.livesIn.type = "Point";
+    }
     this.username = slugify(this.name + randomBytes(3).toString("hex"), {
       lower: true,
       trim: true,

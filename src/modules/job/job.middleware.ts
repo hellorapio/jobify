@@ -10,7 +10,7 @@ class JobMiddleware {
     if (!req.query.lat || !req.query.lng) {
       if (req.query.address) {
         const details = await addressDetails(req.query.address as string);
-        const { lat, lon } = details[0];
+        const { lat, lon } = details;
         req.query.lng = lon;
         req.query.lat = lat;
       } /* else if (req.user.livesIn) {

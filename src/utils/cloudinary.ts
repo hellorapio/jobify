@@ -15,7 +15,7 @@ const uploadImg = async (img: string) => {
     use_filename: true,
     unique_filename: false,
     transformation: [
-      { width: 1000, crop: "scale" },
+      { if: "w_gt_600", width: 600, crop: "scale" },
       { quality: "auto:best" },
       { fetch_format: "auto" },
     ],

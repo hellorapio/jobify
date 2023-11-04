@@ -3,6 +3,7 @@ import { Schema } from "mongoose";
 import slugify from "slugify";
 import { randomBytes } from "crypto";
 import userRepository from "../../user/user.repository";
+import addressDetails from "../../../utils/addressDetails";
 
 const addHooks = (schema: Schema<IJob>) => {
   // schema.virtual("monthlyPay").get(function () {
@@ -11,8 +12,13 @@ const addHooks = (schema: Schema<IJob>) => {
 
   // Add active false Hook on jobs
 
-  schema.pre("save", function (next) {
+  schema.pre("save", async function (next) {
     if (!this.isNew) return next();
+    if (this.address) {
+      const { lon, lat } = await addressDetails(this.address);
+      this.location.coordinates = [lon, lat];
+    }
+
     this.slug = slugify(this.title + randomBytes(3).toString("hex"), {
       lower: true,
       trim: true,
@@ -51,13 +57,13 @@ const addHooks = (schema: Schema<IJob>) => {
     next();
   });
 
-  schema.pre("findOneAndUpdate", function (next) {
+  schema.pre("findOneAndUpdate", async function (next) {
     if (
       //@ts-ignore
       this.getUpdate().isActive === false ||
       //@ts-ignore
       this.getUpdate().applicants >= 0
-    )
+    ) 
       return next();
     this.populate({
       path: "company",
