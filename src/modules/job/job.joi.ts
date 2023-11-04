@@ -87,12 +87,14 @@ const update = Joi.object({
   currency,
 });
 
-const distance = Joi.number().min(1);
-const unit = Joi.string().valid("km", "mi");
+const distance = Joi.number().min(1).default(100);
+const unit = Joi.string().valid("km", "mi").default("mi");
 const lat = Joi.number().min(-90).max(90);
 const lng = Joi.number().min(-180).max(180);
 
-const withIn = Joi.object({
+const query = Joi.object({});
+
+const withIn = query.append({
   lng,
   lat,
   address,
@@ -103,4 +105,4 @@ const withIn = Joi.object({
 const username = Joi.object({ username: validators.username });
 const slug = Joi.object({ slug: validators.username });
 
-export default { create, update, username, slug, withIn };
+export default { create, update, username, slug, withIn, query };

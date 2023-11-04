@@ -35,7 +35,7 @@ const addMiddlewares = async (app: Express) => {
 
   app.use(sanitize());
   app.use(xss());
-  app.use(hpp());
+  app.use(hpp({ whitelist: "sort" }));
 
   app.use(compression());
 };

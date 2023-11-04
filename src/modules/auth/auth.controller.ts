@@ -34,7 +34,7 @@ class AuthController {
       validatedUser,
       req.protocol + "://" + req.hostname + "/api/v1"
     );
-    sendResponse(res, 201, undefined, token);
+    sendResponse(res, 201, "Email Verification has been sent", token);
   }
 
   async login(req: Request, res: Response) {

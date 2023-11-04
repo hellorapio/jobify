@@ -1,26 +1,27 @@
+import { QueryObject } from "./../../types";
 import NotFound from "../../errors/notFound";
 import { IReview } from "./model/review.interface";
 import reviewRepository from "./review.repository";
 import BaseService from "../../bases/base.service";
 import userRepository from "../user/user.repository";
 
-class ReviewService extends BaseService<IReview> {
+class ReviewService extends BaseService<IReview, typeof reviewRepository> {
   constructor() {
     super(reviewRepository);
   }
 
-  override async getAll(company?: any) {
+  override async getAll(company?: any, query?: QueryObject) {
     if (company) {
       const u = await userRepository.findOne({
         username: company,
         role: "company",
       });
-      
+
       if (!u) throw new NotFound("Company Not Found");
-      const reviews = await this.repo.find({ company: u.id });
+      const reviews = await this.repo.find({ company: u.id }, query);
       return reviews;
     } else {
-      const reviews = await this.repo.find({});
+      const reviews = await this.repo.find({}, query);
       return reviews;
     }
   }

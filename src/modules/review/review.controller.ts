@@ -11,8 +11,9 @@ class ReviewController extends BaseController<IReview, typeof service> {
   }
 
   override async getAll(req: Request, res: Response) {
+    const query = await this.validator.query(req.query);
     const { username } = await this.validator.ids(req.params);
-    const reviews = await this.service.getAll(username);
+    const reviews = await this.service.getAll(username, query);
     sendResponse(res, 200, { result: reviews.length, reviews });
   }
 
@@ -35,7 +36,6 @@ class ReviewController extends BaseController<IReview, typeof service> {
     await this.service.delete(username, req.user.id);
     sendResponse(res, 204);
   }
-
 }
 
 export default ReviewController.getInstance<ReviewController>();

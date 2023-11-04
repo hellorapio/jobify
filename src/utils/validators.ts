@@ -27,4 +27,6 @@ const username = Joi.string()
   .regex(/^[a-zA-Z0-9-]*$/)
   .message("Username is not Valid");
 
-export default { id, email, username, name };
+const page = Joi.number().positive().min(1);
+
+export default { id, email, username, name, page };
