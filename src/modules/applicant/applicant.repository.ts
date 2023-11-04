@@ -7,11 +7,13 @@ class ApplicantRepository extends BaseRepository<IApplicant> {
   constructor() {
     super(Applicant);
   }
-  
-  override async find(filter: any, queryObj?: any): Promise<any> {
-    return await new APIFeatures(this.model.find(filter), queryObj).query;
-  }
 
+  override async find(filter: any, queryObj?: any): Promise<any> {
+    return await new APIFeatures(
+      this.model.find(filter),
+      queryObj
+    ).paginate().query;
+  }
 }
 
 export default ApplicantRepository.getInstance<ApplicantRepository>();

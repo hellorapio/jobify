@@ -26,9 +26,10 @@ class ApplicantController extends BaseController<
   }
 
   override async getAll(req: Request, res: Response) {
+    const query = await this.validator.query(req.query);
     const { id } = req.user;
     const { slug } = await this.validator.ids(req.params);
-    const applicants = await this.service.getAll(id, slug);
+    const applicants = await this.service.getAll(id, slug, query);
     sendResponse(res, 200, { results: applicants.length, applicants });
   }
 
@@ -54,7 +55,12 @@ class ApplicantController extends BaseController<
 
   async currentUserApplicants(req: Request, res: Response) {
     const { id, role } = req.user;
-    const applicants = await this.service.getUserApplicants(id, role);
+    const query = await this.validator.query(req.query);
+    const applicants = await this.service.getUserApplicants(
+      id,
+      role,
+      query
+    );
     sendResponse(res, 200, applicants);
   }
 }

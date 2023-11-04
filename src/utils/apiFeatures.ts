@@ -4,10 +4,20 @@ import { QueryObject } from "../types";
 class APIFeatures<T> {
   constructor(public query: Query<T[], T>, public queryObj: QueryObject) {}
 
-  filter() {
+  filter(fields: string[]) {
     // Removing these Fields for now
     let queryObj = structuredClone(this.queryObj);
-    const unWantedFields: string[] = ["page", "sort", "fields", "limit"];
+    const unWantedFields: string[] = [
+      "page",
+      "sort",
+      "fields",
+      "limit",
+      "distance",
+      "unit",
+      "lng",
+      "lat",
+      ...fields,
+    ];
     unWantedFields.forEach(
       (element) => delete queryObj[element as keyof QueryObject]
     );

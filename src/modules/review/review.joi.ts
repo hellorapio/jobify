@@ -35,6 +35,7 @@ const update = Joi.object({
 
 const query = Joi.object({
   page: validators.page,
+  limit: validators.limit,
   sort,
 });
 

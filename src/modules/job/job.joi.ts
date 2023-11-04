@@ -92,12 +92,23 @@ const unit = Joi.string().valid("km", "mi").default("mi");
 const lat = Joi.number().min(-90).max(90);
 const lng = Joi.number().min(-180).max(180);
 
-const query = Joi.object({});
+const query = Joi.object({
+  page: validators.page,
+  limit: validators.page,
+  sort: validators.sort,
+  fields: validators.fields,
+  title,
+  experienceLevel,
+  educationLevel,
+  remote,
+  address,
+  salary,
+  currency,
+});
 
 const withIn = query.append({
   lng,
   lat,
-  address,
   distance,
   unit,
 });

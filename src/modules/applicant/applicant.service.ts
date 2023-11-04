@@ -4,7 +4,10 @@ import jobRepository from "../job/job.repository";
 import applicantRepository from "./applicant.repository";
 import { IApplicant } from "./model/applicant.interface";
 
-class ApplicantService extends BaseService<IApplicant> {
+class ApplicantService extends BaseService<
+  IApplicant,
+  typeof applicantRepository
+> {
   constructor() {
     super(applicantRepository);
   }
@@ -30,8 +33,8 @@ class ApplicantService extends BaseService<IApplicant> {
     if (!applicant) throw new NotFound("There is no Applicant here");
   }
 
-  override async getAll(company?: string, job?: string) {
-    return await this.repo.find({ company, job });
+  override async getAll(company?: string, job?: string, query?: any) {
+    return await this.repo.find({ company, job }, query);
   }
 
   async replyApplicant(id: string, company: any, status: string) {
@@ -58,10 +61,10 @@ class ApplicantService extends BaseService<IApplicant> {
     return applicant;
   }
 
-  async getUserApplicants(id: string, role: string) {
+  async getUserApplicants(id: string, role: string, query?: any) {
     return role === "worker"
-      ? await this.repo.find({ worker: id })
-      : await this.repo.find({ company: id });
+      ? await this.repo.find({ worker: id }, query)
+      : await this.repo.find({ company: id }, query);
   }
 }
 

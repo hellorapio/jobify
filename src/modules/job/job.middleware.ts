@@ -6,7 +6,6 @@ import addressDetails from "../../utils/addressDetails";
 
 class JobMiddleware {
   static async JobsWithIn(req: Request, _: Response, next: NextFunction) {
-    // fix but not now
     if (!req.query.lat || !req.query.lng) {
       if (req.query.address) {
         const details = await addressDetails(req.query.address as string);
@@ -29,7 +28,7 @@ class JobMiddleware {
   static async wantedJobs(req: Request, _: Response, next: NextFunction) {
     req.query.limit = "5";
     req.query.fields = "title,salary.value";
-    req.query.sort = "-salary.value";
+    req.query.sort = "-salary";
     next();
   }
 }

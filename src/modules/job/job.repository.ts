@@ -8,9 +8,13 @@ class JobRepository extends BaseRepository<IJob> {
     super(Job);
   }
 
-  override async find(filter: any, queryObj?: any): Promise<any> {
+  override async find(
+    filter: any,
+    queryObj?: any,
+    ...fields: string[]
+  ): Promise<any> {
     return await new APIFeatures(this.model.find(filter), queryObj)
-      .filter()
+      .filter(fields)
       .fieldsSelect()
       .paginate()
       .sort().query;

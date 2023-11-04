@@ -22,10 +22,15 @@ const ids = Joi.object({
   slug: validators.username,
   company: validators.id,
 });
+const query = Joi.object({
+  page: validators.page,
+  limit: validators.limit,
+});
 
 export default {
   create,
   updateStatus,
   updateLetter,
   ids,
+  query,
 };
