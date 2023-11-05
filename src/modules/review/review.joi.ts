@@ -6,14 +6,6 @@ const rate = Joi.number().integer().positive().min(1).max(5);
 const pros = Joi.string().trim();
 const cons = Joi.string().trim();
 
-const sortRate = Joi.string().pattern(/^[-]?rate$/);
-const sortCreated = Joi.string().pattern(/^[-]?createdAt$/);
-const sortTotal = Joi.alternatives().try(sortRate, sortCreated);
-const sort = Joi.alternatives().try(
-  sortTotal,
-  Joi.array().items(sortTotal)
-);
-
 const ids = Joi.object({
   username: validators.username,
   reviewId: validators.id,
@@ -36,7 +28,7 @@ const update = Joi.object({
 const query = Joi.object({
   page: validators.page,
   limit: validators.limit,
-  sort,
+  sort: validators.sort,
 });
 
 export default { create, update, ids, query };

@@ -3,7 +3,7 @@ import validators from "../../utils/validators";
 
 const address = Joi.string()
   .trim()
-  .regex(/^[a-zA-Z0-9-\s]*$/);
+  .regex(/^[a-zA-Z0-9-,\s]*$/);
 
 const coordinates = Joi.array().items(
   Joi.number().min(-180).max(180).required(),

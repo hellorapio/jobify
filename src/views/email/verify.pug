@@ -1,0 +1,17 @@
+extends base
+
+block content
+  p Hi #{name},
+  p Please Verify Your email address to complete our signup Process
+  p We are glad you have Joined our platform, please verify Your email
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  a(href=`${verify}`, target='_blank') Verify Your Email
+  p If you need any help with our company, please don't hesitate to contact us!
+  p - Jobify Team

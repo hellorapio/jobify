@@ -94,7 +94,7 @@ const lng = Joi.number().min(-180).max(180);
 
 const query = Joi.object({
   page: validators.page,
-  limit: validators.page,
+  limit: validators.limit,
   sort: validators.sort,
   fields: validators.fields,
   title,

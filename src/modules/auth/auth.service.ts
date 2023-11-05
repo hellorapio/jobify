@@ -57,7 +57,11 @@ class AuthService {
     const resetURL = `${host}/reset/${token}`;
 
     try {
-      await Email.sendResetPass({ resetURL, email: user.email });
+      await Email.sendResetPass({
+        resetURL,
+        email: user.email,
+        name: user.name,
+      });
     } catch (error) {
       user.passwordResetExpires = undefined;
       user.passwordResetToken = undefined;

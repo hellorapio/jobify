@@ -38,7 +38,6 @@ process.on("SIGTERM", () => {
 // Email Verification on signup with Welcome Message -- DONE
 
 // Adding real delete on jobs not just deactivation
-// Adding API Features on all Find() Queries -- PROGRESS
 // Implementing Notifications -- PROGRESS
 // Implementing Payments -- PROGRESS
 // Adding Stripe
@@ -48,8 +47,9 @@ process.on("SIGTERM", () => {
 // Adding lng and lat to every collection that has address key through Mongoose Hooks
 // Calculating distances on every job from the user's location
 
-// using livesin with the job search -- TESTING
+// using livesin with the job search -- TESTING -- NOT WORKING RIGHT NOW PROBLEM IN MONGOOSE MIDDLEWARES
 
+// Adding API Features on all Find() Queries -- DONE
 // Making function that gets lng and lat from the locationIQ API -- DONE
 // Added Image Validation and Image upload for users to cloudinary -- DONE
 // Trying to use JWT with Email-Verification // tried ** The user can verify his email multiple times which is Not good **

@@ -55,6 +55,16 @@ const addHooks = async (schema: Schema<IUser>) => {
     return resetToken;
   };
 
+  // schema.pre("findOneAndUpdate", async function (next) {
+  //   if (!this.getUpdate()) return next()
+  //   if (this.getUpdate().address) {
+  //     const { lon, lat } = await addressDetails(this.address);
+  //     this.livesIn.coordinates = [lon, lat];
+  //     this.livesIn.type = "Point";
+  //   }
+  //   next();
+  // });
+
   schema.pre("save", async function (next) {
     if (!this.isNew) return next();
     if (this.address) {

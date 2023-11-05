@@ -1,10 +1,11 @@
 import { IUser } from "./modules/user/model/user.interface";
 
 export type EmailOptions = {
-  email: string;
+  to: string;
   from: string;
-  message: string;
+  text: string;
   subject: string;
+  html: string;
 };
 
 export type Login = {
