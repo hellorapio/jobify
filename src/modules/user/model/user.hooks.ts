@@ -1,5 +1,5 @@
 import { IUser } from "./user.interface";
-import { Schema } from "mongoose";
+import { Schema, UpdateQuery } from "mongoose";
 import bcrypt from "bcryptjs";
 import { randomBytes, createHash } from "crypto";
 import slugify from "slugify";
@@ -55,15 +55,20 @@ const addHooks = async (schema: Schema<IUser>) => {
     return resetToken;
   };
 
-  // schema.pre("findOneAndUpdate", async function (next) {
-  //   if (!this.getUpdate()) return next()
-  //   if (this.getUpdate().address) {
-  //     const { lon, lat } = await addressDetails(this.address);
-  //     this.livesIn.coordinates = [lon, lat];
-  //     this.livesIn.type = "Point";
-  //   }
-  //   next();
-  // });
+  schema.pre<UpdateQuery<IUser>>(
+    "findOneAndUpdate",
+    async function (next) {
+      if (!this.getUpdate()) return next();
+      if (this.getUpdate().address) {
+        const { lon, lat } = await addressDetails(
+          this.getUpdate().address
+        );
+        this.getUpdate().livesIn.coordinates = [lon, lat];
+        this.getUpdate().livesIn.type = "Point";
+      }
+      next();
+    }
+  );
 
   schema.pre("save", async function (next) {
     if (!this.isNew) return next();

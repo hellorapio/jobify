@@ -138,6 +138,33 @@ class AuthService {
 
     await Email.sendWelcome({ email: user.email, name: user.name });
   }
+
+  async changeEmail(id: any, host: string, { email, password }: Login) {
+    const user = await this.repo.findById(id, "+password");
+    if (!user?.correctPassword(password, user.password))
+      throw new NotAuthorized("Your password is Incorrect");
+    const token = randomBytes(32).toString("hex");
+
+    user.verificationToken = createHash("sha256")
+      .update(token)
+      .digest("hex");
+
+    user.verificationTokenExpires = new Date(
+      Date.now() + 2 * 60 * 60 * 1000
+    );
+    
+    user.email = email;
+    user.isVerified = false;
+    //@ts-ignore
+    user.isVerifiedAt = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    await Email.sendVerification({
+      name: user.name,
+      email,
+      verify: host + "/email-verification/" + token,
+    });
+  }
 }
 
 export default AuthService.getInstance();

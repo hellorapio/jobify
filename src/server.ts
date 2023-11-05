@@ -30,25 +30,27 @@ process.on("SIGTERM", () => {
 // Some Security Features related to auth and verification
 
 // Login Attempts
-// Require password on high value action such as Changing emails
 // Using Refresh Tokens
 // Prevent CSRF
 // See if there is any features i can add later and making some brain storming
+
+// Require password on high value action such as Changing emails -- TESTING
 
 // Email Verification on signup with Welcome Message -- DONE
 
 // Adding real delete on jobs not just deactivation
 // Implementing Notifications -- PROGRESS
 // Implementing Payments -- PROGRESS
-// Adding Stripe
-// Making reciepts and sending them to emails (PDFs) about subscriptions
 // Adding aggregation Framework to My Applicants
 // Missing with some Geo operators on the jobs Geo Query
-// Adding lng and lat to every collection that has address key through Mongoose Hooks
 // Calculating distances on every job from the user's location
 
+// Adding lng and lat to every collection that has address key through Mongoose Hooks -- TESTING
 // using livesin with the job search -- TESTING -- NOT WORKING RIGHT NOW PROBLEM IN MONGOOSE MIDDLEWARES
 
+// Making reciepts and sending them to emails (PDFs) about subscriptions -- THEY SAY STRIPE HANDLES BUT I WILL HAVE MY TURN
+
+// Adding Stripe -- DONE
 // Adding API Features on all Find() Queries -- DONE
 // Making function that gets lng and lat from the locationIQ API -- DONE
 // Added Image Validation and Image upload for users to cloudinary -- DONE

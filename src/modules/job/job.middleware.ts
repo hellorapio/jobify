@@ -12,10 +12,10 @@ class JobMiddleware {
         const { lat, lon } = details;
         req.query.lng = lon;
         req.query.lat = lat;
-      } /* else if (req.user.address && req.user.role !== "company") {
+      } else if (req.user.address && req.user.role !== "company") {
         req.query.lng = req.user.livesIn.coordinates[0].toString();
         req.query.lat = req.user.livesIn.coordinates[1].toString();
-      } */ else {
+      } else {
         const { latitude, longitude } = await ipDetails(`${req.ip}`);
         req.query.lng = longitude;
         req.query.lat = latitude;

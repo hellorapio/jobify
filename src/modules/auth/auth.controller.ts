@@ -17,6 +17,7 @@ class AuthController {
     this.resetPassword = this.resetPassword.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
     this.verifyUser = this.verifyUser.bind(this);
+    this.changeEmail = this.changeEmail.bind(this);
   }
 
   public static getInstance() {
@@ -75,6 +76,16 @@ class AuthController {
     const { token } = await this.validator.token(req.params);
     await this.service.verifyUser(token);
     sendResponse(res, 200, "The Email has been Verified");
+  }
+
+  async changeEmail(req: Request, res: Response) {
+    const body = await this.validator.login(req.body);
+    await this.service.changeEmail(
+      req.user.id,
+      req.protocol + "://" + req.hostname + "/api/v1",
+      body
+    );
+    sendResponse(res, 200, "Verification Email has been sent");
   }
 }
 

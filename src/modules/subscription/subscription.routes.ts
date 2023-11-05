@@ -6,8 +6,8 @@ import controller from "./subscription.controller";
 const router = Router();
 
 router
-  .route("/")
+  .route("/checkout/:plan/:duration")
   .all(protect, restrictTo("company"))
-  .post(controller.create);
+  .get(controller.getSession);
 
 export default router;

@@ -53,7 +53,7 @@ const updatePassword = Joi.object({
 });
 
 const resetPassword = Joi.object({
-  password,
+  password: newPass,
   passwordConfirm,
 });
 
@@ -65,6 +65,11 @@ const forgotPassword = Joi.object({
   email,
 });
 
+const changeEmail = Joi.object({
+  email,
+  password,
+});
+
 export default {
   login,
   signup,
@@ -72,4 +77,5 @@ export default {
   forgotPassword,
   updatePassword,
   token,
+  changeEmail,
 };

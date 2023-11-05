@@ -4,7 +4,7 @@ import ISub from "./subscription.interface";
 const subSchema = new Schema<ISub>(
   {
     company: { type: Types.ObjectId, ref: "User" },
-    paid: Boolean,
+    paid: { type: Boolean, default: true },
     plan: String,
     endsAt: Date,
     total: Number,

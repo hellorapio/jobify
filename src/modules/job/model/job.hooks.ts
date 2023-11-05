@@ -1,5 +1,5 @@
 import { IJob } from "./job.interface";
-import { Schema } from "mongoose";
+import { Schema, UpdateQuery } from "mongoose";
 import slugify from "slugify";
 import { randomBytes } from "crypto";
 import userRepository from "../../user/user.repository";
@@ -57,13 +57,22 @@ const addHooks = (schema: Schema<IJob>) => {
     next();
   });
 
+  schema.pre<UpdateQuery<IJob>>("findOneAndUpdate", async function (next) {
+    if (this.getUpdate().address) {
+      const { lon, lat } = await addressDetails(this.getUpdate().address);
+      this.getUpdate().location.coordinates = [lon, lat];
+      this.getUpdate().location.type = "Point";
+    }
+    next();
+  });
+
   schema.pre("findOneAndUpdate", async function (next) {
     if (
       //@ts-ignore
       this.getUpdate().isActive === false ||
       //@ts-ignore
       this.getUpdate().applicants >= 0
-    ) 
+    )
       return next();
     this.populate({
       path: "company",

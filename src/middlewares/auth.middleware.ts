@@ -24,7 +24,7 @@ const protect = async (req: Request, _: Response, next: NextFunction) => {
   // 3) Does the user Exists ?
 
   const user = await User.findById(id).select(
-    "+passwordChangeDate +lastLogout +isVerified"
+    "+passwordChangeDate +lastLogout +isVerified +email"
   );
 
   if (!user) throw new NotAuthorized("User Doesn't Exist please Signup");
@@ -37,7 +37,7 @@ const protect = async (req: Request, _: Response, next: NextFunction) => {
     );
 
   // 5) Check if the user is Verified or not
-  
+
   if (!user.isVerified)
     throw new NotAuthorized("Your Email is not Verified");
 

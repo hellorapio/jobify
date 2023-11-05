@@ -13,6 +13,8 @@ interface CompanySchema {
   numberOfEmployees: number;
   jobs: number;
   address: string;
+  plan: "professional" | "free" | "starter";
+  planExpires: Date;
   ratingsAverage: number;
   ratingsCount: number;
   revenue: number;

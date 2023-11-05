@@ -16,6 +16,7 @@ const config = {
   },
   apis: {
     address: process.env.ADDRESS_API || "",
+    stripe: process.env.STRIPE_SECRET || "",
   },
   cloudinary: {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME || "",

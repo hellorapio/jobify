@@ -44,7 +44,6 @@ const resume = Joi.string().uri();
 
 const updateWorker = Joi.object({
   name: validators.name,
-  email: validators.email,
   address,
   photo,
   gender,
@@ -61,7 +60,6 @@ const username = Joi.object({ username: validators.username.required() });
 
 const updateCompany = Joi.object({
   name: validators.name,
-  email: validators.email,
   photo,
   companyDescription,
   numberOfEmployees,

@@ -34,6 +34,10 @@ class AuthValidator {
   async forgotPassword(body: object) {
     return await validCatch(this.joi.forgotPassword, body);
   }
+
+  async changeEmail(body: object) {
+    return await validCatch(this.joi.changeEmail, body);
+  }
 }
 
 export default AuthValidator.getInstance();

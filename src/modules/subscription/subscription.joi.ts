@@ -1,3 +1,8 @@
-// import Joi from "joi";
+import Joi from "joi";
 
-export default {};
+const create = Joi.object({
+  plan: Joi.string().valid("starter", "professional"),
+  duration: Joi.string().valid("monthly", "annually"),
+});
+
+export default { create };
