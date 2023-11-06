@@ -9,7 +9,7 @@ class SubService extends BaseService<ISub> {
   }
 
   async webhook(event: any) {
-    if (event.type !== "checkout.session.complete") return;
+    if (event.type !== "checkout.session.completed") return;
     const session = event.data.object;
     const company = (
       await userRepository.findOne({
