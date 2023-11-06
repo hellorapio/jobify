@@ -26,6 +26,8 @@ const userSchema = new Schema<IUser>(
     founded: Date,
     ratingsAverage: Number,
     ratingsCount: Number,
+    plan: String,
+    planExpires: Date,
     companyDescription: String,
     numberOfEmployees: Number,
     revenue: Number,
