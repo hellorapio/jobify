@@ -18,11 +18,18 @@ class AuthService {
   }
 
   async login({ email, password }: Login) {
-    const user = await this.repo.findOne({ email }, "+password");
+    const user = await this.repo.findOne(
+      { email },
+      "+password +loginAttempts"
+    );
 
-    if (!user || !(await user.correctPassword(password, user.password)))
+    if (!user) throw new NotAuthorized("Incorrect Email or Password");
+
+    if (!(await user.correctPassword(password, user.password))) {
+      user.loginAttempts += 1;
+      await user.save({ validateBeforeSave: false });
       throw new NotAuthorized("Incorrect Email or Password");
-
+    }
     return await jwt.sign(user.id);
   }
 
@@ -141,8 +148,10 @@ class AuthService {
 
   async changeEmail(id: any, host: string, { email, password }: Login) {
     const user = await this.repo.findById(id, "+password");
-    if (!user?.correctPassword(password, user.password))
+    if (!(await user?.correctPassword(password, user.password)))
       throw new NotAuthorized("Your password is Incorrect");
+
+    if (!user) throw new NotAuthorized("Your password is Incorrect");
     const token = randomBytes(32).toString("hex");
 
     user.verificationToken = createHash("sha256")
@@ -152,7 +161,7 @@ class AuthService {
     user.verificationTokenExpires = new Date(
       Date.now() + 2 * 60 * 60 * 1000
     );
-    
+
     user.email = email;
     user.isVerified = false;
     //@ts-ignore

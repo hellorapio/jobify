@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
 import config from "./../config/config";
+import subscriptionController from "../modules/subscription/subscription.controller";
 
 const addMiddlewares = async (app: Express) => {
   app.set("trust proxy", 1);
@@ -28,7 +29,7 @@ const addMiddlewares = async (app: Express) => {
   });
 
   app.use("/api", limiter);
-
+  app.use("/stripe-hook", express.raw(), subscriptionController.webhook);
   app.use(express.json({ limit: "10kb" }));
   app.use(express.urlencoded({ extended: true, limit: "10kb" }));
   app.use(cookieParser());

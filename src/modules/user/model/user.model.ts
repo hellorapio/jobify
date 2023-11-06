@@ -53,7 +53,7 @@ const userSchema = new Schema<IUser>(
     passwordResetToken: { type: String, select: false },
     passwordChangeDate: { type: Date, select: false },
     passwordResetExpires: { type: Date, select: false },
-    loginAttempts: { type: Number, select: false },
+    loginAttempts: { type: Number, select: false, default: 0 },
     loggedOutAt: { type: Date, select: false },
     joinDate: { type: Date, default: Date.now },
     active: { type: Boolean, default: true, select: false },

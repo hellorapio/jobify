@@ -74,4 +74,12 @@ const createStripe = async (options: StripeOptions) => {
   });
 };
 
-export default createStripe;
+const webookListener = async (body: any, headers: any) => {
+  return new Stripe(config.apis.stripe).webhooks.constructEvent(
+    body,
+    headers["stripe-signature"],
+    config.apis.webhook
+  );
+};
+
+export default { createStripe, webookListener };

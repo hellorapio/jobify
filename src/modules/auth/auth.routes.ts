@@ -9,6 +9,7 @@ router.post("/login", controller.login);
 router.post("/logout", protect, controller.logout);
 
 router.post("/email-verification/:token", controller.verifyUser);
+router.post("/change-email", protect, controller.changeEmail);
 router.patch("/reset/:token", controller.resetPassword);
 
 router.post("/password/forgot", controller.forgotPassword);
