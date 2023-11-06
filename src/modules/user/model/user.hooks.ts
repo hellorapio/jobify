@@ -63,8 +63,10 @@ const addHooks = async (schema: Schema<IUser>) => {
         const { lon, lat } = await addressDetails(
           this.getUpdate().address
         );
-        this.getUpdate().livesIn.coordinates = [lon, lat];
-        this.getUpdate().livesIn.type = "Point";
+        this.getUpdate().livesIn = {
+          coordinates: [lon, lat],
+          type: "Point",
+        };
       }
       next();
     }
@@ -74,8 +76,10 @@ const addHooks = async (schema: Schema<IUser>) => {
     if (!this.isNew) return next();
     if (this.address) {
       const { lon, lat } = await addressDetails(this.address);
-      this.livesIn.coordinates = [lon, lat];
-      this.livesIn.type = "Point";
+      this.livesIn = {
+        coordinates: [lon, lat],
+        type: "Point",
+      };
     }
     this.username = slugify(this.name + randomBytes(3).toString("hex"), {
       lower: true,

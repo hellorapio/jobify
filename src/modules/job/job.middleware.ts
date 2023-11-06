@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import ipDetails from "../../utils/ipDetails";
 import addressDetails from "../../utils/addressDetails";
-
-// APIFeaturs Implementation Also with other jobs
+import BadRequest from "../../errors/badRequest";
 
 class JobMiddleware {
   static async JobsWithIn(req: Request, _: Response, next: NextFunction) {
@@ -12,15 +11,21 @@ class JobMiddleware {
         const { lat, lon } = details;
         req.query.lng = lon;
         req.query.lat = lat;
-      } else if (req.user.address && req.user.role !== "company") {
-        req.query.lng = req.user.livesIn.coordinates[0].toString();
-        req.query.lat = req.user.livesIn.coordinates[1].toString();
       } else {
         const { latitude, longitude } = await ipDetails(`${req.ip}`);
         req.query.lng = longitude;
         req.query.lat = latitude;
       }
     }
+
+    next();
+  }
+
+  static async withInUser(req: Request, _: Response, next: NextFunction) {
+    if (req.user.address) {
+      req.query.lng = req.user.livesIn.coordinates[0].toString();
+      req.query.lat = req.user.livesIn.coordinates[1].toString();
+    } else throw new BadRequest("The use didn't add His Address");
 
     next();
   }

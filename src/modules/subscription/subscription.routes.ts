@@ -6,6 +6,8 @@ import SubscriptionMiddleware from "./subscription.middleware";
 
 const router = Router();
 
+router.get("/", protect, restrictTo(), controller.getAll);
+
 router
   .route("/checkout/:plan/:duration")
   .all(protect, restrictTo("company"))

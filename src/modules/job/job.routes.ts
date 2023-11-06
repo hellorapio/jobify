@@ -19,6 +19,13 @@ router
   .post(protect, restrictTo("company"), controller.create);
 
 router.get("/within", JobMiddleware.JobsWithIn, controller.jobsWithin);
+router.get(
+  "/within-user",
+  protect,
+  restrictTo("worker"),
+  JobMiddleware.withInUser,
+  controller.jobsWithin
+);
 
 router.route("/:slug").get(controller.get);
 
