@@ -29,7 +29,11 @@ const addMiddlewares = async (app: Express) => {
   });
 
   app.use("/api", limiter);
-  app.use("/stripe-hook", express.raw(), subscriptionController.webhook);
+  app.use(
+    "/stripe-hook",
+    express.raw({ type: "application/json" }),
+    subscriptionController.webhook
+  );
   app.use(express.json({ limit: "10kb" }));
   app.use(express.urlencoded({ extended: true, limit: "10kb" }));
   app.use(cookieParser());
