@@ -22,11 +22,15 @@ class SubService extends BaseService<ISub> {
             session.amount_total / 100 === 35
               ? "professional"
               : "starter",
-          planExpires: session.expiresAt,
+          planExpires:
+            session.amount_total / 100 === 350 ||
+            session.amount_total / 100 === 200
+              ? new Date(Date.now() + 1000 * 3600 * 24 * 365)
+              : new Date(Date.now() + 1000 * 3600 * 24 * 30),
         }
       )
     )?.id;
-    console.log(session.expiresAt);
+
     await this.repo.insertOne({
       company,
       currency: session.currency,
@@ -36,7 +40,11 @@ class SubService extends BaseService<ISub> {
         session.amount_total / 100 === 35
           ? "professional"
           : "starter",
-      endsAt: session.expiresAt,
+      endsAt:
+        session.amount_total / 100 === 350 ||
+        session.amount_total / 100 === 200
+          ? new Date(Date.now() + 1000 * 3600 * 24 * 365)
+          : new Date(Date.now() + 1000 * 3600 * 24 * 30),
     });
   }
 }

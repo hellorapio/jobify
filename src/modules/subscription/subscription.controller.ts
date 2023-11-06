@@ -5,7 +5,6 @@ import ISub from "./model/subscription.interface";
 import subscriptionService from "./subscription.service";
 import subscriptionValidator from "./subscription.validator";
 import stripe from "../../utils/stripe";
-// import BadRequest from "../../errors/badRequest";
 
 class SubController extends BaseController<
   ISub,
@@ -20,9 +19,6 @@ class SubController extends BaseController<
   async getSession(req: Request, res: Response) {
     const { email } = req.user;
     const data = await this.validator.create(req.params);
-    console.log(req.user);
-    // if (req.user.planExpires >= new Date())
-    //   throw new BadRequest("You are already subscribed to a plan");
     const session = await stripe.createStripe({
       plan: data.plan,
       duration: data.duration,
