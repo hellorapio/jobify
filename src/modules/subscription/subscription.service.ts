@@ -19,13 +19,14 @@ class SubService extends BaseService<ISub> {
 
     await this.repo.insertOne({
       company,
-      currency: session.line_items[0].price_data.currency,
-      total: session.line_items[0].price_data.unit_amount_decimal / 100,
-      plan: session.line_items[0].price_data.product_data.name,
-      endsAt:
-        session.line_items[0].price_data.recurring.interval === "year"
-          ? new Date(Date.now() + 1000 * 3600 * 24 * 365)
-          : new Date(Date.now() + 1000 * 3600 * 24 * 30),
+      currency: session.currency,
+      total: session.amount_total / 100,
+      plan:
+        session.amount_total / 100 === 350 ||
+        session.amount_total / 100 === 35
+          ? "professional"
+          : "starter",
+      endsAt: session.expiresAt,
     });
   }
 }

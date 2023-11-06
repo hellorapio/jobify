@@ -13,6 +13,7 @@ class SubController extends BaseController<
   constructor() {
     super(subscriptionService, subscriptionValidator);
     this.getSession = this.getSession.bind(this);
+    this.webhook = this.webhook.bind(this);
   }
 
   async getSession(req: Request, res: Response) {
