@@ -29,15 +29,18 @@ process.on("SIGTERM", () => {
 
 // Some Security Features related to auth and verification
 
-// Login Attempts
 // Using Refresh Tokens
 // Prevent CSRF
+// Migrating Rate Limiters to redis
+
 // See if there is any features i can add later and making some brain storming
 
-// Require password on high value action such as Changing emails -- TESTING
-
+// Require password on high value action such as Changing emails -- DONE
+// Login Attempts -- DONE
 // Email Verification on signup with Welcome Message -- DONE
 
+
+// Using plans to limit jobs posted by Companies
 // Adding real delete on jobs not just deactivation
 // Implementing Notifications -- PROGRESS
 // Implementing Payments -- PROGRESS
@@ -45,13 +48,18 @@ process.on("SIGTERM", () => {
 // Missing with some Geo operators on the jobs Geo Query
 // Calculating distances on every job from the user's location
 
-// Adding lng and lat to every collection that has address key through Mongoose Hooks -- TESTING
-// using livesin with the job search -- TESTING -- NOT WORKING RIGHT NOW PROBLEM IN MONGOOSE MIDDLEWARES
-
 // Making reciepts and sending them to emails (PDFs) about subscriptions -- THEY SAY STRIPE HANDLES BUT I WILL HAVE MY TURN
 
+// Adding lng and lat to every collection that has address key through Mongoose Hooks -- DONE
+// using livesin with the job search -- DONE
 // Adding Stripe -- DONE
 // Adding API Features on all Find() Queries -- DONE
 // Making function that gets lng and lat from the locationIQ API -- DONE
 // Added Image Validation and Image upload for users to cloudinary -- DONE
+
+// ---------- NOTES ----------
+
 // Trying to use JWT with Email-Verification // tried ** The user can verify his email multiple times which is Not good **
+// Login Attempts -- Using a property on DB would make a valid user cannot sign in into his Account
+// The best way for doing the login attempts is rate limiting the login route
+

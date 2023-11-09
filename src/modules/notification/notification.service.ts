@@ -7,4 +7,5 @@ class NotificationService extends BaseService<INotification> {
     super(notificationRepository);
   }
 }
+
 export default NotificationService.getInstance<NotificationService>();

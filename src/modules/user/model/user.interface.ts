@@ -65,7 +65,6 @@ interface IUserSchema extends Document, CompanySchema, WorkerSchema {
   isVerified: boolean;
   active: boolean;
   username: string;
-  loginAttempts: number;
 }
 
 export type IUser = IUserSchema & IUserMethods;

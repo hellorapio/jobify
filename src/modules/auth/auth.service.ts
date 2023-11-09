@@ -18,18 +18,11 @@ class AuthService {
   }
 
   async login({ email, password }: Login) {
-    const user = await this.repo.findOne(
-      { email },
-      "+password +loginAttempts"
-    );
+    const user = await this.repo.findOne({ email }, "+password");
 
-    if (!user) throw new NotAuthorized("Incorrect Email or Password");
-
-    if (!(await user.correctPassword(password, user.password))) {
-      user.loginAttempts += 1;
-      await user.save({ validateBeforeSave: false });
+    if (!user || !(await user.correctPassword(password, user.password)))
       throw new NotAuthorized("Incorrect Email or Password");
-    }
+
     return await jwt.sign(user.id);
   }
 

@@ -5,6 +5,7 @@ import ISub from "./model/subscription.interface";
 import subscriptionService from "./subscription.service";
 import subscriptionValidator from "./subscription.validator";
 import stripe from "../../utils/stripe";
+import config from "../../config/config";
 
 class SubController extends BaseController<
   ISub,
@@ -23,8 +24,8 @@ class SubController extends BaseController<
       plan: data.plan,
       duration: data.duration,
       email,
-      success: req.protocol + "://" + req.hostname + "/dashboard",
-      cancel: req.protocol + "://" + req.hostname + "/",
+      success: config.host + "/dashboard",
+      cancel: config.host + "/",
     });
     sendResponse(res, 200, session);
   }

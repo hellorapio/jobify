@@ -2,7 +2,7 @@
 import xss from "xss-clean";
 import { Express } from "express";
 import express from "express";
-import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
 import sanitize from "express-mongo-sanitize";
 import morgan from "morgan";
 import helmet from "helmet";
@@ -12,6 +12,7 @@ import compression from "compression";
 import cors from "cors";
 import config from "./../config/config";
 import subscriptionController from "../modules/subscription/subscription.controller";
+import rateLimiter from "../middlewares/rateLimiter.middleware";
 
 const addMiddlewares = async (app: Express) => {
   app.set("trust proxy", 1);
@@ -22,13 +23,24 @@ const addMiddlewares = async (app: Express) => {
 
   if (config.env === "development") app.use(morgan("dev"));
 
-  const limiter = rateLimit({
-    max: 100,
-    windowMs: 60 * 60 * 1000,
-    message: "You have exceeded Requests per hour",
-  });
+  // Rate Limiter Package
 
-  app.use("/api", limiter);
+  // const limiter = rateLimit({
+  //   max: 100,
+  //   windowMs: 60 * 60 * 1000,
+  //   message: "You have exceeded Requests per hour",
+  // });
+  // const loginLimiter = rateLimit({
+  //   max: 10,
+  //   windowMs: 5 * 60 * 1000,
+  //   message: "You are Trying to login too much from this IP",
+  // });
+  // app.use("/api", limiter);
+  // app.use("/api/v1/auth/login", loginLimiter);
+
+  // Rate Limiter using Redis
+  app.use(rateLimiter);
+
   app.use(
     "/stripe-hook",
     express.raw({ type: "application/json" }),

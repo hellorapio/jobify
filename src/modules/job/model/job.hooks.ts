@@ -60,8 +60,10 @@ const addHooks = (schema: Schema<IJob>) => {
   schema.pre<UpdateQuery<IJob>>("findOneAndUpdate", async function (next) {
     if (this.getUpdate().address) {
       const { lon, lat } = await addressDetails(this.getUpdate().address);
-      this.getUpdate().location.coordinates = [lon, lat];
-      this.getUpdate().location.type = "Point";
+      this.getUpdate().location = {
+        coordinates: [lon, lat],
+        type: "Point",
+      };
     }
     next();
   });

@@ -1,7 +1,9 @@
 const config = {
   env: process.env.NODE_ENV || "production",
   port: process.env.PORT || 5000,
-  database: process.env.DATABASE || "",
+  mongo: process.env.MONGO || "",
+  redis: process.env.REDIS || "",
+  host: process.env.CLIENT_HOST || "",
   jwt: {
     secret: process.env.JWT_SECRET || "",
     refresh: process.env.JWT_REFRESH_TOKEN || "",

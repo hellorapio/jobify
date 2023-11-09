@@ -2,6 +2,7 @@ import authService from "./auth.service";
 import authValidator from "./auth.validator";
 import sendResponse from "../../utils/sendResponse";
 import { Request, Response } from "express";
+import config from "../../config/config";
 
 class AuthController {
   private static instance: AuthController;
@@ -33,7 +34,7 @@ class AuthController {
     const validatedUser = await this.validator.signup(req.body);
     const token = await this.service.signup(
       validatedUser,
-      req.protocol + "://" + req.hostname + "/api/v1"
+      config.host + "/api/v1"
     );
     sendResponse(res, 201, "Email Verification has been sent", token);
   }
@@ -46,10 +47,7 @@ class AuthController {
 
   async forgotPassword(req: Request, res: Response) {
     const { email } = await this.validator.forgotPassword(req.body);
-    await this.service.forgotPassword(
-      email,
-      req.protocol + "://" + req.hostname + "/api/v1"
-    );
+    await this.service.forgotPassword(email, config.host + "/api/v1");
     sendResponse(res, 200, "Reset Link has been Sent to the Email");
   }
 
@@ -82,7 +80,7 @@ class AuthController {
     const body = await this.validator.login(req.body);
     await this.service.changeEmail(
       req.user.id,
-      req.protocol + "://" + req.hostname + "/api/v1",
+      config.host + "/api/v1",
       body
     );
     sendResponse(res, 200, "Verification Email has been sent");
