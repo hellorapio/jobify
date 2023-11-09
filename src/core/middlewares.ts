@@ -15,7 +15,7 @@ import subscriptionController from "../modules/subscription/subscription.control
 import rateLimiter from "../middlewares/rateLimiter.middleware";
 
 const addMiddlewares = async (app: Express) => {
-  app.set("trust proxy", 1);
+  app.set("trust proxy", true);
 
   app.use(cors());
   app.options("*", cors());

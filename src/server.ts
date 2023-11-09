@@ -31,10 +31,10 @@ process.on("SIGTERM", () => {
 
 // Using Refresh Tokens
 // Prevent CSRF
-// Migrating Rate Limiters to redis
 
 // See if there is any features i can add later and making some brain storming
 
+// Migrating Rate Limiters to redis -- DONE
 // Require password on high value action such as Changing emails -- DONE
 // Login Attempts -- DONE
 // Email Verification on signup with Welcome Message -- DONE
