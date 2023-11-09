@@ -16,9 +16,11 @@ router.use("/:slug/applicants", applicantRouter);
 router
   .route("/")
   .get(controller.getAll)
-  .post(protect, restrictTo("company"), controller.create);
+  .all(protect, restrictTo("company"))
+  .post(JobMiddleware.isPaid, controller.create);
 
 router.get("/within", JobMiddleware.JobsWithIn, controller.jobsWithin);
+
 router.get(
   "/within-user",
   protect,

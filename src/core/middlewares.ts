@@ -13,9 +13,10 @@ import cors from "cors";
 import config from "./../config/config";
 import subscriptionController from "../modules/subscription/subscription.controller";
 import rateLimiter from "../middlewares/rateLimiter.middleware";
+import requestIp from "request-ip";
 
 const addMiddlewares = async (app: Express) => {
-  app.set("trust proxy", true);
+  app.use(requestIp.mw());
 
   app.use(cors());
   app.options("*", cors());
@@ -39,6 +40,7 @@ const addMiddlewares = async (app: Express) => {
   // app.use("/api/v1/auth/login", loginLimiter);
 
   // Rate Limiter using Redis
+
   app.use(rateLimiter);
 
   app.use(

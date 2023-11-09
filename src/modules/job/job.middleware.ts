@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import ipDetails from "../../utils/ipDetails";
 import addressDetails from "../../utils/addressDetails";
 import BadRequest from "../../errors/badRequest";
+import NotAuthorized from "../../errors/notAuthorized";
 
 class JobMiddleware {
   static async JobsWithIn(req: Request, _: Response, next: NextFunction) {
@@ -34,6 +35,21 @@ class JobMiddleware {
     req.query.limit = "5";
     req.query.fields = "title,salary.value";
     req.query.sort = "-salary";
+    next();
+  }
+
+  static async isPaid(req: Request, _: Response, next: NextFunction) {
+    const { jobs, plan, planExpires } = req.user;
+
+    if (jobs) {
+      if (planExpires && planExpires.getTime() > Date.now()) {
+        if (plan === "professional" && jobs < 100) return next();
+        if (plan === "starter" && jobs < 25) return next();
+      }
+      if (!plan && jobs < 10) return next();
+
+      throw new NotAuthorized("You have Exceeded Your Jobs Qouta");
+    }
     next();
   }
 }
