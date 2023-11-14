@@ -74,6 +74,12 @@ const addHooks = async (schema: Schema<IUser>) => {
 
   schema.pre("save", async function (next) {
     if (!this.isNew) return next();
+    if (this.role === "company") {
+      this.plan = "free";
+      this.ratingsAverage = 0;
+      this.ratingsCount = 0;
+      this.jobs = 0;
+    }
     if (this.address) {
       const { lon, lat } = await addressDetails(this.address);
       this.livesIn = {

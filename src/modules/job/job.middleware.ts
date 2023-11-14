@@ -46,7 +46,7 @@ class JobMiddleware {
         if (plan === "professional" && jobs < 100) return next();
         if (plan === "starter" && jobs < 25) return next();
       }
-      if (!plan && jobs < 10) return next();
+      if (jobs < 10) return next();
 
       throw new NotAuthorized("You have Exceeded Your Jobs Qouta");
     }

@@ -1,12 +1,13 @@
-import NotFound from "../errors/notFound";
-import errorHandler from "./../middlewares/error.middleware";
+import { Express } from "express";
 import jobRouter from "../modules/job/job.routes";
-import { applicantRouter } from "../modules/applicant/applicant.routes";
 import userRouter from "../modules/user/user.routes";
 import authRouter from "../modules/auth/auth.routes";
-// import reviewRouter from "../modules/review/review.routes";
-import { Express } from "express";
 import subscriptionsRouter from "../modules/subscription/subscription.routes";
+import notificationsRouter from "../modules/notification/notification.routes";
+import { applicantRouter } from "../modules/applicant/applicant.routes";
+// import reviewRouter from "../modules/review/review.routes";
+import errorHandler from "./../middlewares/error.middleware";
+import NotFound from "../errors/notFound";
 
 const addRoutes = (app: Express) => {
   app.use("/api/v1/applicants", applicantRouter);
@@ -14,6 +15,7 @@ const addRoutes = (app: Express) => {
   app.use("/api/v1/users", userRouter);
   app.use("/api/v1/auth", authRouter);
   app.use("/api/v1/subscriptions", subscriptionsRouter);
+  app.use("/api/v1/notifications", notificationsRouter);
   // app.use("/api/v1/reviews", reviewRouter);
 
   app.get("/health", (_, res) => {

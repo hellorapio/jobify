@@ -14,19 +14,21 @@ const rateLimiter = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.path === "/api/v1/auth/login")
-    return limiter({
-      hits: 15,
-      mins: 15,
-      msg: "You've exceeded the login attempt limit",
-      suffix: "login",
-    })(req, res, next);
-  else
-    return limiter({
-      hits: 140,
-      mins: 60,
-      msg: "You've Exceeded Allowed Requests Limit",
-    })(req, res, next);
+  switch (req.path) {
+    case "/api/v1/auth/login":
+      return limiter({
+        hits: 15,
+        mins: 15,
+        msg: "You've exceeded the login attempt limit",
+        suffix: "login",
+      })(req, res, next);
+    default:
+      return limiter({
+        hits: 140,
+        mins: 60,
+        msg: "You've Exceeded Allowed Requests Limit",
+      })(req, res, next);
+  }
 };
 
 const limiter = ({ hits, mins, msg, suffix = "" }: RateLimiterOptions) => {

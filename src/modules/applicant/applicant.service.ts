@@ -1,6 +1,8 @@
 import BaseService from "../../bases/base.service";
 import NotFound from "../../errors/notFound";
 import jobRepository from "../job/job.repository";
+import notificationEmitter from "../notification/notification.emitter";
+import notificationService from "../notification/notification.service";
 import applicantRepository from "./applicant.repository";
 import { IApplicant } from "./model/applicant.interface";
 
@@ -44,6 +46,19 @@ class ApplicantService extends BaseService<
     );
 
     if (!applicant) throw new NotFound("There is no applicant over here");
+
+    const notification = await notificationService.create({
+      user: applicant.worker,
+      read: false,
+      content:
+        status === "Rejected"
+          ? "Your Application has been Rejected"
+          : status === "Accepted"
+          ? "Your Application has been Accepted"
+          : "Your Application is in Interviewing Stage",
+    });
+    
+    notificationEmitter.sendNotification(applicant.worker, notification);
   }
 
   override async create({ letter }: IApplicant, slug?: any, worker?: any) {
