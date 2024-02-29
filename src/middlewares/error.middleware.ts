@@ -40,7 +40,7 @@ const handleJWTExpiredErrors = () =>
   new AppError("Your token has Been Expired please Login Back", 401);
 
 const handleMulterError = () =>
-  new BadRequest("ThE File is too Big, Maximum allowed size is 2mb");
+  new BadRequest("The File is too Big, Maximum allowed size is 2mb");
 
 export default (
   err: AppError,

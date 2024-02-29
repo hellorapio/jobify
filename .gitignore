@@ -3,3 +3,4 @@ scripts
 data
 .env
 package-lock.json
+dist

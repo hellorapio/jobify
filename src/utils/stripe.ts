@@ -75,7 +75,7 @@ const createStripe = async (options: StripeOptions) => {
 };
 
 const webookListener = async (body: any, headers: any) => {
-  return new Stripe(config.apis.stripe).webhooks.constructEvent(
+  return await new Stripe(config.apis.stripe).webhooks.constructEventAsync(
     body,
     headers["stripe-signature"],
     config.apis.webhook

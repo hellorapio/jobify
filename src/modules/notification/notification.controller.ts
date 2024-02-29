@@ -26,19 +26,15 @@ class NotificationController {
     const notifications = JSON.stringify(
       await this.service.getUserNotifications(id)
     );
+
     res.write(`event: notifications\n`);
     res.write(`data: ${notifications}\n\n`);
     res.flush();
 
-    notificationEmitter.on("notification", (userId, data) => {
-      if (id !== userId) return;
-      res.write(`event: notification\n`);
-      res.write(`data: ${JSON.stringify(data)}\n\n`);
-      res.flush();
-    });
+    notificationEmitter.addRes(id, res);
 
     req.on("close", () => {
-      console.log(`Connection closed`);
+      notificationEmitter.removeRes(id);
       res.end();
     });
   }
