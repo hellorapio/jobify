@@ -41,7 +41,7 @@ class Email {
   }
 
   static async sendResetPass({ resetURL, email, name }: ResetPass) {
-    const html = pug.renderFile(`${__dirname}/../views/email/reset.pug`, {
+    const html = pug.renderFile(`${__dirname}/../../public/views/email/reset.pug`, {
       name,
       resetURL,
       subject: "Jobify: Password Reset Link (Valid for 1 Hour)",
@@ -60,7 +60,7 @@ class Email {
 
   static async sendWelcome({ email, name }: Welcome) {
     const html = pug.renderFile(
-      `${__dirname}/../views/email/welcome.pug`,
+      `${__dirname}/../../public/views/email/welcome.pug`,
       {
         name,
         subject: "Jobify: Welcome to Jobify, our Beautiful Platform",
@@ -78,7 +78,7 @@ class Email {
   }
 
   static async sendVerification({ name, verify, email }: Verification) {
-    const html = pug.renderFile(`${__dirname}/../views/email/verify.pug`, {
+    const html = pug.renderFile(`${__dirname}/../../public/views/email/verify.pug`, {
       name,
       verify,
       subject: "Jobify: Please verify your email address",
