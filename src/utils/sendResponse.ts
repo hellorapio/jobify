@@ -15,6 +15,7 @@ const sendResponse = async (
       httpOnly: true,
       secure: config.env === "production",
       sameSite: "none",
+      domain: config.host,
     };
 
     res.cookie("jwt", token, cookieOptions);
