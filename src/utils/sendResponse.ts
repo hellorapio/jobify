@@ -14,7 +14,7 @@ const sendResponse = async (
       ),
       httpOnly: true,
       secure: config.env === "production",
-      sameSite: config.env !== "production" ? "lax" : "none",
+      sameSite: "none",
     };
 
     res.cookie("jwt", token, cookieOptions);
