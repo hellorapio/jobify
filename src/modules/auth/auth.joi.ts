@@ -10,9 +10,7 @@ const password = Joi.string().required().messages({
 });
 
 const newPass = password
-  .regex(
-    /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  )
+  .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/)
   .message("Password isn't strong enough");
 
 const role = Joi.string().valid("worker", "company").required().messages({

@@ -14,6 +14,7 @@ const sendResponse = async (
       ),
       httpOnly: true,
       secure: config.env === "production",
+      sameSite: config.env !== "production",
     };
 
     res.cookie("jwt", token, cookieOptions);
@@ -22,6 +23,7 @@ const sendResponse = async (
       expires: new Date(Date.now() + 5 * 1000),
       httpOnly: true,
       secure: config.env === "production",
+      sameSite: config.env !== "production",
     };
 
     res.cookie("jwt", "", cookieOptions);
