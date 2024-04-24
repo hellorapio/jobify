@@ -9,6 +9,7 @@ const coordinates = Joi.array().items(
   Joi.number().min(-180).max(180).required(),
   Joi.number().min(-90).max(90).required()
 );
+
 // Company
 
 const companyDescription = Joi.string().min(60).trim();

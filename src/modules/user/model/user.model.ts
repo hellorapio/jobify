@@ -11,7 +11,6 @@ const userSchema = new Schema<IUser>(
     experience: { type: [String], default: undefined },
     education: { type: [String], default: undefined },
     experienceYears: Number,
-    DOB: Date,
     resume: String,
     address: String,
     livesIn: {

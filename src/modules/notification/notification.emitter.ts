@@ -1,10 +1,14 @@
+import { EventEmitter } from "events";
 import INotification from "./notification.interface";
 import { Response } from "express";
 
-class NotificationEmitter {
-  private constructor() {}
+class NotificationEmitter extends EventEmitter {
+  private constructor() {
+    super();
+  }
   private static instance: NotificationEmitter;
   private responses = new Map<string, Response>();
+
   static getInstance() {
     if (!this.instance) this.instance = new NotificationEmitter();
     return this.instance;

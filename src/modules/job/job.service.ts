@@ -16,7 +16,7 @@ class JobService extends BaseService<IJob, typeof jobRepository> {
         ? query.distance / 3963.2
         : query.distance / 6378.1;
 
-        const jobs = await this.repo.find(
+    const jobs = await this.repo.find(
       {
         location: {
           $geoWithin: { $centerSphere: [[query.lng, query.lat], radius] },
@@ -49,6 +49,7 @@ class JobService extends BaseService<IJob, typeof jobRepository> {
       return jobs;
     } else {
       const jobs = await this.repo.find({}, query);
+      
       return jobs;
     }
   }

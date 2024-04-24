@@ -44,7 +44,6 @@ interface WorkerSchema {
   experience: string[];
   education: string[];
   experienceYears: number;
-  DOB: Date;
   resume: string;
 }
 

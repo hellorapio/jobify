@@ -18,8 +18,8 @@ import requestIp from "request-ip";
 const addMiddlewares = async (app: Express) => {
   app.use(requestIp.mw());
 
-  app.use(cors());
-  app.options("*", cors());
+  app.use(cors({ credentials: true, origin: true }));
+  app.options("*", cors({ credentials: true, origin: true }));
   app.use(helmet());
 
   if (config.env === "development") app.use(morgan("dev"));

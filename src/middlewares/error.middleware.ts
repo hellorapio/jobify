@@ -26,8 +26,13 @@ const handleCastError = (err: AppError) => {
 
 const handleDuplicateFields = (err: AppError) => {
   const dup = err.message.match(/"([^"]+)"/)![0];
-  const message = `Duplicate Field: ${dup}`;
-  return new AppError(message, 409);
+  if (err.message.includes("email")) {
+    const message = `This email already exists`;
+    return new AppError(message, 409);
+  } else {
+    const message = `Duplicate Field: ${dup}`;
+    return new AppError(message, 409);
+  }
 };
 
 const handleMongooseValidation = (err: AppError) =>
@@ -53,10 +58,10 @@ export default (
 
   if (config.env === "development") sendErrorDev(err, res);
   else {
-    let error: AppError | any = {}
-    error.message = err.message
-    error.statusCode = err.statusCode
-    error.status = err.status
+    let error: AppError | any = {};
+    error.message = err.message;
+    error.statusCode = err.statusCode;
+    error.status = err.status;
 
     if (err.name === "ValidationError")
       error = handleMongooseValidation(err);
