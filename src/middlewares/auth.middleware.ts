@@ -36,11 +36,6 @@ const protect = async (req: Request, _: Response, next: NextFunction) => {
       "Your password has been changed or you have logged out lately"
     );
 
-  // 5) Check if the user is Verified or not
-
-  if (!user.isVerified)
-    throw new NotAuthorized("Your Email is not Verified");
-
   // Access GRANTED HAPPY HACKING <3
   req.user = user;
   next();
