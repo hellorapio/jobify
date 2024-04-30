@@ -40,7 +40,7 @@ class AuthService {
 
     await Email.sendVerification({
       email: body.email,
-      verify: host + "/email-verification/" + token,
+      verify: host + "/verify/" + token,
       name: body.name,
     });
 
@@ -164,7 +164,7 @@ class AuthService {
     await Email.sendVerification({
       name: user.name,
       email,
-      verify: host + "/email-verification/" + token,
+      verify: host + "/verify/" + token,
     });
   }
 }

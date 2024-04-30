@@ -32,10 +32,7 @@ class AuthController {
 
   async signup(req: Request, res: Response) {
     const validatedUser = await this.validator.signup(req.body);
-    const token = await this.service.signup(
-      validatedUser,
-      config.host + "/api/v1"
-    );
+    const token = await this.service.signup(validatedUser, config.host);
     sendResponse(res, 201, "Email Verification has been sent", token);
   }
 
@@ -47,7 +44,7 @@ class AuthController {
 
   async forgotPassword(req: Request, res: Response) {
     const { email } = await this.validator.forgotPassword(req.body);
-    await this.service.forgotPassword(email, config.host + "/api/v1");
+    await this.service.forgotPassword(email, config.host);
     sendResponse(res, 200, "Reset Link has been Sent to the Email");
   }
 
@@ -78,11 +75,7 @@ class AuthController {
 
   async changeEmail(req: Request, res: Response) {
     const body = await this.validator.login(req.body);
-    await this.service.changeEmail(
-      req.user.id,
-      config.host + "/api/v1",
-      body
-    );
+    await this.service.changeEmail(req.user.id, config.host, body);
     sendResponse(res, 200, "Verification Email has been sent");
   }
 }
