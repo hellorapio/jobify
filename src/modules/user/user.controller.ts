@@ -17,8 +17,7 @@ class UserController extends BaseController<
   }
 
   async me(req: Request, res: Response) {
-    const user = await this.service.me(req.user.id);
-    sendResponse(res, 200, user);
+    sendResponse(res, 200, req.user);
   }
 
   override async get(req: Request, res: Response) {
