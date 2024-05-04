@@ -31,10 +31,17 @@ class NotificationController {
     res.write(`data: ${notifications}\n\n`);
     res.flush();
 
+    const resInterval = setInterval(() => {
+      res.write("event: heartbeat\n");
+      res.write("data: heartbeat\n\n");
+      res.flush();
+    }, 30000);
+
     notificationEmitter.addRes(id, res);
 
     req.on("close", () => {
       notificationEmitter.removeRes(id);
+      clearInterval(resInterval);
       res.end();
     });
   }
