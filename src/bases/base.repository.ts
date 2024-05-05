@@ -31,6 +31,11 @@ class BaseRepository<T> {
       new: true,
     });
   }
+  async updateMany(filter: Partial<T>, payload: Partial<T> | any) {
+    return await this.model.updateMany(filter, payload, {
+      new: true,
+    });
+  }
 
   async updateOneById(id: string, payload: Partial<T>) {
     return await this.model.findByIdAndUpdate(id, payload, { new: true });

@@ -57,7 +57,7 @@ class ApplicantService extends BaseService<
           ? "Your Application has been Accepted"
           : "Your Application is in Interviewing Stage",
     });
-    
+
     notificationEmitter.sendNotification(applicant.worker, notification);
   }
 
@@ -66,13 +66,24 @@ class ApplicantService extends BaseService<
       { slug, isActive: true },
       "company"
     );
+
     if (!job) throw new NotFound("there is No Job");
+
     const applicant = await this.repo.insertOne({
       company: job.company,
       worker,
       job: slug,
       letter,
     });
+
+    const notification = await notificationService.create({
+      user: job.company,
+      read: false,
+      content: "You have a new Applicant for your Job",
+    });
+
+    notificationEmitter.sendNotification(job.company, notification);
+
     return applicant;
   }
 

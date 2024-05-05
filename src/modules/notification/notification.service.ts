@@ -10,6 +10,10 @@ class NotificationService extends BaseService<INotification> {
   async getUserNotifications(id: string) {
     return await this.repo.find({ user: id });
   }
+
+  async readNotifications(id: any) {
+    await this.repo.updateMany({ user: id }, { read: true });
+  }
 }
 
 export default NotificationService.getInstance<NotificationService>();
