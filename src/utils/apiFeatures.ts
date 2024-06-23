@@ -14,6 +14,7 @@ class APIFeatures<T> {
       "limit",
       "distance",
       "unit",
+      "keyword",
       "lng",
       "lat",
       ...fields,
@@ -28,7 +29,15 @@ class APIFeatures<T> {
     queryObj = JSON.parse(
       JSON.stringify(queryObj).replace(regex, replacement)
     );
-    this.query.find(queryObj);
+
+    if (this.queryObj.keyword) {
+      queryObj = {
+        ...queryObj,
+        $text: { $search: this.queryObj.keyword },
+      };
+    }
+
+    this.query.find(queryObj, { score: { $meta: "textScore" } });
     return this;
   }
 

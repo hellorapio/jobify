@@ -45,6 +45,8 @@ export type QueryObject = {
   fields?: string;
   limit?: number;
   page?: number;
+  keyword?: string;
+  $text?: { $search: string };
 };
 
 export type JWTObj = {

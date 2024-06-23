@@ -21,11 +21,12 @@ const jobSchema = new Schema<IJob>(
     currency: { type: String, default: "USD" },
     remote: { type: Boolean, default: false },
     employmentType: { type: String, default: "full-time" },
-    jobFunction: { type: String, default: "others" },
+    categories: { type: [String], default: ["others"] },
     experienceLevel: { type: String, default: "entry" },
     educationLevel: { type: String, default: "bachelor" },
     skills: [String],
     benefits: [String],
+    tags: [String],
     contactEmail: String,
     applyUrl: String,
     views: { type: Number, default: 0 },
@@ -41,6 +42,15 @@ const jobSchema = new Schema<IJob>(
 );
 
 jobSchema.index({ company: 1 });
+jobSchema.index(
+  { title: "text", description: "text" },
+  {
+    weights: { title: 1, description: 2 },
+    default_language: "english",
+    name: "jobs_search_index",
+    background: true,
+  }
+);
 jobSchema.index({ location: "2dsphere" });
 
 addHooks(jobSchema);

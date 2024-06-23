@@ -12,18 +12,23 @@ const employmentType = Joi.string().valid(
 );
 const salary = Joi.number().integer().positive();
 const remote = Joi.bool();
-const jobFunction = Joi.string().valid(
-  "engineering",
-  "sales",
-  "marketing",
-  "product",
-  "design",
-  "customer service",
-  "finance",
-  "human resources",
-  "healthcare",
-  "others"
+const categories = Joi.array().items(
+  Joi.string().valid(
+    "engineering",
+    "software",
+    "tech",
+    "sales",
+    "marketing",
+    "product",
+    "design",
+    "customer service",
+    "finance",
+    "human resources",
+    "healthcare",
+    "others"
+  )
 );
+const tags = Joi.array().items(Joi.string());
 const experienceLevel = Joi.string().valid("mid", "entry", "senior");
 const educationLevel = Joi.string().valid(
   "high school",
@@ -58,16 +63,15 @@ const create = Joi.object({
   applyUrl,
   skills,
   benefits,
-  jobFunction,
+  categories,
   remote,
-  // location,
+  tags,
   address: address.required(),
   salary,
   employmentType,
   currency,
 });
 
-// if remote was true it shouldn't provide location
 
 const update = Joi.object({
   title,
@@ -78,10 +82,10 @@ const update = Joi.object({
   applyUrl,
   skills,
   benefits,
-  jobFunction,
+  categories,
   address,
+  tags,
   remote,
-  // location,
   salary,
   employmentType,
   currency,

@@ -1,5 +1,19 @@
 import { Document, ObjectId } from "mongoose";
 
+type Categories =
+  | "engineering"
+  | "sales"
+  | "marketing"
+  | "tech"
+  | "software"
+  | "product"
+  | "design"
+  | "customer service"
+  | "finance"
+  | "human resources"
+  | "healthcare"
+  | "others";
+
 export interface IJob extends Document {
   title: string;
   companyName: string;
@@ -13,19 +27,10 @@ export interface IJob extends Document {
   };
   address: string;
   company: ObjectId;
+  tags: string[];
   applicants: number;
   remote: boolean;
-  jobFunction:
-    | "engineering"
-    | "sales"
-    | "marketing"
-    | "product"
-    | "design"
-    | "customer service"
-    | "finance"
-    | "human resources"
-    | "healthcare"
-    | "others";
+  categories: Categories[];
   experienceLevel: "mid" | "entry" | "senior";
   educationLevel:
     | "high school"
