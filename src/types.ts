@@ -16,7 +16,7 @@ export type Login = {
 export type Signup = {
   email: string;
   password: string;
-  role: "worker" | "company";
+  role: "job seeker" | "company";
   name: string;
 };
 

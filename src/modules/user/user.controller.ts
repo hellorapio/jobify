@@ -28,8 +28,8 @@ class UserController extends BaseController<
 
   override async update(req: Request, res: Response) {
     const body =
-      req.user.role === "worker"
-        ? await this.validator.updateWorker(req.body)
+      req.user.role === "job seeker"
+        ? await this.validator.updateJobSeeker(req.body)
         : await this.validator.updateCompany(req.body);
     if (body.photo !== "")
       body.photo = req.file ? await uploadImg(req.file.path) : undefined;

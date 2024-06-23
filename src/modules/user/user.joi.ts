@@ -33,7 +33,7 @@ const locations = Joi.array().items(
 );
 const founded = Joi.date().max("now");
 
-// Worker
+// Job Seeker
 
 const gender = Joi.string().valid("female", "male");
 const birthDate = Joi.date().max("now");
@@ -43,7 +43,7 @@ const experienceYears = Joi.number().min(0);
 const DOB = Joi.date().max("now");
 const resume = Joi.string().uri();
 
-const updateWorker = Joi.object({
+const updateJobSeeker = Joi.object({
   name: validators.name,
   address,
   photo,
@@ -72,4 +72,4 @@ const updateCompany = Joi.object({
   username: validators.username,
 });
 
-export default { updateCompany, updateWorker, username };
+export default { updateCompany, updateJobSeeker, username };

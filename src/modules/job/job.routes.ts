@@ -24,7 +24,7 @@ router.get("/within", JobMiddleware.JobsWithIn, controller.jobsWithin);
 router.get(
   "/within-user",
   protect,
-  restrictTo("worker"),
+  restrictTo("job seeker"),
   JobMiddleware.withInUser,
   controller.jobsWithin
 );

@@ -11,6 +11,11 @@ const employmentType = Joi.string().valid(
   "internship"
 );
 const salary = Joi.number().integer().positive();
+const minExperience = Joi.number().integer().positive();
+const maxExperience = Joi.number()
+  .integer()
+  .positive()
+  .min(Joi.ref("minExperience") ? Joi.ref("minExperience") : 0);
 const remote = Joi.bool();
 const categories = Joi.array().items(
   Joi.string().valid(
@@ -19,6 +24,7 @@ const categories = Joi.array().items(
     "tech",
     "sales",
     "marketing",
+    "analytics",
     "product",
     "design",
     "customer service",
@@ -29,7 +35,12 @@ const categories = Joi.array().items(
   )
 );
 const tags = Joi.array().items(Joi.string());
-const experienceLevel = Joi.string().valid("mid", "entry", "senior");
+const experienceLevel = Joi.string().valid(
+  "mid-level",
+  "entry",
+  "junior",
+  "senior"
+);
 const educationLevel = Joi.string().valid(
   "high school",
   "associate",
@@ -66,12 +77,13 @@ const create = Joi.object({
   categories,
   remote,
   tags,
+  minExperience,
+  maxExperience,
   address: address.required(),
   salary,
   employmentType,
   currency,
 });
-
 
 const update = Joi.object({
   title,
@@ -80,6 +92,8 @@ const update = Joi.object({
   educationLevel,
   contactEmail,
   applyUrl,
+  minExperience,
+  maxExperience,
   skills,
   benefits,
   categories,

@@ -4,9 +4,9 @@ import addHooks from "./applicant.hooks";
 
 const applicantSchema = new Schema<IApplicant>(
   {
-    worker: { type: Types.ObjectId, ref: "Worker" },
-    job: String,
-    company: { type: Types.ObjectId, ref: "company" },
+    jobSeeker: { type: Types.ObjectId, ref: "User" },
+    company: { type: Types.ObjectId, ref: "User" },
+    job: { type: Types.ObjectId, ref: "Job" },
     status: { type: String, default: "Pending" },
     letter: String,
   },
@@ -15,7 +15,7 @@ const applicantSchema = new Schema<IApplicant>(
 
 addHooks(applicantSchema);
 
-applicantSchema.index({ worker: 1, job: 1 }, { unique: true });
+applicantSchema.index({ jobSeeker: 1, job: 1 }, { unique: true });
 
 const Applicant = model<IApplicant>("Applicant", applicantSchema);
 

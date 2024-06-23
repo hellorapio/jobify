@@ -5,7 +5,7 @@ import restrictTo from "../../middlewares/restrict.middleware";
 
 const applicantJobsrouter = Router({ mergeParams: true });
 
-// Add Notifications on these for workers
+// Add Notifications on these for Job Seekers
 applicantJobsrouter
   .route("/reply/:applicantId")
   .all(protect)
@@ -15,9 +15,9 @@ applicantJobsrouter
   .route("/")
   .all(protect)
   .get(restrictTo("company"), controller.getAll)
-  .post(restrictTo("worker"), controller.create)
-  .patch(restrictTo("worker"), controller.updateApplicant)
-  .delete(restrictTo("worker"), controller.deleteApplicant);
+  .post(restrictTo("job seeker"), controller.create)
+  .patch(restrictTo("job seeker"), controller.updateApplicant)
+  .delete(restrictTo("job seeker"), controller.deleteApplicant);
 
 export const applicantRouter = Router();
 

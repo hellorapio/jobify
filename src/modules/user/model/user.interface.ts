@@ -33,7 +33,7 @@ interface CompanySchema {
   }[];
 }
 
-interface WorkerSchema {
+interface JobSeekerSchema {
   gender: string;
   birthDate: Date;
   address: string;
@@ -47,11 +47,11 @@ interface WorkerSchema {
   resume: string;
 }
 
-interface IUserSchema extends Document, CompanySchema, WorkerSchema {
+interface IUserSchema extends Document, CompanySchema, JobSeekerSchema {
   name: string;
   photo: string;
   email: string;
-  role: "worker" | "company" | "admin";
+  role: "job seeker" | "company" | "admin";
   password: string;
   passwordChangeDate: Date | undefined;
   passwordResetToken: string | undefined;

@@ -44,9 +44,9 @@ class JobController extends BaseController<IJob, typeof jobService> {
   }
 
   override async create(req: Request, res: Response) {
-    const { name, id } = req.user;
+    const { id } = req.user;
     const body = await this.validator.create(req.body);
-    const job = await this.service.create(body, id, name);
+    const job = await this.service.create(body, id);
     sendResponse(res, 201, job);
   }
 }

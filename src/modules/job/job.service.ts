@@ -29,11 +29,10 @@ class JobService extends BaseService<IJob, typeof jobRepository> {
     return jobs;
   }
 
-  override async create(body: Partial<IJob>, id?: any, name?: string) {
+  override async create(body: Partial<IJob>, id?: any) {
     return await this.repo.insertOne({
       ...body,
       company: id,
-      companyName: name,
     });
   }
 
@@ -49,7 +48,7 @@ class JobService extends BaseService<IJob, typeof jobRepository> {
       return jobs;
     } else {
       const jobs = await this.repo.find({}, query);
-      
+
       return jobs;
     }
   }

@@ -14,11 +14,11 @@ class ApplicantService extends BaseService<
     super(applicantRepository);
   }
 
-  async updateApplicant(job: string, letter: string, worker: any) {
+  async updateApplicant(job: any, letter: string, jobSeeker: any) {
     const applicant = await this.repo.updateOne(
       {
         job,
-        worker,
+        jobSeeker,
       },
       { letter }
     );
@@ -26,9 +26,9 @@ class ApplicantService extends BaseService<
     if (!applicant) throw new NotFound("There is no applicant");
   }
 
-  async deleteApplicant(job: string, worker: any) {
+  async deleteApplicant(job: any, jobSeeker: any) {
     const applicant = await this.repo.deleteOne({
-      worker,
+      jobSeeker,
       job,
     });
 
@@ -48,7 +48,7 @@ class ApplicantService extends BaseService<
     if (!applicant) throw new NotFound("There is no applicant over here");
 
     const notification = await notificationService.create({
-      user: applicant.worker,
+      user: applicant.jobSeeker,
       read: false,
       content:
         status === "Rejected"
@@ -58,10 +58,17 @@ class ApplicantService extends BaseService<
           : "Your Application is in Interviewing Stage",
     });
 
-    notificationEmitter.sendNotification(applicant.worker, notification);
+    notificationEmitter.sendNotification(
+      applicant.jobSeeker,
+      notification
+    );
   }
 
-  override async create({ letter }: IApplicant, slug?: any, worker?: any) {
+  override async create(
+    { letter }: IApplicant,
+    slug?: any,
+    jobSeeker?: any
+  ) {
     const job = await jobRepository.findOne(
       { slug, isActive: true },
       "company"
@@ -71,7 +78,7 @@ class ApplicantService extends BaseService<
 
     const applicant = await this.repo.insertOne({
       company: job.company,
-      worker,
+      jobSeeker,
       job: slug,
       letter,
     });
@@ -88,8 +95,8 @@ class ApplicantService extends BaseService<
   }
 
   async getUserApplicants(id: string, role: string, query?: any) {
-    return role === "worker"
-      ? await this.repo.find({ worker: id }, query)
+    return role === "job seeker"
+      ? await this.repo.find({ jobSeeker: id }, query)
       : await this.repo.find({ company: id }, query);
   }
 }

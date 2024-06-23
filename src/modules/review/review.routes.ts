@@ -9,7 +9,7 @@ router.get("/", protect, controller.getAll);
 
 router
   .route("/")
-  .all(protect, restrictTo("worker"))
+  .all(protect, restrictTo("job seeker"))
   .post(controller.create)
   .patch(controller.update)
   .delete(controller.delete);

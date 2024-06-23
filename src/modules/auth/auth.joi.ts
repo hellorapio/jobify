@@ -13,7 +13,7 @@ const newPass = password
   .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/)
   .message("Password isn't strong enough");
 
-const role = Joi.string().valid("worker", "company").required().messages({
+const role = Joi.string().valid("job seeker", "company").required().messages({
   "any.only": "Invalid Role",
   "any.required": "Role is Required for signup",
 });

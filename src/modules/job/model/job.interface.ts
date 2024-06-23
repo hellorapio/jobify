@@ -7,6 +7,7 @@ type Categories =
   | "tech"
   | "software"
   | "product"
+  | "analytics"
   | "design"
   | "customer service"
   | "finance"
@@ -16,7 +17,6 @@ type Categories =
 
 export interface IJob extends Document {
   title: string;
-  companyName: string;
   description: string;
   salary: number;
   currency: "GBP" | "EUR" | "YEN" | "USD" | "CHF";
@@ -31,7 +31,9 @@ export interface IJob extends Document {
   applicants: number;
   remote: boolean;
   categories: Categories[];
-  experienceLevel: "mid" | "entry" | "senior";
+  minExperience: number;
+  maxExperience: number;
+  experienceLevel: "mid-level" | "entry" | "junior" | "senior";
   educationLevel:
     | "high school"
     | "associate"

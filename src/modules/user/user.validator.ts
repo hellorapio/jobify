@@ -10,8 +10,8 @@ class UserValidator extends BaseValidator {
   async updateCompany(body: object) {
     return await validCatch(this.joi.updateCompany, body);
   }
-  async updateWorker(body: object) {
-    return await validCatch(this.joi.updateWorker, body);
+  async updateJobSeeker(body: object) {
+    return await validCatch(this.joi.updateJobSeeker, body);
   }
 }
 
