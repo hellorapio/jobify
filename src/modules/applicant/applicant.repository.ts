@@ -1,5 +1,5 @@
 import BaseRepository from "../../bases/base.repository";
-import APIFeatures from "../../utils/apiFeatures";
+import QueryBuilder from "../../utils/queryBuilder";
 import { IApplicant } from "./model/applicant.interface";
 import Applicant from "./model/applicant.model";
 
@@ -9,7 +9,7 @@ class ApplicantRepository extends BaseRepository<IApplicant> {
   }
 
   override async find(filter: any, queryObj?: any): Promise<any> {
-    return await new APIFeatures(
+    return await new QueryBuilder(
       this.model.find(filter),
       queryObj
     ).paginate().query;

@@ -10,6 +10,15 @@ class JobService extends BaseService<IJob, typeof jobRepository> {
     super(jobRepository);
   }
 
+  async suggestions({ q }: { q: string }) {
+    const jobs = await this.repo.find(
+      { title: { $regex: `${q}`, $options: "i" } },
+      { fields: "title", limit: 6 }
+    );
+
+    return Array.from(new Set(jobs.map((job: IJob) => job.title)));
+  }
+
   async withIn(query: JobsWithIn) {
     const radius =
       query.unit === "mi"
@@ -38,13 +47,13 @@ class JobService extends BaseService<IJob, typeof jobRepository> {
 
   override async getAll(company?: any, query?: QueryObject) {
     if (company) {
-      const u = await userRepository.findOne({
+      const user = await userRepository.findOne({
         username: company,
         role: "company",
       });
 
-      if (!u) throw new NotFound("Company Not Found");
-      const jobs = await this.repo.find({ company: u.id }, query);
+      if (!user) throw new NotFound("Company Not Found");
+      const jobs = await this.repo.find({ company: user.id }, query);
       return jobs;
     } else {
       const jobs = await this.repo.find({}, query);

@@ -3,7 +3,16 @@ import validators from "../../utils/validators";
 
 const title = Joi.string().trim();
 const description = Joi.string().min(50).trim();
-const currency = Joi.string().valid("GBP", "EUR", "YEN", "USD", "CHF");
+const currency = Joi.string().valid(
+  "GBP",
+  "EUR",
+  "YEN",
+  "USD",
+  "CHF",
+  "CAD",
+  "AUD",
+  "INR"
+);
 const employmentType = Joi.string().valid(
   "full-time",
   "part-time",
@@ -11,7 +20,7 @@ const employmentType = Joi.string().valid(
   "internship"
 );
 const salary = Joi.number().integer().positive();
-const minExperience = Joi.number().integer().positive();
+const minExperience = Joi.number().integer().min(0);
 const maxExperience = Joi.number()
   .integer()
   .positive()
@@ -31,6 +40,7 @@ const categories = Joi.array().items(
     "finance",
     "human resources",
     "healthcare",
+    "management",
     "others"
   )
 );
@@ -39,7 +49,11 @@ const experienceLevel = Joi.string().valid(
   "mid-level",
   "entry",
   "junior",
-  "senior"
+  "senior",
+  "manager",
+  "staff",
+  "intern",
+  "freelancer"
 );
 const educationLevel = Joi.string().valid(
   "high school",
@@ -131,7 +145,19 @@ const withIn = query.append({
   unit,
 });
 
+const suggestions = Joi.object({
+  q: Joi.string().trim().min(3).max(25).required(),
+});
+
 const username = Joi.object({ username: validators.username });
 const slug = Joi.object({ slug: validators.username });
 
-export default { create, update, username, slug, withIn, query };
+export default {
+  create,
+  update,
+  username,
+  slug,
+  withIn,
+  query,
+  suggestions,
+};

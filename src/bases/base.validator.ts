@@ -38,10 +38,6 @@ class BaseValidator {
   async query(data: object) {
     return await validCatch(this.joi.query, data);
   }
-
-  async withIn(data: object) {
-    return await validCatch(this.joi.withIn, data);
-  }
 }
 
 export default BaseValidator;

@@ -13,13 +13,14 @@ type Categories =
   | "finance"
   | "human resources"
   | "healthcare"
+  | "management"
   | "others";
 
 export interface IJob extends Document {
   title: string;
   description: string;
   salary: number;
-  currency: "GBP" | "EUR" | "YEN" | "USD" | "CHF";
+  currency: "GBP" | "EUR" | "YEN" | "USD" | "CHF" | "CAD" | "AUD" | "INR";
   employmentType: "full-time" | "part-time" | "contract" | "internship";
   location: {
     type: "Point";
@@ -33,7 +34,15 @@ export interface IJob extends Document {
   categories: Categories[];
   minExperience: number;
   maxExperience: number;
-  experienceLevel: "mid-level" | "entry" | "junior" | "senior";
+  experienceLevel:
+    | "mid-level"
+    | "entry"
+    | "junior"
+    | "senior"
+    | "manager"
+    | "staff"
+    | "intern"
+    | "freelancer";
   educationLevel:
     | "high school"
     | "associate"

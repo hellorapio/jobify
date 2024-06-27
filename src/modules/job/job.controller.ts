@@ -5,10 +5,21 @@ import { Request, Response } from "express";
 import BaseController from "../../bases/base.controller";
 import { IJob } from "./model/job.interface";
 
-class JobController extends BaseController<IJob, typeof jobService> {
+class JobController extends BaseController<
+  IJob,
+  typeof jobService,
+  typeof jobValidator
+> {
   constructor() {
     super(jobService, jobValidator);
     this.jobsWithin = this.jobsWithin.bind(this);
+    this.getSuggestions = this.getSuggestions.bind(this);
+  }
+
+  async getSuggestions(req: Request, res: Response) {
+    const query = await this.validator.suggestions(req.query);
+    const suggestions = await this.service.suggestions(query);
+    sendResponse(res, 200, { suggestions });
   }
 
   async jobsWithin(req: Request, res: Response) {

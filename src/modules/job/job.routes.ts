@@ -7,9 +7,7 @@ import JobMiddleware from "./job.middleware";
 
 const router = Router();
 
-router
-  .route("/top-wanted-jobs")
-  .get(JobMiddleware.wantedJobs, controller.getAll);
+router.route("/suggestions").get(controller.getSuggestions);
 
 router.use("/:slug/applicants", applicantRouter);
 

@@ -26,15 +26,8 @@ class JobMiddleware {
     if (req.user.address) {
       req.query.lng = req.user.livesIn.coordinates[0].toString();
       req.query.lat = req.user.livesIn.coordinates[1].toString();
-    } else throw new BadRequest("The use didn't add His Address");
+    } else throw new BadRequest("The user didn't add his address");
 
-    next();
-  }
-
-  static async wantedJobs(req: Request, _: Response, next: NextFunction) {
-    req.query.limit = "5";
-    req.query.fields = "title,salary.value";
-    req.query.sort = "-salary";
     next();
   }
 
