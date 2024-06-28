@@ -8,11 +8,9 @@ class ApplicantRepository extends BaseRepository<IApplicant> {
     super(Applicant);
   }
 
+  //@ts-ignore
   override async find(filter: any, queryObj?: any): Promise<any> {
-    return await new QueryBuilder(
-      this.model.find(filter),
-      queryObj
-    ).paginate().query;
+    return await new QueryBuilder(this.model, queryObj).execute();
   }
 }
 

@@ -6,10 +6,6 @@ import userRepository from "../../user/user.repository";
 import addressDetails from "../../../utils/addressDetails";
 
 const addHooks = (schema: Schema<IJob>) => {
-  // schema.virtual("monthlyPay").get(function () {
-  //   return this.salary / 12;
-  // });
-
   // Add active false Hook on jobs
 
   schema.pre("save", async function (next) {

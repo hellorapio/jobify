@@ -2,6 +2,9 @@ import Joi from "joi";
 import validators from "../../utils/validators";
 
 const title = Joi.string().trim();
+const country = Joi.string().trim().alphanum();
+const city = Joi.string().trim().alphanum();
+const state = Joi.string().trim().alphanum();
 const description = Joi.string().min(50).trim();
 const currency = Joi.string().valid(
   "GBP",
@@ -19,7 +22,9 @@ const employmentType = Joi.string().valid(
   "contract",
   "internship"
 );
-const salary = Joi.number().integer().positive();
+
+const salary = Joi.number().integer().min(1).positive();
+
 const minExperience = Joi.number().integer().min(0);
 const maxExperience = Joi.number()
   .integer()
@@ -90,10 +95,13 @@ const create = Joi.object({
   benefits,
   categories,
   remote,
+  country: country.required(),
+  city: city.required(),
+  state: state.required(),
   tags,
   minExperience,
   maxExperience,
-  address: address.required(),
+  address,
   salary,
   employmentType,
   currency,
@@ -112,6 +120,9 @@ const update = Joi.object({
   benefits,
   categories,
   address,
+  country,
+  city,
+  state,
   tags,
   remote,
   salary,

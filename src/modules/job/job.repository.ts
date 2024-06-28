@@ -1,4 +1,3 @@
-import { FilterQuery } from "mongoose";
 import BaseRepository from "../../bases/base.repository";
 import QueryBuilder from "../../utils/queryBuilder";
 import { IJob } from "./model/job.interface";
@@ -9,16 +8,8 @@ class JobRepository extends BaseRepository<IJob> {
     super(Job);
   }
 
-  override async find(
-    filter: FilterQuery<IJob> = {},
-    queryObj?: any,
-    ...fields: string[]
-  ): Promise<any> {
-    return await new QueryBuilder(this.model.find(filter), queryObj)
-      .filter(fields)
-      .fieldsSelect()
-      .paginate()
-      .sort().query;
+  override async find(queryObj?: any): Promise<any> {
+    return await new QueryBuilder(this.model, queryObj).execute();
   }
 
   override async findById(id: string, select: string = "") {

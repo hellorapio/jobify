@@ -11,12 +11,13 @@ class JobService extends BaseService<IJob, typeof jobRepository> {
   }
 
   async suggestions({ q }: { q: string }) {
-    const jobs = await this.repo.find(
-      { title: { $regex: `${q}`, $options: "i" } },
-      { fields: "title", limit: 6 }
-    );
+    const [suggestions] = await this.repo.find({
+      fields: "title",
+      limit: 6,
+      title: { $regex: `${q}`, $options: "i" },
+    });
 
-    return Array.from(new Set(jobs.map((job: IJob) => job.title)));
+    return Array.from(new Set(suggestions.map((job: IJob) => job.title)));
   }
 
   async withIn(query: JobsWithIn) {
@@ -25,15 +26,11 @@ class JobService extends BaseService<IJob, typeof jobRepository> {
         ? query.distance / 3963.2
         : query.distance / 6378.1;
 
-    const jobs = await this.repo.find(
-      {
-        location: {
-          $geoWithin: { $centerSphere: [[query.lng, query.lat], radius] },
-        },
-      },
-      query,
-      "address"
-    );
+    query.location = {
+      $geoWithin: { $centerSphere: [[query.lng, query.lat], radius] },
+    };
+
+    const jobs = await this.repo.find(query);
 
     return jobs;
   }
@@ -53,12 +50,14 @@ class JobService extends BaseService<IJob, typeof jobRepository> {
       });
 
       if (!user) throw new NotFound("Company Not Found");
-      const jobs = await this.repo.find({ company: user.id }, query);
+      query = query || {};
+      query.company = user.id;
+
+      const jobs = await this.repo.find(query);
       return jobs;
     } else {
-      const jobs = await this.repo.find({}, query);
-
-      return jobs;
+      const [documents, count] = await this.repo.find(query);
+      return { documents, count };
     }
   }
 

@@ -12,6 +12,7 @@ class JobMiddleware {
         const { lat, lon } = details;
         req.query.lng = lon;
         req.query.lat = lat;
+        delete req.query.address;
       } else {
         const { latitude, longitude } = await ipDetails(`${req.ip}`);
         req.query.lng = longitude;

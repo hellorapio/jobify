@@ -38,7 +38,7 @@ export type JobsWithIn = {
   lng: number;
   unit: "mi" | "km";
   distance: number;
-};
+} & QueryObject;
 
 export type QueryObject = {
   sort?: string;
@@ -47,7 +47,7 @@ export type QueryObject = {
   page?: number;
   keyword?: string;
   $text?: { $search: string };
-};
+} & Record<string, any>;
 
 export type JWTObj = {
   id: string;

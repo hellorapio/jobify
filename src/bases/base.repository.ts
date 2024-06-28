@@ -14,6 +14,10 @@ class BaseRepository<T> {
     return await this.model.create(payload);
   }
 
+  async countDocs(filter: Partial<T>) {
+    return await this.model.countDocuments(filter);
+  }
+
   async find(filter: Partial<T> | any) {
     return await this.model.find(filter);
   }

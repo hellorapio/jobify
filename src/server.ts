@@ -27,4 +27,9 @@ process.on("SIGTERM", () => {
   });
 });
 
+// TODO: Refactor to use QueryBuilder
 // TODO: resume implementation
+// TODO: Use redis with sse
+// TODO: Add tests
+// TODO: Add CI/CD
+// TODO: Add Location search by Coordinates also on /jobs

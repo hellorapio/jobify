@@ -8,10 +8,9 @@ class ReviewRepository extends BaseRepository<IReview> {
     super(Review);
   }
 
+  //@ts-ignore
   override async find(filter: any, queryObj?: any): Promise<any> {
-    return await new QueryBuilder(this.model.find(filter), queryObj)
-      .paginate()
-      .sort().query;
+    return await new QueryBuilder(this.model, queryObj).execute();
   }
 }
 

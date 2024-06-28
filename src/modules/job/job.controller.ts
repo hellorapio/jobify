@@ -25,14 +25,14 @@ class JobController extends BaseController<
   async jobsWithin(req: Request, res: Response) {
     const query = await this.validator.withIn(req.query);
     const jobs = await this.service.withIn(query);
-    sendResponse(res, 200, { results: jobs.length, jobs });
+    sendResponse(res, 200, { jobs });
   }
 
   override async getAll(req: Request, res: Response) {
     const query = await this.validator.query(req.query);
     const { username } = await this.validator.username(req.params);
     const jobs = await this.service.getAll(username, query);
-    sendResponse(res, 200, { results: jobs.length, jobs });
+    sendResponse(res, 200, { jobs });
   }
 
   override async update(req: Request, res: Response) {

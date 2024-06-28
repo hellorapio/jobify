@@ -27,6 +27,9 @@ export interface IJob extends Document {
     coordinates: [number, number];
   };
   address: string;
+  country: string;
+  city: string;
+  state: string;
   company: ObjectId;
   tags: string[];
   applicants: number;
