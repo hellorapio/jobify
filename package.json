@@ -8,6 +8,7 @@
   "scripts": {
     "start:dev": "nodemon ./src/server.ts",
     "build": "tsc",
+    "build:render": "npm i && npm run build",
     "start:prod": "node ./dist/server.js",
     "debug": "ndb server.ts"
   },
