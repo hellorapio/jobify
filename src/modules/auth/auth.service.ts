@@ -1,7 +1,6 @@
 import { createHash, randomBytes } from "crypto";
 import userRepository from "../user/user.repository";
 import jwt from "../../utils/jwt";
-import Email from "../../utils/email";
 import NotAuthorized from "../../errors/notAuthorized";
 import NotFound from "../../errors/notFound";
 import BadRequest from "../../errors/badRequest";
@@ -38,10 +37,13 @@ class AuthService {
       verificationTokenExpires: new Date(Date.now() + 2 * 60 * 60 * 1000),
     });
 
-    await Email.sendVerification({
-      email: body.email,
-      verify: host + "/verify/" + token,
-      name: body.name,
+    await emailQueue.add("sendEmail", {
+      type: "verification",
+      data: {
+        email: body.email,
+        verify: host + "/verify/" + token,
+        name: body.name,
+      },
     });
 
     return await jwt.sign(user.id);
@@ -60,8 +62,6 @@ class AuthService {
       type: "reset-password",
       data: { name: user.name, resetURL, email },
     });
-
-    // await Email.sendResetPass();
   }
 
   async resetPassword(token: string, password: string) {
@@ -127,7 +127,10 @@ class AuthService {
         "This Validation link Either not Valid or Expired"
       );
 
-    await Email.sendWelcome({ email: user.email, name: user.name });
+    await emailQueue.add("sendEmail", {
+      type: "welcome",
+      data: { email: user.email, name: user.name },
+    });
   }
 
   async changeEmail(id: any, host: string, { email, password }: Login) {
@@ -152,10 +155,13 @@ class AuthService {
     user.isVerifiedAt = undefined;
     await user.save({ validateBeforeSave: false });
 
-    await Email.sendVerification({
-      name: user.name,
-      email,
-      verify: host + "/verify/" + token,
+    await emailQueue.add("sendEmail", {
+      type: "verification",
+      data: {
+        name: user.name,
+        email,
+        verify: host + "/verify/" + token,
+      },
     });
   }
 }

@@ -17,27 +17,19 @@ export const emailQueue = new Queue<EmailJobData>("Emails", {
   connection: redis,
 });
 
-emailQueue
-  .clean(1000 * 60, 100, "completed")
-  .then((jobs) => {
-    console.log(`Cleaned ${jobs.length} completed jobs`);
-  })
-  .catch((error) => {
-    console.error(`Failed to clean completed jobs: ${error}`);
-  });
-
 const worker = new Worker(
   "Emails",
   async (job: Job<EmailJobData>) => {
-    switch (job.data.type) {
+    const { type, data } = job.data;
+    switch (type) {
       case "welcome":
-        await Email.sendWelcome(job.data.data);
+        await Email.sendWelcome(data);
         break;
       case "reset-password":
-        await Email.sendResetPass(job.data.data);
+        await Email.sendResetPass(data);
         break;
       case "verification":
-        await Email.sendVerification(job.data.data);
+        await Email.sendVerification(data);
         break;
       default:
         throw new Error("Wrong job type");
