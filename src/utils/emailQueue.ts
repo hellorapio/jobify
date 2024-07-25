@@ -15,6 +15,11 @@ type EmailJobData =
 
 export const emailQueue = new Queue<EmailJobData>("Emails", {
   connection: redis,
+  streams: {
+    events: {
+      maxLen: 10,
+    },
+  },
 });
 
 const worker = new Worker(
@@ -36,7 +41,7 @@ const worker = new Worker(
         break;
     }
   },
-  { connection: redis, removeOnComplete: { age: 10 } }
+  { connection: redis, removeOnComplete: { age: 60 }, concurrency: 100 }
 );
 
 worker.on("completed", async (job) => {

@@ -6,6 +6,7 @@ import restrictTo from "../../middlewares/restrict.middleware";
 const applicantJobsrouter = Router({ mergeParams: true });
 
 // Add Notifications on these for Job Seekers
+
 applicantJobsrouter
   .route("/reply/:applicantId")
   .all(protect)

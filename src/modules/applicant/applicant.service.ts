@@ -61,10 +61,7 @@ class ApplicantService extends BaseService<
           : "Your Application is in Interviewing Stage",
     });
 
-    notificationEmitter.sendNotification(
-      applicant.jobSeeker,
-      notification
-    );
+    notificationEmitter.publishNotification(notification);
   }
 
   override async create(
@@ -92,7 +89,7 @@ class ApplicantService extends BaseService<
       content: "You have a new Applicant for your Job",
     });
 
-    notificationEmitter.sendNotification(job.company, notification);
+    notificationEmitter.publishNotification(notification);
 
     return applicant;
   }

@@ -22,6 +22,9 @@ const rateLimiter = async (
         msg: "You've exceeded the login attempt limit",
         suffix: "login",
       })(req, res, next);
+    case "/health":
+      next();
+      break;
     default:
       return limiter({
         hits: 140,
