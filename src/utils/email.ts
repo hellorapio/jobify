@@ -5,19 +5,19 @@ import config from "../config/config";
 import pug from "pug";
 import { htmlToText } from "html-to-text";
 
-type ResetPass = {
+export type ResetPass = {
   resetURL: string;
   email: string;
   name: string;
 };
 
-type Verification = {
+export type Verification = {
   verify: string;
   email: string;
   name: string;
 };
 
-type Welcome = {
+export type Welcome = {
   email: string;
   name: string;
 };
@@ -26,7 +26,7 @@ const {
   email: { pass, port, user, host },
 } = config;
 
-class Email {
+export default class Email {
   static transporter = nodemailer.createTransport({
     host,
     port: Number(port),
@@ -41,11 +41,14 @@ class Email {
   }
 
   static async sendResetPass({ resetURL, email, name }: ResetPass) {
-    const html = pug.renderFile(`${__dirname}/../../public/views/email/reset.pug`, {
-      name,
-      resetURL,
-      subject: "Jobify: Password Reset Link (Valid for 1 Hour)",
-    });
+    const html = pug.renderFile(
+      `${__dirname}/../../public/views/email/reset.pug`,
+      {
+        name,
+        resetURL,
+        subject: "Jobify: Password Reset Link (Valid for 1 Hour)",
+      }
+    );
 
     const text = htmlToText(html);
 
@@ -78,11 +81,14 @@ class Email {
   }
 
   static async sendVerification({ name, verify, email }: Verification) {
-    const html = pug.renderFile(`${__dirname}/../../public/views/email/verify.pug`, {
-      name,
-      verify,
-      subject: "Jobify: Please verify your email address",
-    });
+    const html = pug.renderFile(
+      `${__dirname}/../../public/views/email/verify.pug`,
+      {
+        name,
+        verify,
+        subject: "Jobify: Please verify your email address",
+      }
+    );
     const text = htmlToText(html);
     await this.sendEmail({
       from: "info@hellorapio.me",
@@ -93,5 +99,3 @@ class Email {
     });
   }
 }
-
-export default Email;

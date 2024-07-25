@@ -36,7 +36,10 @@ class ApplicantService extends BaseService<
   }
 
   override async getAll(company?: string, job?: string, query?: any) {
-    return await this.repo.find({ company, job }, query);
+    query = query || {};
+    query.company = company;
+    query.job = job;
+    return await this.repo.find(query);
   }
 
   async replyApplicant(id: string, company: any, status: string) {
@@ -95,9 +98,15 @@ class ApplicantService extends BaseService<
   }
 
   async getUserApplicants(id: string, role: string, query?: any) {
-    return role === "job seeker"
-      ? await this.repo.find({ jobSeeker: id }, query)
-      : await this.repo.find({ company: id }, query);
+    if (role === "job seeker") {
+      query = query || {};
+      query.jobSeeker = id;
+      return await this.repo.find(query);
+    } else {
+      query = query || {};
+      query.company = id;
+      return await this.repo.find(query);
+    }
   }
 }
 

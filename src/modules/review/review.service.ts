@@ -12,16 +12,20 @@ class ReviewService extends BaseService<IReview, typeof reviewRepository> {
 
   override async getAll(company?: any, query?: QueryObject) {
     if (company) {
-      const u = await userRepository.findOne({
+      const user = await userRepository.findOne({
         username: company,
         role: "company",
       });
 
-      if (!u) throw new NotFound("Company Not Found");
-      const reviews = await this.repo.find({ company: u.id }, query);
+      if (!user) throw new NotFound("Company Not Found");
+
+      query = query || {};
+      query.company = user.id;
+
+      const reviews = await this.repo.find(query);
       return reviews;
     } else {
-      const reviews = await this.repo.find({}, query);
+      const reviews = await this.repo.find(query);
       return reviews;
     }
   }

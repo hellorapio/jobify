@@ -4,9 +4,9 @@ import jwt from "../../utils/jwt";
 import Email from "../../utils/email";
 import NotAuthorized from "../../errors/notAuthorized";
 import NotFound from "../../errors/notFound";
-import InternalError from "../../errors/internalError";
 import BadRequest from "../../errors/badRequest";
 import { Login, Signup, UpdatePassword } from "../../types";
+import { emailQueue } from "../../utils/emailQueue";
 
 class AuthService {
   private static instance: AuthService;
@@ -56,21 +56,12 @@ class AuthService {
 
     const resetURL = `${host}/reset/${token}`;
 
-    try {
-      await Email.sendResetPass({
-        resetURL,
-        email: user.email,
-        name: user.name,
-      });
-    } catch (error) {
-      user.passwordResetExpires = undefined;
-      user.passwordResetToken = undefined;
-      await user.save({ validateBeforeSave: false });
+    await emailQueue.add("sendEmail", {
+      type: "reset-password",
+      data: { name: user.name, resetURL, email },
+    });
 
-      throw new InternalError(
-        "There was an Error Sending this Email, Please try again Later"
-      );
-    }
+    // await Email.sendResetPass();
   }
 
   async resetPassword(token: string, password: string) {
