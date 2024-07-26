@@ -1,17 +1,7 @@
 import { Queue, Worker, Job } from "bullmq";
 import redis from "../core/redis";
-import Email, { Verification, Welcome, ResetPass } from "./email";
-
-type EmailJobData =
-  | {
-      type: "reset-password";
-      data: ResetPass;
-    }
-  | { type: "welcome"; data: Welcome }
-  | {
-      type: "verification";
-      data: Verification;
-    };
+import Email from "./email";
+import { EmailJobData } from "../types";
 
 export const emailQueue = new Queue<EmailJobData>("Emails", {
   connection: redis,
@@ -45,5 +35,8 @@ const worker = new Worker(
 );
 
 worker.on("completed", async (job) => {
+  // Should be storing job logs
+  // also there should be an event for failed jobs
+  // logging in server is just enough for now
   console.log(`this job ${job.id} has been completed`);
 });

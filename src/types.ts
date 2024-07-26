@@ -54,3 +54,31 @@ export type JWTObj = {
   iat: number;
   exp: number;
 };
+
+export type ResetPass = {
+  resetURL: string;
+  email: string;
+  name: string;
+};
+
+export type Verification = {
+  verify: string;
+  email: string;
+  name: string;
+};
+
+export type Welcome = {
+  email: string;
+  name: string;
+};
+
+export type EmailJobData =
+  | {
+      type: "reset-password";
+      data: ResetPass;
+    }
+  | { type: "welcome"; data: Welcome }
+  | {
+      type: "verification";
+      data: Verification;
+    };

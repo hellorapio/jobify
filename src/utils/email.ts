@@ -1,26 +1,9 @@
 import nodemailer from "nodemailer";
-import { EmailOptions } from "../types";
+import { EmailOptions, ResetPass, Verification, Welcome } from "../types";
 import SMTPConnection from "nodemailer/lib/smtp-connection";
 import config from "../config/config";
 import pug from "pug";
 import { htmlToText } from "html-to-text";
-
-export type ResetPass = {
-  resetURL: string;
-  email: string;
-  name: string;
-};
-
-export type Verification = {
-  verify: string;
-  email: string;
-  name: string;
-};
-
-export type Welcome = {
-  email: string;
-  name: string;
-};
 
 const {
   email: { pass, port, user, host },
