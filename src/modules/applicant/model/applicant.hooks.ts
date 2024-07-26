@@ -18,7 +18,6 @@ const addHooks = async (schema: Schema<IApplicant>) => {
   };
 
   schema.post("save", async function (doc) {
-    console.log(doc.job);
     //@ts-ignore
     await doc.constructor.calculateApplicants(doc.job);
   });

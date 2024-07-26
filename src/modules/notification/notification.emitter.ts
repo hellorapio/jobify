@@ -30,7 +30,7 @@ class NotificationEmitter extends EventEmitter {
   }
 
   async sendNotification(data: INotification) {
-    const res = await this.getRes(data.id);
+    const res = await this.getRes(data.user.toString());
     if (!res) return;
     res.write(`event: notification\n`);
     res.write(`data: ${JSON.stringify(data)}\n\n`);

@@ -79,7 +79,7 @@ class ApplicantService extends BaseService<
     const applicant = await this.repo.insertOne({
       company: job.company,
       jobSeeker,
-      job: slug,
+      job: job._id,
       letter,
     });
 
