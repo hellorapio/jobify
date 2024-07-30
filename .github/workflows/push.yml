@@ -1,0 +1,14 @@
+name: actions test
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: log
+        run: | 
+          echo "Hello from actions file"
+          echo "Github actions has been triggered"
