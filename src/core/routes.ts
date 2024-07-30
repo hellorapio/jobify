@@ -9,7 +9,7 @@ import { applicantRouter } from "../modules/applicant/applicant.routes";
 import errorHandler from "./../middlewares/error.middleware";
 import NotFound from "../errors/notFound";
 
-const addRoutes = (app: Express) => {
+const addRoutes = async (app: Express) => {
   app.use("/api/v1/applicants", applicantRouter);
   app.use("/api/v1/jobs", jobRouter);
   app.use("/api/v1/users", userRouter);

@@ -89,7 +89,7 @@ class ApplicantService extends BaseService<
       content: "You have a new Applicant for your Job",
     });
 
-    notificationEmitter.publishNotification(notification);
+    notificationEmitter.publishNotification(await notification.populate({path: "job"}));
 
     return applicant;
   }

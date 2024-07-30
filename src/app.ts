@@ -4,10 +4,14 @@ import connectDB from "./core/mongo";
 import addMiddlewares from "./core/middlewares";
 import addRoutes from "./core/routes";
 
-const app = express();
+async function init() {
+  const app = express();
 
-connectDB();
-addMiddlewares(app);
-addRoutes(app);
+  await connectDB();
+  await addMiddlewares(app);
+  await addRoutes(app);
 
-export default app;
+  return app;
+}
+
+export default init;

@@ -1,37 +1,34 @@
 require("dotenv").config({ path: `${__dirname}/config/.env` });
+import init from "./app";
 import config from "./config/config";
-import app from "./app";
 
-process.on("uncaughtException", (err) => {
-  console.log(err.name);
-  console.log(err.message);
-  process.exit(1);
-});
+async function main() {
+  const app = await init();
 
-const server = app.listen(config.port, () => {
-  console.log(`I'm listening on ${config.port}...`);
-});
-
-process.on("unhandledRejection", (err: Error) => {
-  console.log(err.name);
-  console.log(err.message);
-  server.close(() => {
+  process.on("uncaughtException", (err) => {
+    console.log(err.name);
+    console.log(err.message);
     process.exit(1);
   });
-});
 
-process.on("SIGTERM", () => {
-  console.log("SIGTERM Event");
-  server.close(() => {
-    console.log("SIGTERM");
+  const server = app.listen(config.port, () => {
+    console.log(`I'm listening on ${config.port}...`);
   });
-});
 
+  process.on("unhandledRejection", (err: Error) => {
+    console.log(err.name);
+    console.log(err.message);
+    server.close(() => {
+      process.exit(1);
+    });
+  });
 
-// TODO: Refactor to use QueryBuilder
-// TODO: resume implementation
-// TODO: Add tests
-// TODO: Add CI/CD
-// TODO: Add Location search by Coordinates also on /jobs
-// DONE: Use redis with sse
-// DONE: added BullMQ
+  process.on("SIGTERM", () => {
+    console.log("SIGTERM Event");
+    server.close(() => {
+      console.log("SIGTERM");
+    });
+  });
+}
+
+main();

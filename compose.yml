@@ -1,9 +1,9 @@
-version: '3.8'
+version: "3.8"
 
 services:
   mongo:
     image: mongo:latest
-    container_name: mongo_instance
+    container_name: mongodb
     ports:
       - "27017:27017"
     volumes:
@@ -13,19 +13,19 @@ services:
 
   redis:
     image: redis:latest
-    container_name: redis_instance
+    container_name: redis
     ports:
       - "6379:6379"
     networks:
       - app-network
 
   app:
-    image: your_app_image:latest  # Replace with your app's Docker image
-    container_name: app_instance
+    image: jobify:latest
+    container_name: app
     ports:
-      - "3000:3000"  # Replace with your app's port
+      - "5000:5000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/your_database  # Replace with your database name
+      - MONGO_URI=mongodb://mongo:27017/jobify
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     depends_on:
