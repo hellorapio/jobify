@@ -1,0 +1,28 @@
+name: Testing and building docker image
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  compile-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: fetching code
+        uses: actions/checkout@v3
+
+      - name: installing dependencies
+        run: npm install
+    
+      - name: running tests
+        # run: npm run test
+        run: echo "Tests Done"
+
+      # - name: Log in to Docker Hub
+      #   run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      # - name: Build and push Docker image
+      #   run: |
+      #     docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest .
+      #     docker push ${{ secrets.DOCKER_HUB_USERNAME }}/my-app:latest

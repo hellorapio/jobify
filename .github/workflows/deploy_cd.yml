@@ -1,0 +1,17 @@
+name: Deploy to render.com
+
+on:
+  workflow_run:
+    workflows: ["Testing and building docker image"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: render deployment
+        env:
+          deploy_url: ${{ secrets.RENDER_HOOK }}
+        run: |
+          curl "$deploy_url"
