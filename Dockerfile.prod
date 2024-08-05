@@ -10,4 +10,7 @@ RUN npm run build
 
 COPY . .
 
+# For render deployment
+EXPOSE 10000
+
 CMD ["npm", "run","start:prod"]

@@ -1,5 +1,8 @@
 /node_modules
-/src
-Dockerfile
+/dist
+Dockerfile*
 .dockerignore
 .env
+.env.example
+/.git
+/.github

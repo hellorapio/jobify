@@ -1,5 +1,10 @@
 version: "3.8"
 
+# This compose file is for development purposes
+# I'm using render for deployment 
+# so i don't a compose.prod for this project
+# i needed this file to spin up containers for my app in development
+
 services:
   mongo:
     image: mongo:latest
@@ -24,6 +29,8 @@ services:
     container_name: app
     ports:
       - "5000:5000"
+    env_file:
+      - ./src/config/.env
     environment:
       - MONGO_URI=mongodb://mongo:27017/jobify
       - REDIS_HOST=redis

@@ -7,9 +7,9 @@ import addRoutes from "./core/routes";
 async function init() {
   const app = express();
 
-  await connectDB();
-  await addMiddlewares(app);
-  await addRoutes(app);
+  connectDB();
+  addMiddlewares(app);
+  addRoutes(app);
 
   return app;
 }

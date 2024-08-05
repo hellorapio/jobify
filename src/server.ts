@@ -1,4 +1,4 @@
-require("dotenv").config({ path: `${__dirname}/config/.env` });
+require("dotenv").config({ path: `./.env` });
 import init from "./app";
 import config from "./config/config";
 
