@@ -14,11 +14,27 @@ jobs:
 
       - name: installing dependencies
         run: echo "installing dependencies"
+        # Just mocking the installation
         # run: npm install
-
+        
       - name: running tests
-        # run: npm run test
         run: echo "Tests Done"
+        # Just mocking the Testing
+        # run: npm run test
+
+      - name: Notify on success
+        if: success()
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_HOOK }}
+          content: "Tests succeeded, continuing to build and push docker image :)"
+
+      - name: Notify on failure
+        if: failure()
+        uses: tsickert/discord-webhook@v6.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_HOOK }}
+          content: "Tests didn't succeed as expected :("
 
   docker:
     needs: compile-app
