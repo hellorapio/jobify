@@ -8,6 +8,7 @@ import { applicantRouter } from "../modules/applicant/applicant.routes";
 // import reviewRouter from "../modules/review/review.routes";
 import errorHandler from "./../middlewares/error.middleware";
 import NotFound from "../errors/notFound";
+import feedbackRouter from "../modules/feedback/feedback.routes";
 
 const addRoutes = async (app: Express) => {
   app.use("/api/v1/applicants", applicantRouter);
@@ -16,6 +17,7 @@ const addRoutes = async (app: Express) => {
   app.use("/api/v1/auth", authRouter);
   app.use("/api/v1/subscriptions", subscriptionsRouter);
   app.use("/api/v1/notifications", notificationsRouter);
+  app.use("/api/v1/feedbacks", feedbackRouter);
   // app.use("/api/v1/reviews", reviewRouter);
 
   app.get("/health", (_, res) => {
